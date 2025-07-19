@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Fuji Silvertech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --dark-bg: #0a0c12;
+            --metal-dark: #1a1e28;
+            --metal-mid: #2a2f3d;
+            --metal-light: #3a4152;
+            --accent-blue: #00a8ff;
+            --accent-gold: #ffb300;
+            --text-light: #f0f4f8;
+            --text-gray: #a0aec0;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #141925 100%);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 12, 18, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(58, 65, 82, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            padding: 12px 5%;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #0066cc 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(0, 168, 255, 0.3);
+        }
+
+        .logo-icon i {
+            font-size: 22px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--accent-blue);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover:after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: var(--accent-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0 10%;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920') no-repeat center center;
+            background-size: cover;
+            filter: brightness(0.4);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards 0.5s;
+        }
+
+        .hero-subtitle {
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .hero-title {
+            font-size: 60px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-title span {
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text {
+            font-size: 18px;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #0066cc 100%);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 20px rgba(0, 168, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 168, 255, 0.6);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 10%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-subtitle {
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-gold));
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-description {
+            color: var(--text-gray);
+            font-size: 18px;
+            max-width: 700px;
+            margin: 30px auto 0;
+            line-height: 1.8;
+        }
+
+        /* History Section */
+        .history-section {
+            position: relative;
+            background: var(--metal-dark);
+            overflow: hidden;
+        }
+
+        .history-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920') no-repeat center center;
+            background-size: cover;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--accent-blue), var(--accent-gold));
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            padding: 20px 40px;
+            position: relative;
+            width: 50%;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+            padding-right: 80px;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 80px;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s ease;
+        }
+
+        .timeline-content {
+            background: linear-gradient(135deg, rgba(26, 30, 40, 0.8) 0%, rgba(42, 47, 61, 0.8) 100%);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(58, 65, 82, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #0066cc 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 30px;
+            box-shadow: 0 0 20px rgba(0, 168, 255, 0.4);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-icon {
+            right: -90px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-icon {
+            left: -90px;
+        }
+
+        .timeline-year {
+            color: var(--accent-gold);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .timeline-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .timeline-description {
+            color: var(--text-gray);
+        }
+
+        /* Values Section */
+        .values-section {
+            background: var(--dark-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .value-card {
+            background: linear-gradient(135deg, rgba(26, 30, 40, 0.8) 0%, rgba(42, 47, 61, 0.8) 100%);
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            border: 1px solid rgba(58, 65, 82, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .value-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 168, 255, 0.1) 0%, rgba(255, 179, 0, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .value-card:hover:before {
+            opacity: 1;
+        }
+
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #0066cc 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 30px;
+            box-shadow: 0 0 25px rgba(0, 168, 255, 0.4);
+        }
+
+        .value-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .value-description {
+            color: var(--text-gray);
+        }
+
+        /* Leadership Section */
+        .leadership-section {
+            background: var(--metal-dark);
+            position: relative;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .team-card {
+            background: linear-gradient(135deg, rgba(26, 30, 40, 0.8) 0%, rgba(42, 47, 61, 0.8) 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            text-align: center;
+            border: 1px solid rgba(58, 65, 82, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .team-image {
+            height: 300px;
+            width: 100%;
+            background-size: cover;
+            background-position: top center;
+            position: relative;
+        }
+
+        .team-image:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, var(--metal-dark) 0%, transparent 50%);
+        }
+
+        .team-info {
+            padding: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .team-name {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .team-role {
+            color: var(--accent-blue);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .team-bio {
+            color: var(--text-gray);
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--metal-mid);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--accent-blue);
+            transform: translateY(-3px);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #0f1420 100%);
+            padding: 80px 10%;
+            position: relative;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(26, 30, 40, 0.8) 0%, rgba(42, 47, 61, 0.8) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(58, 65, 82, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-icon {
+            font-size: 50px;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+        }
+
+        .stat-number {
+            font-size: 50px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--metal-dark);
+            padding: 80px 10% 40px;
+            border-top: 1px solid rgba(58, 65, 82, 0.3);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+        }
+
+        .footer-column h3 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-blue);
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .footer-column p {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        .footer-links a i {
+            color: var(--accent-blue);
+            font-size: 14px;
+        }
+
+        .social-grid {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-grid a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--metal-mid);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-grid a:hover {
+            background: var(--accent-blue);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(58, 65, 82, 0.3);
+            color: var(--text-gray);
+            font-size: 15px;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .timeline:before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+                text-align: left !important;
+            }
+
+            .timeline-item:nth-child(odd) {
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+                padding-left: 70px;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-icon,
+            .timeline-item:nth-child(even) .timeline-icon {
+                left: -40px;
+                right: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 5%;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 42px;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-industry"></i>
+            </div>
+            <div class="logo-text">FujiSilverTech aaaaaaaaaaaaa</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Projects</a></li>
+                <li><a href="#" class="active">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-subtitle">Building The Future</div>
+            <h1 class="hero-title">Innovating <span>Precast Concrete</span> Solutions</h1>
+            <p class="hero-text">For over two decades, Fuji Silvertech has been at the forefront of precast concrete manufacturing, delivering innovative, sustainable, and high-quality infrastructure solutions across India and beyond.</p>
+            <a href="#" class="cta-button">Explore Our Journey</a>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section class="history-section">
+        <div class="section-header">
+            <div class="section-subtitle">Our Journey</div>
+            <h2 class="section-title">Company History</h2>
+            <p class="section-description">From our humble beginnings to becoming an industry leader, our journey is marked by innovation, dedication, and continuous growth.</p>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="timeline-year">2001</div>
+                    <h3 class="timeline-title">Foundation</h3>
+                    <p class="timeline-description">Established with a vision to revolutionize precast concrete manufacturing in India with a small factory in Bangalore.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-expand"></i>
+                    </div>
+                    <div class="timeline-year">2007</div>
+                    <h3 class="timeline-title">First Expansion</h3>
+                    <p class="timeline-description">Expanded operations with a state-of-the-art manufacturing facility and doubled production capacity.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="timeline-year">2012</div>
+                    <h3 class="timeline-title">Quality Certification</h3>
+                    <p class="timeline-description">Achieved ISO 9001 certification, establishing our commitment to quality management systems.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-globe-asia"></i>
+                    </div>
+                    <div class="timeline-year">2016</div>
+                    <h3 class="timeline-title">International Projects</h3>
+                    <p class="timeline-description">Successfully executed major infrastructure projects in Southeast Asia and the Middle East.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="timeline-year">2020</div>
+                    <h3 class="timeline-title">Sustainability Initiative</h3>
+                    <p class="timeline-description">Launched our Green Manufacturing program, reducing carbon footprint by 40% across operations.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="timeline-year">2023</div>
+                    <h3 class="timeline-title">Automation Revolution</h3>
+                    <p class="timeline-description">Implemented AI-driven production systems, increasing efficiency and precision in manufacturing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <div class="section-header">
+            <div class="section-subtitle">Our Principles</div>
+            <h2 class="section-title">Core Values</h2>
+            <p class="section-description">These fundamental beliefs guide our decisions, actions, and relationships with clients, partners, and employees.</p>
+        </div>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3 class="value-title">Quality Excellence</h3>
+                <p class="value-description">We maintain uncompromising standards in every product, ensuring durability, precision, and reliability that exceeds expectations.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3 class="value-title">Innovation</h3>
+                <p class="value-description">Continuous research and technological advancement drive our solutions, keeping us at the industry's cutting edge.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h3 class="value-title">Sustainability</h3>
+                <p class="value-description">We're committed to eco-friendly manufacturing processes and materials that minimize environmental impact.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="value-title">Integrity</h3>
+                <p class="value-description">Honest communication, ethical practices, and transparency form the foundation of all our relationships.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <h3 class="value-title">Collaboration</h3>
+                <p class="value-description">We believe in partnership - with clients, employees, and communities - to create shared success.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="value-title">Safety First</h3>
+                <p class="value-description">Protecting our workforce and ensuring safe operations is our highest priority in all activities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Section -->
+    <section class="leadership-section">
+        <div class="section-header">
+            <div class="section-subtitle">Meet Our Leaders</div>
+            <h2 class="section-title">Executive Team</h2>
+            <p class="section-description">Our experienced leadership team brings decades of industry expertise and a shared vision for transforming infrastructure development.</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-image" style="background-image: url('https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600')"></div>
+                <div class="team-info">
+                    <h3 class="team-name">Rajiv Sharma</h3>
+                    <div class="team-role">Founder & CEO</div>
+                    <p class="team-bio">25+ years in construction materials innovation. Spearheaded company growth from startup to market leader.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-image" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600')"></div>
+                <div class="team-info">
+                    <h3 class="team-name">Priya Patel</h3>
+                    <div class="team-role">Chief Operations Officer</div>
+                    <p class="team-bio">Operational excellence expert with 18 years experience in manufacturing optimization and quality systems.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-image" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600')"></div>
+                <div class="team-info">
+                    <h3 class="team-name">Arjun Mehta</h3>
+                    <div class="team-role">Chief Technology Officer</div>
+                    <p class="team-bio">Pioneer in concrete technology with 15 patents in sustainable material formulations and production processes.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

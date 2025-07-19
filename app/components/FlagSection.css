@@ -1,0 +1,74 @@
+.flag-section {
+  position: relative;
+}
+
+.sticky {
+  position: relative;
+  background: linear-gradient(90deg, #e3f2fd 0%, #f5f7fa 100%) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 2px 16px rgba(62, 92, 118, 0.08);
+  padding-bottom: 60px;
+}
+
+.h-light {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  max-width: 100%;
+  height: auto;
+}
+
+.right-img {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.indian-flag {
+  position: relative;
+  box-shadow: 0 4px 24px rgba(62, 92, 118, 0.12);
+  border-radius: 0 !important;
+  overflow: hidden;
+  max-width: 500px;
+  margin-left: auto;
+}
+
+.flags-overlay {
+  z-index: 2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .right-img {
+    position: relative;
+    transform: none;
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .indian-flag {
+    margin: 0 auto;
+  }
+  
+  .sticky {
+    padding-bottom: 30px;
+  }
+}
+
+/* Animation for the content */
+[data-aos] {
+  transition-property: opacity, transform;
+}
+
+[data-aos="fade-up"] {
+  transform: translate3d(0, 30px, 0);
+  opacity: 0;
+}
+
+[data-aos].aos-animate {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
