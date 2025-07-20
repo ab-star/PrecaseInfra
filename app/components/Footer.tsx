@@ -1,5 +1,6 @@
 "use client"
 import React from "react";
+import Image from "next/image";
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa";
 
 const branches = [
@@ -23,13 +24,18 @@ const branches = [
 ];
 
 const Footer = () => (
-  <footer className="w-full relative overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-gray-800 text-white pt-[120px] pb-[120px] px-8 md:px-32 lg:px-56 flex flex-col md:flex-row gap-16 md:gap-0 justify-between items-start shadow-2xl border-t-0">
-    {/* Decorative divider */}
-    <div className="absolute top-0 left-0 w-full" style={{zIndex:2}}>
-      <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-20">
-        <path d="M0,80 C480,0 960,160 1440,80 L1440,0 L0,0 Z" fill="#181e29" fillOpacity="0.9" />
-      </svg>
-    </div>
+  <footer
+    className="w-full relative overflow-hidden text-white flex flex-col md:flex-row gap-16 md:gap-0 justify-between items-start shadow-2xl border-t-0"
+    style={{
+      background: "url('/footerBackground.jpg') center/cover no-repeat, linear-gradient(135deg, #1e293b 60%, #181e29 100%)",
+      padding: '96px 64px 96px 64px',
+      minHeight: '520px',
+      fontSize: '1.25rem', // 20px
+      fontFamily: 'Segoe UI, Arial, Helvetica Neue, Helvetica, sans-serif',
+      letterSpacing: '0.02em',
+      fontWeight: 500,
+    }}
+  >
     {/* Geometric/abstract background shapes */}
     <div className="absolute inset-0 pointer-events-none z-0">
       <div className="absolute left-1/4 top-10 w-72 h-72 bg-gradient-to-tr from-blue-900/30 to-indigo-700/10 rounded-full blur-3xl animate-pulse-slow" />
@@ -39,35 +45,38 @@ const Footer = () => (
     <div className="relative z-10 flex-1 flex flex-col gap-8 items-start">
       <div className="flex items-center gap-4 mb-4">
         <span className="text-4xl font-extrabold tracking-wider drop-shadow-lg animate-pulse-slow" style={{textShadow:'0 0 32px #fff6,0 2px 8px #38bdf8'}}>
-          <img src="/file.svg" alt="Logo" className="w-14 h-14 inline-block mr-2 drop-shadow-lg" style={{filter:'drop-shadow(0 0 16px #fff8)'}} />
-          FLAJI SILVERTECH
+          <Image src="/brandIcon.jpeg" alt="Logo" width={56} height={56} className="w-14 h-14 inline-block mr-2 drop-shadow-lg rounded-full" style={{filter:'drop-shadow(0 0 16px #fff8)'}} />
         </span>
       </div>
-      <div className="text-lg font-medium text-white/90 leading-relaxed mb-2">
+      <div className="text-xl font-semibold text-white/90 leading-relaxed mb-2" style={{fontFamily: 'inherit'}}>
         Head Office:<br/>
         101, Silvertech House, Main Street, Andheri West,<br/>
         Mumbai, Maharashtra 400053, India
       </div>
-      <div className="flex flex-col gap-2 text-base text-white/80">
-        <div className="flex items-center gap-3 group cursor-pointer hover:text-amber-400 transition-all">
-          <FaPhoneAlt className="text-xl group-hover:scale-110 transition-transform animate-float" />
-          +91 22 1234 5678
+      <div className="flex flex-col gap-8 text-lg text-white/90 w-full" style={{fontFamily: 'inherit'}}>
+        <div className="w-full max-w-3xl mx-auto p-16 rounded-[2.5rem] shadow-2xl border-2 border-white/20 bg-[url('/footerBackground.jpg')] bg-cover bg-center bg-no-repeat flex flex-col items-center" style={{backgroundColor: 'rgba(20,24,36,0.98)', boxShadow: '0 16px 64px 0 #000c'}}>
+          <div className="flex items-center gap-12 mb-12">
+            <FaPhoneAlt className="text-6xl text-amber-300 drop-shadow-2xl" />
+            <span className="text-5xl font-extrabold tracking-widest text-white select-all">+91 22 1234 5678</span>
+          </div>
+          <div className="flex items-center gap-12">
+            <FaEnvelope className="text-6xl text-blue-300 drop-shadow-2xl" />
+            <span className="text-5xl font-extrabold tracking-widest text-white select-all">info@flajisil.com</span>
+          </div>
         </div>
-        <div className="flex items-center gap-3 group cursor-pointer hover:text-amber-400 transition-all">
-          <FaEnvelope className="text-xl group-hover:scale-110 transition-transform animate-float" />
-          info@flajisil.com
-        </div>
-        <div className="flex gap-4 mt-2">
-          <a href="#" className="group hover:text-blue-400 transition-all"><FaFacebookF className="text-xl group-hover:scale-125 animate-pulse-slow" /></a>
-          <a href="#" className="group hover:text-blue-300 transition-all"><FaTwitter className="text-xl group-hover:scale-125 animate-pulse-slow" /></a>
-          <a href="#" className="group hover:text-blue-500 transition-all"><FaLinkedinIn className="text-xl group-hover:scale-125 animate-pulse-slow" /></a>
+        <div className="flex gap-6 mt-8 justify-center w-full">
+          <a href="#" className="group hover:text-blue-400 transition-all"><FaFacebookF className="text-3xl group-hover:scale-125 animate-pulse-slow" /></a>
+          <a href="#" className="group hover:text-blue-300 transition-all"><FaTwitter className="text-3xl group-hover:scale-125 animate-pulse-slow" /></a>
+          <a href="#" className="group hover:text-blue-500 transition-all"><FaLinkedinIn className="text-3xl group-hover:scale-125 animate-pulse-slow" /></a>
         </div>
       </div>
     </div>
     {/* Right: Branches */}
     <div className="relative z-10 flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8 w-full max-w-2xl">
       <div className="col-span-full mb-4">
-        <h4 className="text-2xl font-bold text-white mb-4 tracking-wide">Branch Offices</h4>
+        <h4 className="text-3xl font-extrabold text-white mb-4 tracking-wide" style={{fontFamily: 'inherit'}}>
+          Branch Offices
+        </h4>
       </div>
       {branches.map((branch, idx) => (
         <div key={branch.city} className="flex items-start gap-4 group">
@@ -75,8 +84,8 @@ const Footer = () => (
             <FaMapMarkerAlt />
           </span>
           <div>
-            <div className="font-semibold text-lg text-white mb-1">{branch.city}</div>
-            <div className="text-white/80 text-base leading-snug">{branch.address}</div>
+            <div className="font-bold text-xl text-white mb-1" style={{fontFamily: 'inherit'}}>{branch.city}</div>
+            <div className="text-white/90 text-lg leading-snug" style={{fontFamily: 'inherit'}}>{branch.address}</div>
           </div>
         </div>
       ))}

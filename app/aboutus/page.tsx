@@ -1,13 +1,20 @@
+
 import CompanyVision from "../components/CompanyVision";
 import MainHeader from "../components/MainHeader";
 import Footer from "../components/Footer";
+import ManagementSection from "../components/ManagementSection";
+import AnimatedDivider from "../components/AnimatedDivider";
+import KeyManagementSection from "../components/KeyManagementSection";
 
 export default function AboutUsPage() {
   return (
     <>
       <MainHeader />
-      <main className="min-h-screen bg-white flex flex-col items-center justify-center py-16 px-4">
+      <main>
         <CompanyVision />
+        <ManagementSection />
+        <AnimatedDivider />
+        <KeyManagementSection />
       </main>
       <Footer />
     </>

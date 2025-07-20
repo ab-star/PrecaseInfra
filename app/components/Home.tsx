@@ -2,6 +2,7 @@ import Image from "next/image";
 import MainHeader from "./MainHeader";
 import FujiSilvertechLanding from "../pages";
 import IndianFlagWithPole from "./IndianFlagWithPole";
+import IndiaMapSection from "./IndiaMapSection";
 import PresenceSection from "./PresenceSection";
 import SustainabilitySectionAnimated from "./SustainabilitySectionAnimated";
 import FutureReadyAnimated from "./FutureReadyAnimated";
@@ -16,7 +17,8 @@ export default function Home() {
             <MainHeader />
       <FujiSilvertechLanding />
       <IndianFlagWithPole />
-      <PresenceSection />
+      <IndiaMapSection />
+
       <SustainabilitySectionAnimated />
       {/* <ConstructionSectorNavigation /> */}
       {/* <FutureReadySection /> */}

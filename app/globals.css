@@ -8,13 +8,7 @@
   background-size: 200% 200%;
   animation: gradientMove 8s ease-in-out infinite;
 }
-@keyframes parallax {
-  0%, 100% { transform: scale(1.045) translateY(-8px); }
-  50% { transform: scale(1.07) translateY(-16px); }
-}
-.animate-parallax {
-  animation: parallax 2.5s cubic-bezier(.4,0,.2,1) infinite;
-}
+
 @keyframes sectorName {
   0% { letter-spacing: 0.02em; }
   50% { letter-spacing: 0.18em; }

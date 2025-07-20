@@ -1,0 +1,18 @@
+.divider {
+  width: 100vw;
+  height: 120px;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+.wave {
+  position: absolute;
+  width: 100vw;
+  height: 120px;
+  left: 0;
+  top: 0;
+  z-index: 11;
+}

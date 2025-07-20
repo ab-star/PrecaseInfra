@@ -1,6 +1,8 @@
 
 "use client"
 import { useRef, useEffect, useState } from "react";
+// Use native img for GSAP refs
+import styles from "./CompanyVision.module.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
@@ -21,9 +23,9 @@ function CompanyVision() {
     const btn = useRef(null);
 
     useEffect(() => {
-        let ctx = gsap.context(() => {
+        const ctx = gsap.context(() => {
             gsap.registerPlugin(ScrollTrigger);
-            var tl = gsap.timeline({
+            const tl = gsap.timeline({
                 defaults: { duration: 1 },
                 scrollTrigger: {
                     trigger: parallaxRef.current,
@@ -115,19 +117,23 @@ function CompanyVision() {
     }, []);
 
     return (
-        <div className="parallax-outer">
-            <div ref={parallaxRef} style={{ background: `linear-gradient(#0F2B9C, #673D7D ${background}%, #A74A67, #EDFC54 )` }} className='parallax'>
-                <img ref={mountain3} className='mountain-3' src="/parallax/mountain-3.svg" />
-                <img ref={mountain2} className='mountain-2' src="/parallax/mountain-2.svg" />
-                <img ref={mountain1} className='mountain-1' src="/parallax/mountain-1.svg" />
-                <img ref={sun} className='sun' src="/parallax/sun.svg" />
-                <img ref={cloudsBottom} className='clouds-bottom' src="/parallax/cloud-bottom.svg" />
-                <img ref={cloudsLeft} className='clouds-left' src="/parallax/clouds-left.svg" />
-                <img ref={cloudsRight} className='clouds-right' src="/parallax/clouds-right.svg" />
-                <img ref={stars} className='stars' src="/parallax/stars.svg" />
-                <div ref={copy} className="copy">
-                    <h1>Journey</h1>
-                    <span ref={btn}>Discover more</span>
+        <div className={styles.parallaxOuter}>
+            <div
+                ref={parallaxRef}
+                style={{ background: `linear-gradient(#0F2B9C, #673D7D ${background}%, #A74A67, #EDFC54 )` }}
+                className={styles.parallax}
+            >
+                <img ref={mountain3} className={styles.mountain3} src="/parallax/mountain-3.svg" alt="mountain 3" />
+                <img ref={mountain2} className={styles.mountain2} src="/parallax/mountain-2.svg" alt="mountain 2" />
+                <img ref={mountain1} className={styles.mountain1} src="/parallax/mountain-1.svg" alt="mountain 1" />
+                <img ref={sun} className={styles.sun} src="/parallax/sun.svg" alt="sun" />
+                <img ref={cloudsBottom} className={styles.cloudsBottom} src="/parallax/cloud-bottom.svg" alt="clouds bottom" />
+                <img ref={cloudsLeft} className={styles.cloudsLeft} src="/parallax/clouds-left.svg" alt="clouds left" />
+                <img ref={cloudsRight} className={styles.cloudsRight} src="/parallax/clouds-right.svg" alt="clouds right" />
+                <img ref={stars} className={styles.stars} src="/parallax/stars.svg" alt="stars" />
+                <div ref={copy} className={styles.copy}>
+                    <h1 className={styles.copyH1}>Journey</h1>
+                    <span ref={btn} className={styles.copySpan}>Discover more</span>
                 </div>
             </div>
         </div>

@@ -1,11 +1,14 @@
+
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const MainHeader = () => (
   <header style={{padding: "0px 2rem"}} className="bg-white py-8 px-8 md:px-24 lg:px-40 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 w-full shadow-xl border-b border-gray-200">
     <div className="flex flex-col items-center md:items-start mb-4 md:mb-0">
-      <h1 className="text-3xl font-bold tracking-wider mb-2 text-gray-900 drop-shadow">FLAJI SILVERTECH</h1>
-      <p className="text-base text-gray-700">The Power of Firewall</p>
+      <div className="flex items-center gap-3 mb-2">
+        <Image style={{height: "5rem", width: "5rems"}} src="/brandIcon.jpeg" alt="Company Logo" width={48} height={48} className="rounded-full shadow-lg" />
+      </div>
     </div>
     <nav className="hidden md:flex gap-x-10 pt-4 w-full justify-end">
       <Link

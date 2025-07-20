@@ -56,9 +56,22 @@ const tileVariants = {
 const ClientsAcquiredSection = () => {
   return (
     <section
-      className="w-full pt-[120px] pb-[120px] px-6 md:px-24 lg:px-40 flex flex-col items-center relative overflow-x-clip"
-      style={{ minHeight: "900px", background: "url('/concrete4.jpg') center/cover, #181818", padding: '64px 48px' }}
+      className="w-full pt-[120px] pb-[48px] px-6 md:px-24 lg:px-40 flex flex-col items-center relative overflow-x-clip"
+      style={{ minHeight: "700px", background: "none", padding: '64px 48px 32px 48px' }}
     >
+      {/* Background video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        style={{objectFit:'cover'}}
+      >
+        <source src="/goldenTextureVideo.mov" type="video/quicktime" />
+        <source src="/goldenTextureVideo.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
       {/* Parallax floating shapes for depth */}
       <motion.div
         className="hidden md:block absolute -top-10 left-10 w-32 h-32 bg-blue-400/20 rounded-full blur-2xl z-0"
@@ -77,7 +90,7 @@ const ClientsAcquiredSection = () => {
           return (
             <motion.div
               key={client.name}
-              className={`relative flex flex-col items-center justify-center bg-[url('/tiles.jpg')] bg-cover bg-center rounded-none shadow-xl border-2 border-white/10 p-4 md:p-6 min-h-[100px] md:min-h-[120px] min-w-[100px] md:min-w-[120px] group overflow-hidden will-change-transform ${isLast ? 'sm:col-span-2 md:col-span-2 lg:col-span-3 max-w-full' : ''}`}
+              className={`relative flex flex-col items-center justify-center bg-white rounded-none shadow-xl border-2 border-white/10 p-4 md:p-6 min-h-[100px] md:min-h-[120px] min-w-[100px] md:min-w-[120px] group overflow-hidden will-change-transform ${isLast ? 'sm:col-span-2 md:col-span-2 lg:col-span-3 max-w-full' : ''}`}
               initial="offscreen"
               whileInView="onscreen"
               viewport={{ once: true, amount: 0.3 }}

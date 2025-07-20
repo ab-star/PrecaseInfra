@@ -1,0 +1,80 @@
+/* Parallax and CompanyVision styles encapsulated for CSS module usage */
+.parallaxOuter {
+    overflow: hidden;
+}
+.parallax {
+    height: 110vh;
+    width: 100%;
+    position: relative;
+}
+.parallaxImg {
+    position: absolute;
+}
+.mountain3,
+.mountain2,
+.mountain1 {
+    width: 100%;
+    bottom: 0;
+    z-index: 3;
+    position: absolute;
+}
+.mountain2 {
+    bottom: 20px;
+    z-index: 2;
+}
+.mountain1 {
+    bottom: 40px;
+    z-index: 1;
+}
+.sun {
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    position: absolute;
+}
+.cloudsLeft {
+    left: 0;
+    width: 20%;
+    position: absolute;
+}
+.cloudsRight {
+    right: 0;
+    width: 20%;
+    position: absolute;
+}
+.cloudsBottom {
+    bottom: 0px;
+    width: 100%;
+    position: absolute;
+}
+.stars {
+    top: -550px;
+    left: 0;
+    width: 100%;
+    position: absolute;
+}
+.copy {
+    position: absolute;
+    bottom: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    color: #e4e4e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    opacity: 0;
+}
+.copyH1 {
+    font-size: 10rem;
+}
+.copySpan {
+    background-color: #e4e4e4;
+    color: #282a57;
+    padding: 1rem;
+    font-weight: 800;
+    border-radius: 0.5rem;
+    opacity: 0;
+}
