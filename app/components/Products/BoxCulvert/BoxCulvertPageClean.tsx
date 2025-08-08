@@ -319,14 +319,6 @@ const BoxCulvertPageClean = () => {
           playsInline
         />
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-          <div className="text-center text-white">
-            <motion.h1 initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="text-6xl font-bold mb-4">
-              Box Culvert
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-xl">
-              High-Strength | Precision Engineering | Rapid Installation
-            </motion.p>
-          </div>
         </div>
       </section>
 
@@ -349,26 +341,45 @@ const BoxCulvertPageClean = () => {
       </section>
 
       {/* Strength Section */}
-      <section className="w-full h-screen flex items-center">
-        <div className="flex-1 p-16">
-          <h2 className="text-5xl font-bold text-gray-900 mb-6">Strength That Lasts</h2>
-          <p className="text-lg text-gray-700 mb-8">
-            Engineered for exceptional durability and load-bearing capacity. Built with high-performance concrete and reinforced steel.
-          </p>
-          <ul className="space-y-3 text-gray-700">
-            <li>• Designed for Indian highways & railways</li>
-            <li>• 100+ year design life</li>
-            <li>• Exceeds IS, IRC, and IRS standards</li>
-          </ul>
-        </div>
-        <div className="flex-1 p-16">
-          <Image 
-            src="/product/BoxCulvertProduct/strong/strong.png" 
-            alt="Strength" 
-            width={600} 
-            height={600} 
-            className="w-full h-auto rounded-lg shadow-xl" 
-          />
+      <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
+        <Image
+          src="/concrete4.jpg"
+          alt="Concrete background"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-10 flex items-center h-full py-8">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 lg:gap-20">
+            {/* Left: Text */}
+            <div className="w-full md:w-[42%] text-left text-white">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white uppercase tracking-wide">LOOKS STRONG.</h2>
+              <p className="mt-6 text-base md:text-lg text-white leading-relaxed">
+                To build strong and sustainable precast bridges, we designed them to comply with Indian loading conditions for
+                Highways and Railways. We made it with high-performance self-compacting concrete as per Japanese
+                Industrial manufacturing standards.
+              </p>
+              <p className="mt-4 text-base md:text-lg text-white leading-relaxed">
+                Our reinforced concrete culverts deliver exceptional strength and durability even in the most challenging environments,
+                with precision engineering that ensures perfect alignment during installation.
+              </p>
+            </div>
+            {/* Right: Image */}
+            <div className="w-full md:w-[58%] flex justify-center md:justify-end">
+              <div className="relative scale-110 md:scale-125">
+                <Image
+                  src="/product/BoxCulvertProduct/strong/strong.png"
+                  alt="Box culvert frame"
+                  width={1200}
+                  height={1200}
+                  className="object-contain drop-shadow-2xl"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
