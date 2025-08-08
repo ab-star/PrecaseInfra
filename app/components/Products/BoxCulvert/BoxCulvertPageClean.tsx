@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef, Suspense, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Center } from '@react-three/drei';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import * as THREE from 'three';
 
@@ -41,10 +40,17 @@ function ScrollLockedImageTransition() {
 
   const total = transitionImages.length;
   const TRANSITION_TIME = 500; // ms, matches CSS duration below
-  const WHEEL_THRESHOLD = 120; // normalized px required for one step
-  const LOCK_THRESHOLD = 0.98; // lock when ~fully visible
+  const WHEEL_THRESHOLD = 60; // Reduced threshold for faster response (was 120)
+  const LOCK_THRESHOLD = 0.6; // More aggressive lock when partially visible (was 0.98)
+  const LOCK_AGGRESSIVE_THRESHOLD = 0.85; // When section is mostly visible, lock immediately
   const UNLOCK_LEAVE_THRESHOLD = 0.1; // unlock when largely out of view
+  const FAST_SCROLL_THRESHOLD = 100; // Detect fast scrolling to capture it
 
+  // Track scroll speed to detect fast scrollers
+  const lastScrollY = useRef(0);
+  const lastScrollTime = useRef(Date.now());
+  const scrollSpeed = useRef(0);
+  
   const getVisibilityRatio = useCallback(() => {
     // Measure the closest <section> to ensure full-viewport logic
     const sectionEl = (sectionRef.current?.closest('section') as HTMLElement | null) ?? sectionRef.current;
@@ -55,24 +61,52 @@ function ScrollLockedImageTransition() {
     return height === 0 ? 0 : visible / height;
   }, []);
 
-  const isFullyInViewport = useCallback(() => getVisibilityRatio() >= LOCK_THRESHOLD, [getVisibilityRatio]);
+  const isAlmostFullyInViewport = useCallback(() => getVisibilityRatio() >= LOCK_AGGRESSIVE_THRESHOLD, [getVisibilityRatio]);
+  
+  const isFullyInViewport = useCallback(() => {
+    const ratio = getVisibilityRatio();
+    // If scrolling fast and section is partially visible, consider it "fully" in viewport
+    return ratio >= LOCK_THRESHOLD || 
+           isAlmostFullyInViewport() || 
+           (scrollSpeed.current > FAST_SCROLL_THRESHOLD && ratio > 0.4);
+  }, [getVisibilityRatio, isAlmostFullyInViewport]);
 
-  const lock = () => {
+  const lock = useCallback(() => {
     const now = Date.now();
     if (now < relockUntil.current) return;
     if (isLocked.current) return;
+    
     isLocked.current = true;
     prevBodyOverflow.current = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     document.documentElement.style.setProperty('overscroll-behavior-y', 'contain');
-    // Ensure the section is fully aligned when locking to avoid half-cut state
+    document.documentElement.classList.add('locked-scroll');
+    
+    // Make sure section is shown with an absolutely reliable approach
     const sectionEl = sectionRef.current?.closest('section') as HTMLElement | null;
     if (sectionEl) {
+      // First immediate snap
+      sectionEl.scrollIntoView({ behavior: 'auto', block: 'start' });
+      
+      // Backup snap after a moment in case first one didn't work
       setTimeout(() => {
-        sectionEl.scrollIntoView({ behavior: 'auto', block: 'start' });
-      }, 0);
+        const ratio = getVisibilityRatio();
+        if (ratio < 0.98) {
+          window.scrollTo({
+            top: window.pageYOffset + sectionEl.getBoundingClientRect().top,
+            behavior: 'auto'
+          });
+        }
+      }, 50);
     }
-  };
+    
+    // Show hint for keyboard users
+    const hintTimeout = setTimeout(() => {
+      console.log("Use arrows keys or mouse wheel to navigate images"); // Could show actual UI hint
+    }, 1000);
+    
+    return () => clearTimeout(hintTimeout);
+  }, [getVisibilityRatio]);
 
   const unlock = () => {
     if (!isLocked.current) return;
@@ -166,10 +200,50 @@ function ScrollLockedImageTransition() {
   }, [processQueue]);
 
   useEffect(() => {
+    // Track when section comes into view with IntersectionObserver
+    const sectionEl = sectionRef.current?.closest('section');
+    let observer: IntersectionObserver | null = null;
+    
+    if (sectionEl) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            // Pre-activate when scrolling into view
+            const now = Date.now();
+            if (now >= relockUntil.current && scrollSpeed.current > FAST_SCROLL_THRESHOLD) {
+              lock();
+            }
+          }
+        },
+        {
+          threshold: [0.2, 0.4, 0.5, 0.6, 0.8], // Multiple thresholds for granular detection
+          rootMargin: "-10% 0px -10% 0px" // Slightly inset to ensure proper viewing area
+        }
+      );
+      
+      observer.observe(sectionEl);
+    }
+    
     const onScrollResize = () => {
       const ratio = getVisibilityRatio();
       const now = Date.now();
-      if (ratio >= LOCK_THRESHOLD && now >= relockUntil.current) {
+      
+      // Track scroll speed
+      const currentY = window.scrollY;
+      const timeDelta = now - lastScrollTime.current;
+      if (timeDelta > 0) {
+        const distance = Math.abs(currentY - lastScrollY.current);
+        scrollSpeed.current = distance / timeDelta * 1000; // px per second
+      }
+      lastScrollY.current = currentY;
+      lastScrollTime.current = now;
+      
+      // Aggressive locking logic with improved conditions
+      if ((ratio >= LOCK_THRESHOLD || 
+          (ratio >= LOCK_AGGRESSIVE_THRESHOLD && scrollSpeed.current < FAST_SCROLL_THRESHOLD) ||
+          (ratio >= 0.4 && scrollSpeed.current > FAST_SCROLL_THRESHOLD)) && 
+          now >= relockUntil.current) {
         lock();
       } else if (ratio < UNLOCK_LEAVE_THRESHOLD) {
         unlock();
@@ -182,9 +256,10 @@ function ScrollLockedImageTransition() {
     return () => {
       window.removeEventListener('scroll', onScrollResize);
       window.removeEventListener('resize', onScrollResize);
+      if (observer) observer.disconnect();
       unlock();
     };
-  }, [getVisibilityRatio]);
+  }, [getVisibilityRatio, lock]);
 
   useEffect(() => {
     const normalizeDelta = (e: WheelEvent) => {
@@ -193,16 +268,95 @@ function ScrollLockedImageTransition() {
       return e.deltaY;
     };
 
+    // Keep track of recent wheel events to detect fast flick patterns
+    const recentWheelEvents: {delta: number, time: number}[] = [];
+    const MAX_RECENT_EVENTS = 5;
+    const MAX_RECENT_TIME_MS = 300; // Look at events in last 300ms
+
+    const detectFlickPattern = () => {
+      const now = Date.now();
+      // Remove old events
+      while (recentWheelEvents.length && now - recentWheelEvents[0].time > MAX_RECENT_TIME_MS) {
+        recentWheelEvents.shift();
+      }
+      
+      // Detect consistent direction and increasing speed
+      if (recentWheelEvents.length >= 3) {
+        const direction = Math.sign(recentWheelEvents[0].delta);
+        const allSameDirection = recentWheelEvents.every(e => Math.sign(e.delta) === direction);
+        
+        if (allSameDirection) {
+          const avgDelta = recentWheelEvents.reduce((sum, e) => sum + Math.abs(e.delta), 0) / recentWheelEvents.length;
+          return { isFlick: true, direction, avgDelta };
+        }
+      }
+      
+      return { isFlick: false, direction: 0, avgDelta: 0 };
+    };
+
     const onWheel = (e: WheelEvent) => {
-      if (!isLocked.current && isFullyInViewport()) lock();
+      const delta = normalizeDelta(e);
+      const ratio = getVisibilityRatio();
+      const absDelta = Math.abs(delta);
+      
+      // Track this wheel event
+      recentWheelEvents.push({ delta, time: Date.now() });
+      if (recentWheelEvents.length > MAX_RECENT_EVENTS) recentWheelEvents.shift();
+      
+      // Check for flick pattern
+      const { isFlick, direction } = detectFlickPattern();
+      
+      // Capture wheel events as early as possible when entering section
+      const isFastWheel = absDelta > 40;
+      const isVeryFastWheel = absDelta > 80;
+      const isApproaching = ratio >= 0.3 && ratio < 0.8;
+      
+      // Super aggressive capture for fast wheels
+      if (!isLocked.current) {
+        if (isFullyInViewport() || 
+            (ratio > 0.4 && isFastWheel) || 
+            (ratio > 0.3 && isFlick) ||
+            (ratio > 0.2 && isVeryFastWheel) ||
+            (isApproaching && scrollSpeed.current > FAST_SCROLL_THRESHOLD)) {
+          // Prevent default to avoid further scrolling
+          e.preventDefault();
+          
+          // Use the ratio for immediate decision making without storing
+          
+          // Lock the section
+          lock();
+          
+          // If this was a flick or fast wheel, immediately queue the step
+          // with the correct direction based on the wheel event
+          if (isFlick || isFastWheel) {
+            const wheelDir = delta > 0 ? 1 : -1;
+            const stepDir = isFlick ? direction : wheelDir;
+            setTimeout(() => enqueueStep(stepDir as 1 | -1), 10); // Respond very quickly
+          }
+          return;
+        }
+      }
+      
       if (!isLocked.current) return;
       e.preventDefault();
       e.stopPropagation();
-      wheelAccum.current += normalizeDelta(e);
-      if (Math.abs(wheelAccum.current) >= WHEEL_THRESHOLD) {
-        const dir = wheelAccum.current > 0 ? 1 : -1;
-        wheelAccum.current = 0;
+      
+      // For fast scrollers, be more responsive with almost instant step changes
+      const shouldImmediatelyRespond = isVeryFastWheel || isFlick;
+      
+      if (shouldImmediatelyRespond) {
+        const dir = delta > 0 ? 1 : -1;
+        wheelAccum.current = 0; // Reset accumulator
         enqueueStep(dir as 1 | -1);
+      } else {
+        // Normal accumulation for smoother control
+        wheelAccum.current += delta;
+        
+        if (Math.abs(wheelAccum.current) >= WHEEL_THRESHOLD) {
+          const dir = wheelAccum.current > 0 ? 1 : -1;
+          wheelAccum.current = 0;
+          enqueueStep(dir as 1 | -1);
+        }
       }
     };
 
@@ -246,7 +400,7 @@ function ScrollLockedImageTransition() {
       document.removeEventListener('touchstart', onTouchStart);
       document.removeEventListener('touchmove', onTouchMove);
     };
-  }, [enqueueStep, isFullyInViewport]);
+  }, [enqueueStep, isFullyInViewport, getVisibilityRatio, lock]);
 
   // Preload images
   useEffect(() => {
@@ -256,6 +410,27 @@ function ScrollLockedImageTransition() {
       img.src = src;
     });
   }, []);
+
+  // Track approach state to show scroll indicator
+  const [state, setState] = useState({
+    isLocked: false,
+    isApproaching: false
+  });
+  
+  // Use effect to track when user is approaching section
+  useEffect(() => {
+    const trackApproaching = () => {
+      const ratio = getVisibilityRatio();
+      if (ratio > 0.3 && ratio < 0.6) {
+        setState(prev => ({...prev, isApproaching: true}));
+      } else if (ratio <= 0.2 || ratio >= 0.8) {
+        setState(prev => ({...prev, isApproaching: false}));
+      }
+    };
+    
+    window.addEventListener('scroll', trackApproaching, { passive: true });
+    return () => window.removeEventListener('scroll', trackApproaching);
+  }, [getVisibilityRatio]);
 
   return (
     <div
@@ -270,6 +445,20 @@ function ScrollLockedImageTransition() {
           <Image src={src} alt={`Installation step ${i + 1}`} fill sizes="100vw" className="object-cover" priority={i <= 1} unoptimized />
         </div>
       ))}
+      
+      {/* Scroll Indicator */}
+      <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-500 
+                      ${state.isApproaching && !state.isLocked ? 'opacity-100' : 'opacity-0'}`}>
+        <div className="bg-black/70 rounded-full p-4 text-white flex flex-col items-center">
+          <div className="flex flex-col items-center mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+          <p className="text-lg font-medium">Scroll to explore installation</p>
+        </div>
+      </div>
+      
       {/* Progress Dots */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {transitionImages.map((_, i) => (
@@ -386,12 +575,7 @@ const BoxCulvertPageClean = () => {
       {/* Scroll-Locked Transition Section */}
       <section className="w-full h-screen bg-black relative">
         <ScrollLockedImageTransition />
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="text-center text-white">
-            <h2 className="text-6xl font-bold mb-4 drop-shadow-2xl">Installation Process</h2>
-            <p className="text-xl opacity-90">Experience our streamlined methodology</p>
-          </div>
-        </div>
+     
       </section>
 
     </div>

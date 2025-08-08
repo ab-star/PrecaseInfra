@@ -269,15 +269,6 @@ const ProfessionalBoxCulvertPage = () => {
       <section className="relative w-full h-screen bg-black flex items-center justify-center overflow-hidden">
         <ScrollLockedImageTransition />
         
-        {/* Section title overlay */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white pointer-events-none">
-          <h2 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-2xl">
-            Installation Process
-          </h2>
-          <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto drop-shadow-lg">
-            Experience our streamlined Box Culvert installation methodology
-          </p>
-        </div>
       </section>
 
       {/* Creative/Custom Section: Project Gallery */}
