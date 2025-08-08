@@ -63,39 +63,37 @@ export default function DrainsPage() {
       </section>
 
       {/* Section 2: Three 3D Models aligned horizontally with titles (reduced model size) */}
-      <section className="w-full h-screen bg-gray-50 flex flex-col">
-        <div className="text-center p-6">
-        </div>
-        <div className="flex-1 w-full px-6 md:px-12 lg:px-20 xl:px-28 pb-6">
-          <div className="h-full w-full grid grid-cols-1 md:grid-cols-3 gap-10 justify-items-center">
+      <section className="w-full bg-gray-50 flex flex-col py-4 md:py-6">
+        <div className="w-full px-6 md:px-12 lg:px-20 xl:px-28 pb-0">
+          <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 justify-items-center">
             {/* Card 1 */}
-            <div className="relative w-full max-w-[520px] h-full rounded-xl overflow-hidden bg-white/0 flex flex-col">
-              <div className="flex-1 min-h-0">
-                <ModelCanvas path={GLB_2} scale={0.95} />
+            <div className="relative w-full max-w-[560px] rounded-xl overflow-hidden bg-white/0 flex flex-col">
+              <div className="w-full aspect-[5/4] md:aspect-[5/4] lg:aspect-[6/5]">
+                <ModelCanvas path={GLB_2} scale={1.12} />
               </div>
-              <div className="pt-3 text-center">
+              <div className="pt-0 md:pt-1 text-center">
                 <h3 className="text-2xl md:text-3xl font-extrabold uppercase leading-tight">
                   U Shape Drain <span className="text-blue-600">T6</span>
                 </h3>
               </div>
             </div>
             {/* Card 2 */}
-            <div className="relative w-full max-w-[520px] h-full rounded-xl overflow-hidden bg-white/0 flex flex-col">
-              <div className="flex-1 min-h-0">
-                <ModelCanvas path={GLB_3} scale={0.95} />
+            <div className="relative w-full max-w-[560px] rounded-xl overflow-hidden bg-white/0 flex flex-col">
+              <div className="w-full aspect-[5/4] md:aspect-[5/4] lg:aspect-[6/5]">
+                <ModelCanvas path={GLB_3} scale={1.12} />
               </div>
-              <div className="pt-3 text-center">
+              <div className="pt-0 md:pt-1 text-center">
                 <h3 className="text-2xl md:text-3xl font-extrabold uppercase leading-tight">
                   U Shape Drain <span className="text-blue-600">T25</span>
                 </h3>
               </div>
             </div>
             {/* Card 3 */}
-            <div className="relative w-full max-w-[520px] h-full rounded-xl overflow-hidden bg-white/0 flex flex-col">
-              <div className="flex-1 min-h-0">
-                <ModelCanvas path={GLB_1} scale={0.9} />
+            <div className="relative w-full max-w-[560px] rounded-xl overflow-hidden bg-white/0 flex flex-col">
+              <div className="w-full aspect-[5/4] md:aspect-[5/4] lg:aspect-[6/5]">
+                <ModelCanvas path={GLB_1} scale={1.08} />
               </div>
-              <div className="pt-3 text-center">
+              <div className="pt-0 md:pt-1 text-center">
                 <h3 className="text-2xl md:text-3xl font-extrabold uppercase leading-tight">
                   FT <span className="text-blue-600">Flume</span>
                 </h3>
@@ -107,7 +105,7 @@ export default function DrainsPage() {
 
       {/* Section 3: Product Showcase (Fullscreen, transparent background, full width) */}
       <section className="w-full h-screen bg-transparent text-slate-900 flex flex-col">
-        <div className="px-6 pt-10 pb-4 text-center">
+        <div className="px-6 pt-0 pb-0 text-center">
 
         </div>
         <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-3 gap-8 px-6 md:px-12 lg:px-20 xl:px-28 pb-8">
