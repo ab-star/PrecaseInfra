@@ -26,9 +26,11 @@ const IndiaMapSection = () => {
     <section
       style={{
         width: '100%',
-        minHeight: 1400,
+        minHeight: 1100,
         height: '100vh',
         background: `url('/IndiaMapStatus.png') center/cover no-repeat`,
+        paddingTop: '6vw',
+        paddingBottom: '6vw',
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
@@ -51,15 +53,44 @@ const IndiaMapSection = () => {
           borderRadius: 0,
         }}
       >
-        <h2 style={{ color: '#1a2a3a', fontWeight: 800, fontSize: '2.4rem', marginBottom: 18, letterSpacing: 1 }}>
+        <h2 style={{ color: '#fff', fontWeight: 800, fontSize: '2.4rem', marginBottom: 18, letterSpacing: 1 }}>
           Our Presence Spans the Heart of India
         </h2>
-        <p style={{ color: '#3e5c76', fontWeight: 500, fontSize: '1.18rem', marginBottom: 12, lineHeight: 1.6 }}>
-          From the peaks of the Himalayas to the coasts of Kanyakumari, <b>3gInfraTech</b> is powering progress in every region. Our projects connect cities, empower rural communities, and drive economic growth in every state.
+        <p style={{ color: '#fff', fontWeight: 500, fontSize: '1.18rem', marginBottom: 12, lineHeight: 1.6 }}>
+          From the peaks of the Himalayas to the coasts of Kanyakumari, <b>3gInfraTech</b> is powering progress in every region. Our projects connect cities, empower rural communities, and drive economic growth in every state.<br /><br />
+          Whether it’s the bustling metros of Mumbai and Delhi, the vibrant tech corridors of Bengaluru and Hyderabad, or the heartlands of Uttar Pradesh and Bihar, our footprint is everywhere. We bring world-class infrastructure to remote villages, modernize transport in growing towns, and support sustainable development in every corner of the country.<br /><br />
         </p>
-        <p style={{ color: '#1a7f4e', fontWeight: 600, fontSize: '1.13rem', marginBottom: 0, lineHeight: 1.6 }}>
-          <span style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0b3d91' }}>We are present in every corner of India—</span> building bridges, highways, metros, and smart infrastructure that unite the nation. Our commitment to quality and innovation ensures that no matter where you are, our impact is felt, seen, and celebrated.
-        </p>
+      </div>
+      {/* Gujarat/Surat location pointer - adjust left/top as needed */}
+      {/* Animated SVG pointer for Surat/Gujarat */}
+      <div
+        style={{
+          position: 'absolute',
+         left: '45%', // Surat
+         top: '60%',
+          transform: 'translate(-50%, -100%)',
+          zIndex: 10,
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      >
+        <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+          <g>
+            <circle cx="48" cy="39" r="24" fill="#e11d48" fillOpacity="0.85">
+              <animate attributeName="r" values="24;32;24" dur="1.2s" repeatCount="indefinite" />
+              <animate attributeName="fill-opacity" values="0.85;0.5;0.85" dur="1.2s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="48" cy="39" r="12" fill="#fff" />
+            <circle cx="48" cy="39" r="8" fill="#e11d48" />
+            <path d="M48 66 L36 90 Q48 81 60 90 Z" fill="#e11d48" stroke="#fff" strokeWidth="2" filter="url(#shadow)" />
+            <animateTransform attributeName="transform" type="translate" values="0 0; 0 -3; 0 0" dur="1.2s" repeatCount="indefinite" />
+          </g>
+          <defs>
+            <filter id="shadow" x="0" y="0" width="44" height="44" filterUnits="userSpaceOnUse">
+              <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#000" floodOpacity="0.25" />
+            </filter>
+          </defs>
+        </svg>
       </div>
     </section>
   );

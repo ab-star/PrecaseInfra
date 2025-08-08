@@ -1,14 +1,22 @@
 
 "use client"
 import { useRef, useEffect, useState } from "react";
+import ConcreteBoxLegacy from "./ConcreteBoxLegacy";
 // Use native img for GSAP refs
 import styles from "./CompanyVision.module.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
+
+const proverbs = [
+  'Legacy is not leaving something for people, it’s leaving something in people.',
+  'Great companies are built on great legacies.'
+];
+
 function CompanyVision() {
 
-    const [background, setBackground] = useState(20)
+    const [showLegacy, setShowLegacy] = useState(false);
+    const [proverbIndex, setProverbIndex] = useState(0);
 
     const parallaxRef = useRef(null);
     const mountain3 = useRef(null);
@@ -34,7 +42,11 @@ function CompanyVision() {
                     scrub: true,
                     pin: true,
                     onUpdate: (self) => {
-                        setBackground(Math.ceil(self.progress * 100 + 20))
+                        // Show legacy box only in the last 10% of the parallax scroll
+                        setShowLegacy(self.progress > 0.90);
+                        // Show first proverb for first 60%, second for next 30%, then legacy box
+                        if (self.progress < 0.6) setProverbIndex(0);
+                        else if (self.progress < 0.9) setProverbIndex(1);
                     },
                 },
             });
@@ -120,7 +132,7 @@ function CompanyVision() {
         <div className={styles.parallaxOuter}>
             <div
                 ref={parallaxRef}
-                style={{ background: `linear-gradient(#0F2B9C, #673D7D ${background}%, #A74A67, #EDFC54 )` }}
+                style={{ background: `#c7dced` }}
                 className={styles.parallax}
             >
                 <img ref={mountain3} className={styles.mountain3} src="/parallax/mountain-3.svg" alt="mountain 3" />
@@ -131,10 +143,13 @@ function CompanyVision() {
                 <img ref={cloudsLeft} className={styles.cloudsLeft} src="/parallax/clouds-left.svg" alt="clouds left" />
                 <img ref={cloudsRight} className={styles.cloudsRight} src="/parallax/clouds-right.svg" alt="clouds right" />
                 <img ref={stars} className={styles.stars} src="/parallax/stars.svg" alt="stars" />
-                <div ref={copy} className={styles.copy}>
-                    <h1 className={styles.copyH1}>Journey</h1>
+                {showLegacy && <ConcreteBoxLegacy />}
+                {!showLegacy && (
+                  <div ref={copy} className={styles.copy}>
+                    <h1 className={styles.copyH1}>{proverbs[proverbIndex]}</h1>
                     <span ref={btn} className={styles.copySpan}>Discover more</span>
-                </div>
+                  </div>
+                )}
             </div>
         </div>
     )

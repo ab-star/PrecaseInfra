@@ -1,3 +1,51 @@
+/* ConcreteBoxLegacy styles */
+.legacyBoxContainer {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translate(-50%, 0);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+.legacyBox {
+  background: #e4e4e4;
+  border-radius: 1.2rem;
+  /* box-shadow removed */
+  padding: 2.2rem 2.8rem 1.6rem 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.legacyBoxImg {
+  border-radius: 0.7rem;
+  /* box-shadow removed */
+  width: 260px;
+  height: 180px;
+  object-fit: cover;
+}
+.legacyBoxText {
+  background: rgba(34, 36, 56, 0.92);
+  color: #fff;
+  border-radius: 0.8rem;
+  padding: 1.5rem 2.2rem;
+  text-align: center;
+  max-width: 420px;
+  /* box-shadow removed */
+}
+.legacyBoxText h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.7rem;
+  letter-spacing: 1px;
+}
+.legacyBoxText p {
+  font-size: 1.18rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
 /* Parallax and CompanyVision styles encapsulated for CSS module usage */
 .parallaxOuter {
     overflow: hidden;
@@ -68,7 +116,13 @@
     opacity: 0;
 }
 .copyH1 {
-    font-size: 10rem;
+    font-size: 4.2rem;
+    color: #181818;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: 0.01em;
+    opacity: 1 !important;
+    transition: all 0.4s;
 }
 .copySpan {
     background-color: #e4e4e4;

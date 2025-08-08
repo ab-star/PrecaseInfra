@@ -27,8 +27,8 @@ const IndianFlagWithPole = () => {
         isolation: 'isolate',
         alignItems: 'flex-end',
         paddingLeft: '3.5rem',
-        paddingTop: '6.5rem',
-        paddingBottom: '12.5rem',
+        paddingTop: '8rem',
+        paddingBottom: '10rem',
         marginRight: 'auto',
         boxShadow: "0 8px 32px 0 #8886, 0 0 0 4px #fff8 inset",
         borderRadius: 18,
@@ -36,8 +36,8 @@ const IndianFlagWithPole = () => {
       }}
     >
       {/* Flag and pole group */}
-      <div className="relative flex flex-col items-center" style={{ height: 400, zIndex: 2, alignItems: 'flex-start', marginBottom: '-32px' }}>
-        <div style={{ position: 'relative', height: 400, width: 32, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div className="relative flex flex-col items-center" style={{ height: 600, zIndex: 2, alignItems: 'flex-start', marginBottom: '-32px' }}>
+        <div style={{ position: 'relative', height: 600, width: 32, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {/* Ball on top */}
           <div
             style={{
@@ -47,7 +47,7 @@ const IndianFlagWithPole = () => {
               borderRadius: "50%",
               boxShadow: "0 2px 8px 0 #bfa76a99, 0 0 0 2px #bfa76a inset",
               position: "absolute",
-              top: "-9rem",
+              top: "-8rem",
               left: '350%',
               transform: 'translateX(-50%)',
               zIndex: 60
@@ -57,7 +57,7 @@ const IndianFlagWithPole = () => {
           <div
             style={{
               position: 'absolute',
-              top: "-10rem",
+              top: "-9rem",
               left: '7rem',
               transform: 'translateX(0)',
               width: 180,
@@ -84,7 +84,7 @@ const IndianFlagWithPole = () => {
           <div
             style={{
               width: 10,
-              height: '484px',
+              height: '648px',
               background: "linear-gradient(180deg, #e0e0e0 0%, #b0b0b0 100%)",
               borderRadius: 5,
               boxShadow: "0 0 8px 0 #8888, 0 0 0 1px #aaa inset",
@@ -93,12 +93,12 @@ const IndianFlagWithPole = () => {
               left: '350%',
               transform: 'translateX(-50%)',
               bottom: 0,
-              top: "-9rem"
+              top: "-7rem"
             }}
           />
         </div>
         {/* Platform for flag - wide, concrete, with a right-side stem, no text */}
-        <div style={{ position: 'relative', width: 'min(100vw, 1200px)', minWidth: 600, marginTop: 24, marginBottom: 8, zIndex: 10, display: 'flex', alignItems: 'flex-end', marginLeft: 0, left: 0 , top: "6rem" }}>
+        <div style={{ position: 'relative', width: 'calc(min(80vw, 600px) + 20rem)', minWidth: 320, marginTop: 24, marginBottom: 8, zIndex: 10, display: 'flex', alignItems: 'flex-end', marginLeft: 0, left: 0 , top: "6rem" }}>
           {/* Main platform */}
           <div
             className="flex flex-col justify-center items-center"
@@ -116,23 +116,6 @@ const IndianFlagWithPole = () => {
               height: 160
             }}
           />
-          {/* Step platform on the right */}
-          <div
-            style={{
-              width: 480,
-              height: 54,
-              background: "url('/concrete_texture.jpg') center/cover no-repeat, #b0b0b0",
-              borderRadius: 0,
-              marginLeft: 0,
-              marginBottom: 0,
-              alignSelf: 'flex-end',
-              boxShadow: "0 4px 12px 0 #8886, 0 0 0 1px #fff8 inset",
-              zIndex: 11,
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-            }}
-          />
         </div>
       </div>
       {/* Animated text to the right of the flag, no background */}
@@ -144,22 +127,20 @@ const IndianFlagWithPole = () => {
           filter: 'blur(16px)',
           marginLeft: 48,
           marginRight: 0,
-          maxWidth: 520,
+          width: 'calc(100% - (min(80vw, 600px) + 20rem) - 4.5rem)',
           minWidth: 320,
           transition: 'box-shadow 0.3s',
           alignSelf: 'flex-end',
-          marginBottom: 32
+          marginBottom: 140,
+          marginTop: 140
         }}
       >
         <h2 style={{ color: '#1a2a3a', fontWeight: 800, fontSize: '2.5rem', marginBottom: 16, letterSpacing: 1 }}>
           Igniting India&apos;s Infrastructure Renaissance
         </h2>
-        <h4 style={{ color: '#3e5c76', fontWeight: 600, marginBottom: 18 }}>
-          Proudly Building the Nation&apos;s Future
-        </h4>
-        <p style={{ fontSize: '1.18em', color: '#22334a', maxWidth: 480 }}>
-          At <b>3gInfraTech</b>, we are not just constructing structures—we are shaping the dreams of a billion people. Our cutting-edge precast solutions, visionary engineering, and relentless pursuit of excellence are powering India&apos;s leap into a new era of smart cities, sustainable highways, and world-class infrastructure. <br /><br />
-          <span style={{ color: '#1a7f4e', fontWeight: 700 }}>Join us as we build a legacy of progress, innovation, and national pride.</span>
+        <p style={{ fontSize: '1.18em', color: '#fff', width: '100%' }}>
+          At <b>3gInfraTech</b>, we are not just constructing structures—we are shaping the dreams of a billion people. Our cutting-edge precast solutions, visionary engineering, and relentless pursuit of excellence are powering India&apos;s leap into a new era of smart cities, sustainable highways, and world-class infrastructure.<br /><br />
+          With every project, we strive to set new benchmarks in quality, safety, and sustainability. Our team is dedicated to delivering innovative solutions that not only meet today’s needs but also anticipate tomorrow’s challenges. From iconic bridges to vital water systems, we are committed to building a stronger, more resilient nation—one that stands tall for generations to come.
         </p>
       </div>
     </div>

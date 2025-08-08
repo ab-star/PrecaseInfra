@@ -9,10 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@react-three/drei": "^10.5.1",
-    "@react-three/fiber": "^9.2.0",
+    "@react-three/drei": "^10.6.1",
+    "@react-three/fiber": "^9.3.0",
     "aos": "^2.3.4",
-    "framer-motion": "^12.23.6",
+    "framer-motion": "^12.23.12",
     "gasp": "^0.0.2",
     "gsap": "^3.13.0",
     "lottie-react": "^2.4.1",

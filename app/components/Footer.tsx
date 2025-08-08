@@ -57,11 +57,25 @@ const Footer = () => (
         <div className="w-full max-w-3xl mx-auto p-16 rounded-[2.5rem] shadow-2xl border-2 border-white/20 bg-[url('/footerBackground.jpg')] bg-cover bg-center bg-no-repeat flex flex-col items-center" style={{backgroundColor: 'rgba(20,24,36,0.98)', boxShadow: '0 16px 64px 0 #000c'}}>
           <div className="flex items-center gap-12 mb-12">
             <FaPhoneAlt className="text-6xl text-amber-300 drop-shadow-2xl" />
-            <span className="text-5xl font-extrabold tracking-widest text-white select-all">+91 22 1234 5678</span>
+            <span className="text-5xl font-extrabold tracking-widest select-all" style={{
+              color: '#fff',
+              background: '#181e29',
+              borderRadius: '0.5rem',
+              padding: '0.25em 0.7em',
+              boxShadow: '0 2px 16px 0 #000a',
+              letterSpacing: '0.08em'
+            }}>+91 22 1234 5678</span>
           </div>
           <div className="flex items-center gap-12">
             <FaEnvelope className="text-6xl text-blue-300 drop-shadow-2xl" />
-            <span className="text-5xl font-extrabold tracking-widest text-white select-all">info@flajisil.com</span>
+            <span className="text-5xl font-extrabold tracking-widest select-all" style={{
+              color: '#fff',
+              background: '#181e29',
+              borderRadius: '0.5rem',
+              padding: '0.25em 0.7em',
+              boxShadow: '0 2px 16px 0 #000a',
+              letterSpacing: '0.08em'
+            }}>info@flajisil.com</span>
           </div>
         </div>
         <div className="flex gap-6 mt-8 justify-center w-full">

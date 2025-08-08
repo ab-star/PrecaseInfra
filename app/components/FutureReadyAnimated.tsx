@@ -31,8 +31,8 @@ const FutureReadyAnimated = () => (
   >
     <div className="max-w-7xl w-full mx-auto flex flex-col md:flex-row gap-16 items-start bg-white/10 p-12 md:p-20">
       <div className="flex-1 text-green-900 pr-8">
-        <h2 className="text-5xl font-extrabold mb-6 drop-shadow-lg">We are Future Ready</h2>
-        <p className="text-xl font-semibold leading-relaxed opacity-95">
+        <h2 className="text-5xl font-extrabold mb-6 drop-shadow-lg" style={{marginBottom: "1rem"}}>We are Future Ready</h2>
+        <p className="text-xl font-semibold leading-relaxed opacity-95 mt-16" style={{ color: '#111' }}>
           Our 100-year legacy and partnership with Fuji Japan give us access to advanced precast concrete technology, allowing us to complete projects faster, cost-effectively, and with less manpower and machinery needed on site. Our durable products are engineered with precision and manufactured by experts. We strive to exceed client expectations with high-quality precast concrete solutions continuously.
         </p>
       </div>

@@ -18,13 +18,13 @@ export default function Home() {
       <FujiSilvertechLanding />
       <IndianFlagWithPole />
       <IndiaMapSection />
+            <SectorsShowcase />
+      <FutureReadyAnimated />
+      <ClientsAcquiredSection />
 
       <SustainabilitySectionAnimated />
       {/* <ConstructionSectorNavigation /> */}
       {/* <FutureReadySection /> */}
-      <FutureReadyAnimated />
-      <SectorsShowcase />
-      <ClientsAcquiredSection />
       <BottomVideo />
       <Footer />
     </>
