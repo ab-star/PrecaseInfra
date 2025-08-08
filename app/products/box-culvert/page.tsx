@@ -4,7 +4,7 @@ import BoxCulvertPageClean from '../../components/Products/BoxCulvert/BoxCulvert
 const BoxCulvertPage = () => {
   return (
     <div>
-        <BoxCulvertPageClean />
+      <BoxCulvertPageClean />
     </div>
   )
 }

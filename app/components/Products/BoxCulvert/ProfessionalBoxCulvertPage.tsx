@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useEffect, useRef, Suspense } from 'react';
 // 3D Model Loader Component
@@ -115,7 +114,7 @@ function ScrollLockedImageTransition() {
       </div>
       
       {/* Background overlay for better contrast */}
-      <div className="absolute inset-0 bg-black bg-opacity-20 z-5" />
+      <div className="absolute inset-0 bg-black bg-opacity-20" />
       
       {/* Images with smooth transitions */}
       {transitionImages.map((src, i) => (
@@ -189,20 +188,20 @@ const ProfessionalBoxCulvertPage = () => {
   };
 
   return (
-    <div className="bg-white font-sans">
+    <div className="bg-white font-sans pt-28">
       {/* Hero Section - Fullscreen Video */}
       <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 bg-black bg-opacity-30 z-0" />
+        <div className="absolute inset-0 bg-black bg-opacity-30 pointer-events-none" />
         <video
-          className="absolute top-0 left-0 w-full h-full object-cover z-10"
+          className="absolute top-0 left-0 w-full h-full object-cover"
           src="/product/BoxCulvertProduct/video/box-video.mp4"
           autoPlay
           muted
           loop
           playsInline
-          controls
+          controls={false}
         />
-        <div className="relative z-20 flex flex-col items-center justify-center h-full w-full text-center">
+        <div className="relative flex flex-col items-center justify-center h-full w-full text-center">
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -267,11 +266,11 @@ const ProfessionalBoxCulvertPage = () => {
       </section>
 
       {/* Scroll-Locked Image Transition Section */}
-      <section className="relative w-full h-screen bg-black flex items-center justify-center overflow-hidden" style={{ scrollSnapAlign: 'start' }}>
+      <section className="relative w-full h-screen bg-black flex items-center justify-center overflow-hidden">
         <ScrollLockedImageTransition />
         
         {/* Section title overlay */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-30 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white pointer-events-none">
           <h2 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-2xl">
             Installation Process
           </h2>
@@ -316,9 +315,9 @@ const ProfessionalBoxCulvertPage = () => {
         <div>
           <h4 className="font-semibold mb-2">Follow Us</h4>
           <div className="flex space-x-4">
-            <a href="#" aria-label="LinkedIn" className="text-blue-400 hover:text-white"><svg width="24" height="24" fill="currentColor"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm13.5 10.28h-3v-4.5c0-1.08-.02-2.47-1.5-2.47-1.5 0-1.73 1.17-1.73 2.39v4.58h-3v-9h2.88v1.23h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.59v4.72z"/></svg></a>
-            <a href="#" aria-label="Twitter" className="text-blue-400 hover:text-white"><svg width="24" height="24" fill="currentColor"><path d="M24 4.56c-.89.39-1.84.65-2.84.77 1.02-.61 1.8-1.57 2.17-2.72-.95.56-2.01.97-3.13 1.19-.9-.96-2.18-1.56-3.6-1.56-2.72 0-4.93 2.21-4.93 4.93 0 .39.04.77.12 1.13-4.09-.21-7.72-2.17-10.15-5.15-.42.72-.66 1.56-.66 2.45 0 1.69.86 3.18 2.18 4.06-.8-.03-1.56-.25-2.22-.62v.06c0 2.36 1.68 4.33 3.91 4.78-.41.11-.84.17-1.28.17-.31 0-.61-.03-.9-.08.61 1.91 2.39 3.3 4.5 3.34-1.65 1.29-3.74 2.06-6.01 2.06-.39 0-.77-.02-1.15-.07 2.14 1.37 4.68 2.17 7.41 2.17 8.89 0 13.76-7.36 13.76-13.76 0-.21 0-.42-.02-.63.94-.68 1.76-1.53 2.41-2.5z"/></svg></a>
-            <a href="#" aria-label="Facebook" className="text-blue-400 hover:text-white"><svg width="24" height="24" fill="currentColor"><path d="M22.68 0h-21.36c-.73 0-1.32.59-1.32 1.32v21.36c0 .73.59 1.32 1.32 1.32h11.49v-9.29h-3.13v-3.62h3.13v-2.67c0-3.1 1.89-4.79 4.65-4.79 1.32 0 2.45.1 2.78.14v3.22h-1.91c-1.5 0-1.79.71-1.79 1.75v2.35h3.58l-.47 3.62h-3.11v9.29h6.09c.73 0 1.32-.59 1.32-1.32v-21.36c0-.73-.59-1.32-1.32-1.32z"/></svg></a>
+            <a href="#" className="text-blue-400 hover:text-white">LinkedIn</a>
+            <a href="#" className="text-blue-400 hover:text-white">Twitter</a>
+            <a href="#" className="text-blue-400 hover:text-white">Facebook</a>
           </div>
         </div>
       </footer>

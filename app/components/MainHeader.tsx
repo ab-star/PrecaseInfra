@@ -7,7 +7,7 @@ const MainHeader = () => {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
 
   return (
-    <header style={{ padding: "0px 2rem" }} className="bg-white py-8 px-8 md:px-24 lg:px-40 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 w-full shadow-xl border-b border-gray-200">
+    <header style={{ padding: "0px 2rem" }} className="fixed top-0 left-0 right-0 z-[100] bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 py-8 px-8 md:px-24 lg:px-40 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0 w-full shadow-xl border-b border-gray-200">
       <div className="flex flex-col items-center md:items-start mb-4 md:mb-0">
         <div className="flex items-center gap-3 mb-2">
           <Image 
@@ -46,7 +46,7 @@ const MainHeader = () => {
           </button>
           
           {isProductsOpen && (
-            <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
+            <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-[110] border border-gray-200">
               <Link
                 href="/products/box-culvert"
                 className="block px-4 py-2 text-gray-800 hover:bg-amber-50 hover:text-amber-600 transition-colors"
