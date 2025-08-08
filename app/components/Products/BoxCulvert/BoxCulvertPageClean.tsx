@@ -346,10 +346,6 @@ const BoxCulvertPageClean = () => {
             </ErrorBoundary>
           </Canvas>
         </div>
-        <div className="text-center p-8">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Explore in 3D</h2>
-          <p className="text-lg text-gray-600">Interact with the model to view from every angle</p>
-        </div>
       </section>
 
       {/* Strength Section */}
@@ -387,53 +383,6 @@ const BoxCulvertPageClean = () => {
         </div>
       </section>
 
-      {/* Gallery Section */}
-      <section className="w-full h-screen bg-gradient-to-br from-slate-900 to-blue-900 flex flex-col items-center justify-center text-white">
-        <h2 className="text-5xl font-bold mb-8 text-yellow-400">Project Gallery</h2>
-        <p className="text-lg mb-10 text-center max-w-2xl">See our Box Culverts in action across major infrastructure projects</p>
-        <div className="grid grid-cols-3 gap-8 max-w-5xl">
-          {[1, 2, 3].map((i) => (
-            <Image 
-              key={i}
-              src={`/product/BoxCulvertProduct/gallery/${i}.jpg`} 
-              alt={`Project ${i}`} 
-              width={400} 
-              height={300} 
-              className="rounded-lg shadow-lg object-cover w-full h-64" 
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-slate-900 text-white py-16 px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-2xl font-bold mb-4">Infrastire</h3>
-            <p className="text-blue-100">Building the future with precision engineering</p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Contact</h4>
-            <p className="text-blue-100">📞 +91 79 4021 0000</p>
-            <p className="text-blue-100">✉️ askexpert@infrastire.com</p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Quick Links</h4>
-            <div className="space-y-1">
-              <div><a href="#" className="hover:underline text-blue-100">Home</a></div>
-              <div><a href="#" className="hover:underline text-blue-100">Products</a></div>
-              <div><a href="#" className="hover:underline text-blue-100">Projects</a></div>
-            </div>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Follow Us</h4>
-            <div className="flex space-x-4">
-              <a href="#" className="text-blue-400 hover:text-white">LinkedIn</a>
-              <a href="#" className="text-blue-400 hover:text-white">Twitter</a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
