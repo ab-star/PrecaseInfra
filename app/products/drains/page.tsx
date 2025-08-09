@@ -84,7 +84,7 @@ export default function DrainsPage() {
 
       {/* Section 2: Interactive 3D Models with Alternating Text */}
       <section className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50 py-8 md:py-12">
-        <div className="w-full px-6 md:px-12 lg:px-20 xl:px-24 mx-auto max-w-7xl">
+        <div className="w-full">
           <div className="flex flex-col items-center gap-8 md:gap-10">
               {models.map((m, index) => (
                       <article
@@ -109,7 +109,7 @@ export default function DrainsPage() {
 
       {/* Section 3: Product Specifications */}
       <section className="w-full bg-white py-8 md:py-12">
-        <div className="w-full px-6 md:px-12 lg:px-20 xl:px-24 mx-auto max-w-7xl space-y-6">
+        <div className="w-full">
 
           {/* Row: FT Flume */}
           <article className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
