@@ -27,8 +27,6 @@ const IndianFlagWithPole = () => {
         isolation: 'isolate',
         alignItems: 'flex-end',
         paddingLeft: '3.5rem',
-        paddingTop: '8rem',
-        paddingBottom: '10rem',
         marginRight: 'auto',
         boxShadow: "0 8px 32px 0 #8886, 0 0 0 4px #fff8 inset",
         borderRadius: 18,
@@ -36,7 +34,7 @@ const IndianFlagWithPole = () => {
       }}
     >
       {/* Flag and pole group */}
-      <div className="relative flex flex-col items-center" style={{ height: 600, zIndex: 2, alignItems: 'flex-start', marginBottom: '-32px' }}>
+      <div className="relative flex flex-col items-center" style={{ height: 600, zIndex: 2, alignItems: 'flex-start', marginBottom: '4rem' }}>
         <div style={{ position: 'relative', height: 600, width: 32, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {/* Ball on top */}
           <div
@@ -84,7 +82,6 @@ const IndianFlagWithPole = () => {
           <div
             style={{
               width: 10,
-              height: '648px',
               background: "linear-gradient(180deg, #e0e0e0 0%, #b0b0b0 100%)",
               borderRadius: 5,
               boxShadow: "0 0 8px 0 #8888, 0 0 0 1px #aaa inset",
@@ -93,12 +90,13 @@ const IndianFlagWithPole = () => {
               left: '350%',
               transform: 'translateX(-50%)',
               bottom: 0,
-              top: "-7rem"
+              top: "-7rem",
+              height: '35rem'
             }}
           />
         </div>
         {/* Platform for flag - wide, concrete, with a right-side stem, no text */}
-        <div style={{ position: 'relative', width: 'calc(min(80vw, 600px) + 20rem)', minWidth: 320, marginTop: 24, marginBottom: 8, zIndex: 10, display: 'flex', alignItems: 'flex-end', marginLeft: 0, left: 0 , top: "6rem" }}>
+        <div style={{ position: 'relative', width: 'calc(min(80vw, 600px) + 20rem)', minWidth: 320, marginTop: 24, marginBottom: 8, zIndex: 10, display: 'flex', alignItems: 'flex-end', marginLeft: 0, left: 0 }}>
           {/* Main platform */}
           <div
             className="flex flex-col justify-center items-center"

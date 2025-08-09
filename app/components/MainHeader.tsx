@@ -23,7 +23,7 @@ const MainHeader = () => {
       <nav className="hidden md:flex gap-x-10 pt-4 w-full justify-end relative">
         <Link
           href="/"
-          className="text-gray-900 hover:text-amber-600 transition-colors text-lg font-semibold px-3 py-2 rounded-md"
+          style={{fontSize: "1.1rem"}}
         >
           HOME
         </Link>
@@ -32,7 +32,8 @@ const MainHeader = () => {
         <div className="relative">
           <button
             onClick={() => setIsProductsOpen(!isProductsOpen)}
-            className="text-gray-900 hover:text-amber-600 transition-colors text-lg font-semibold px-3 py-2 rounded-md flex items-center"
+            className="flex items-center"
+            style={{fontSize: "1.1rem"}}
           >
             PRODUCTS
             <svg
@@ -74,7 +75,8 @@ const MainHeader = () => {
 
         <Link
           href="/aboutus"
-          className="text-gray-900 hover:text-amber-600 transition-colors text-lg font-semibold px-3 py-2 rounded-md"
+          className=""
+          style={{fontSize: "1.1rem"}}
         >
           ABOUT US
         </Link>
