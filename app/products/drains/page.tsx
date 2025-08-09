@@ -83,13 +83,13 @@ export default function DrainsPage() {
       </section>
 
       {/* Section 2: Interactive 3D Models with Alternating Text */}
-      <section className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50 py-8 md:py-12">
-        <div className="w-full">
+      <section style={{background: "url(/product/Drain/background/uShapedDrainBg.jpg)" , padding: "5rem 0"}} className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50" >
+        <div className="w-full py-5">
           <div className="flex flex-col items-center gap-8 md:gap-10">
               {models.map((m, index) => (
                       <article
                         key={m.title}
-                className={`w-full max-w-6xl mx-auto rounded-xl ring-1 ring-black/5 bg-white shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 ${m.textPosition === 'left' ? 'md:flex-row-reverse' : ''} ${(index === 0 || index === models.length - 1) ? 'md:ml-auto md:mr-0' : ''}`}
+                className={`w-full max-w-6xl mx-auto rounded-xl ring-1 ring-black/5  shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 ${m.textPosition === 'left' ? 'md:flex-row-reverse' : ''} ${(index === 0 || index === models.length - 1) ? 'md:ml-auto md:mr-0' : ''}`}
                       >
                         <div
                           className="relative w-full md:w-[68%] h-[360px] md:h-[480px] rounded-lg overflow-hidden bg-center bg-cover"
@@ -97,9 +97,8 @@ export default function DrainsPage() {
                         >
                           <ModelCanvas path={m.path} scale={m.scale} />
                         </div>
-                        <div className="w-full md:w-[32%] flex flex-col items-center text-center px-2">
-                          <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">{m.title}</h3>
-                          <p className="text-slate-600 text-xs md:text-sm mt-1">Drag to rotate</p>
+                        <div className="w-full md:w-[32%] flex flex-col items-center text-center px-2 text-white" style={{color: "white !important"}}>
+                          <h3 className="text-xl md:text-2xl font-extrabold uppercas" style={{color: "white !important"}}>{m.title}</h3>
                         </div>
                       </article>
                     ))}
