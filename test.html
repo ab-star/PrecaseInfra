@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Product Showcase</title>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f8f9fa;
+}
+
+/* Upper section */
+.three-d-section {
+    text-align: center;
+    padding: 40px 20px;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.three-d-section h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.three-d-section p {
+    max-width: 700px;
+    margin: auto;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Product rows */
+.product-section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+.product-row {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+}
+
+.product-media {
+    flex: 1;
+}
+
+.product-media img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.product-details {
+    flex: 1;
+}
+
+.product-details h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.product-details p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .product-row {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+</style>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<section class="product-section-3d">
+
+    <!-- 3D Model 1 -->
+    <div class="product-row">
+        <div class="product-media">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Concrete_Culvert.jpg" 
+                 alt="3D Model - Box Culvert" />
+        </div>
+        <div class="product-details">
+            <h2>Precast Box Culvert</h2>
+            <p>Durable reinforced concrete structure for efficient water flow under roads and railways.</p>
+        </div>
+    </div>
+
+    <!-- 3D Model 2 -->
+    <div class="product-row">
+        <div class="product-media">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/Concrete_Barrier.jpg" 
+                 alt="3D Model - Concrete Barrier" />
+        </div>
+        <div class="product-details">
+            <h2>Concrete Barrier</h2>
+            <p>High-strength safety barrier for highways, construction zones, and critical infrastructure.</p>
+        </div>
+    </div>
+
+    <!-- 3D Model 3 -->
+    <div class="product-row">
+        <div class="product-media">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/Concrete_pipe.jpg" 
+                 alt="3D Model - Concrete Pipe" />
+        </div>
+        <div class="product-details">
+            <h2>Concrete Pipe</h2>
+            <p>Reliable drainage solution with reinforced concrete for long-lasting performance.</p>
+        </div>
+    </div>
+
+</section>
+
+<section class="product-section">
+
+    <!-- Product 1 -->
+    <div class="product-row">
+        <div class="product-media">
+            <img src="https://images.pexels.com/photos/1282767/pexels-photo-1282767.jpeg" 
+                 alt="Precast Box Culvert" />
+        </div>
+        <div class="product-details">
+            <h2>Precast Box Culvert</h2>
+            <ul>
+                <li><strong>Exterior Length:</strong> 6 ft</li>
+                <li><strong>Exterior Width:</strong> 6 ft</li>
+                <li><strong>Interior Width:</strong> 4 ft</li>
+                <li><strong>Interior Height:</strong> 4 ft</li>
+                <li><strong>Weight:</strong> 7000 lbs</li>
+                <li><strong>Material:</strong> Reinforced Concrete</li>
+                <li><strong>Compliance:</strong> ASTM C433</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product-row reverse">
+        <div class="product-details">
+            <h2>Concrete Barrier</h2>
+            <ul>
+                <li><strong>Length:</strong> 10 ft</li>
+                <li><strong>Height:</strong> 3 ft</li>
+                <li><strong>Weight:</strong> 5000 lbs</li>
+                <li><strong>Material:</strong> High-strength Concrete</li>
+                <li><strong>Compliance:</strong> ASTM C825</li>
+            </ul>
+        </div>
+        <div class="product-media">
+            <img src="https://images.pexels.com/photos/585419/pexels-photo-585419.jpeg" 
+                 alt="Concrete Barrier" />
+        </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-row">
+        <div class="product-media">
+            <img src="https://images.pexels.com/photos/569157/pexels-photo-569157.jpeg" 
+                 alt="Concrete Pipe" />
+        </div>
+        <div class="product-details">
+            <h2>Concrete Pipe</h2>
+            <ul>
+                <li><strong>Diameter:</strong> 3 ft</li>
+                <li><strong>Length:</strong> 8 ft</li>
+                <li><strong>Weight:</strong> 2500 lbs</li>
+                <li><strong>Material:</strong> Reinforced Concrete</li>
+                <li><strong>Compliance:</strong> ASTM C76</li>
+            </ul>
+        </div>
+    </div>
+
+</section>
+
+</body>
+</html>

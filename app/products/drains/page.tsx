@@ -1,7 +1,7 @@
 "use client";
 import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF, Center } from "@react-three/drei";
+import { OrbitControls, useGLTF, Center, Bounds } from "@react-three/drei";
 import Image from "next/image";
 import * as THREE from "three";
 
@@ -18,7 +18,7 @@ useGLTF.preload?.(GLB_2);
 // @ts-expect-error useGLTF exposes a static preload helper at runtime
 useGLTF.preload?.(GLB_3);
 
-function DrainModel({ path, scale = 1.2 }: { path: string; scale?: number }) {
+function DrainModel({ path, scale = 1.5 }: { path: string; scale?: number }) {
   const { scene } = useGLTF(path) as { scene: THREE.Object3D };
   return (
     <Center>
@@ -27,21 +27,47 @@ function DrainModel({ path, scale = 1.2 }: { path: string; scale?: number }) {
   );
 }
 
-function ModelCanvas({ path, scale = 1.1 }: { path: string; scale?: number }) {
+function ModelCanvas({ path, scale = 1.5 }: { path: string; scale?: number }) {
   return (
-    <Canvas camera={{ position: [5, 3, 5], fov: 45 }} style={{ width: "100%", height: "100%", background: "#f8fafc" }}>
+    <Canvas 
+  camera={{ position: [5, 3, 5], fov: 45, far: 1000 }} 
+  style={{ width: "100%", height: "100%" }}
+  gl={{ alpha: true, antialias: true }}
+      frameloop="always"
+    >
       <ambientLight intensity={0.8} />
       <directionalLight position={[10, 10, 5]} intensity={1.2} />
       <directionalLight position={[-10, -10, -5]} intensity={0.4} />
-      <OrbitControls enablePan={false} enableZoom={false} enableRotate target={[0, 0, 0]} />
-      <Suspense fallback={<mesh><boxGeometry args={[1.6, 1, 1.2]} /><meshStandardMaterial color="#9ca3af" /></mesh>}>
-        <DrainModel path={path} scale={scale} />
+      <Suspense fallback={
+        <mesh>
+          <boxGeometry args={[1.6, 1, 1.2]} />
+          <meshStandardMaterial color="#9ca3af" />
+        </mesh>
+      }>
+  <Bounds fit observe margin={1.5}>
+          <DrainModel path={path} scale={scale} />
+        </Bounds>
       </Suspense>
+      <OrbitControls 
+        makeDefault 
+        enablePan={false} 
+        enableZoom={false} 
+        enableRotate={true}
+        minPolarAngle={Math.PI / 6}
+        maxPolarAngle={Math.PI / 1.8}
+        target={[0, 0, 0]} 
+      />
     </Canvas>
   );
 }
 
 export default function DrainsPage() {
+  const models = [
+    {title:'U Shape Drain T6', path:GLB_2, scale:1.5, textPosition: 'right'}, 
+    {title:'U Shape Drain T25', path:GLB_3, scale:1.5, textPosition: 'left'}, 
+    {title:'FT Flume', path:GLB_1, scale:1.5, textPosition: 'right'}
+  ];
+
   return (
     <div className="bg-white">
       {/* Section 1: Fullscreen Video */}
@@ -54,165 +80,87 @@ export default function DrainsPage() {
           loop
           playsInline
         />
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-          <div className="text-center text-white">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">Drains</h1>
-            <p className="text-lg md:text-xl opacity-90">High-precision Precast Drainage Systems</p>
+      </section>
+
+      {/* Section 2: Interactive 3D Models with Alternating Text */}
+      <section className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50 py-8 md:py-12">
+        <div className="w-full px-6 md:px-12 lg:px-20 xl:px-24 mx-auto max-w-7xl">
+          <div className="flex flex-col items-center gap-8 md:gap-10">
+              {models.map((m, index) => (
+                      <article
+                        key={m.title}
+                className={`w-full max-w-6xl mx-auto rounded-xl ring-1 ring-black/5 bg-white shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 ${m.textPosition === 'left' ? 'md:flex-row-reverse' : ''} ${(index === 0 || index === models.length - 1) ? 'md:ml-auto md:mr-0' : ''}`}
+                      >
+                        <div
+                          className="relative w-full md:w-[68%] h-[360px] md:h-[480px] rounded-lg overflow-hidden bg-center bg-cover"
+                          style={{ backgroundImage: `url(/product/Drain/background/${(index % 3) + 1}.jpg)` }}
+                        >
+                          <ModelCanvas path={m.path} scale={m.scale} />
+                        </div>
+                        <div className="w-full md:w-[32%] flex flex-col items-center text-center px-2">
+                          <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">{m.title}</h3>
+                          <p className="text-slate-600 text-xs md:text-sm mt-1">Drag to rotate</p>
+                        </div>
+                      </article>
+                    ))}
           </div>
         </div>
       </section>
 
-      {/* Section 2: Three 3D Models aligned horizontally with titles (reduced model size) */}
-      <section className="w-full bg-gray-50 flex flex-col py-4 md:py-6">
-        <div className="w-full px-6 md:px-12 lg:px-20 xl:px-28 pb-0">
-          <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 justify-items-center">
-            {/* Card 1 */}
-            <div className="relative w-full max-w-[560px] rounded-xl overflow-hidden bg-white/0 flex flex-col">
-              <div className="w-full aspect-[5/4] md:aspect-[5/4] lg:aspect-[6/5]">
-                <ModelCanvas path={GLB_2} scale={1.12} />
-              </div>
-              <div className="pt-0 md:pt-1 text-center">
-                <h3 className="text-2xl md:text-3xl font-extrabold uppercase leading-tight">
-                  U Shape Drain <span className="text-blue-600">T6</span>
-                </h3>
-              </div>
-            </div>
-            {/* Card 2 */}
-            <div className="relative w-full max-w-[560px] rounded-xl overflow-hidden bg-white/0 flex flex-col">
-              <div className="w-full aspect-[5/4] md:aspect-[5/4] lg:aspect-[6/5]">
-                <ModelCanvas path={GLB_3} scale={1.12} />
-              </div>
-              <div className="pt-0 md:pt-1 text-center">
-                <h3 className="text-2xl md:text-3xl font-extrabold uppercase leading-tight">
-                  U Shape Drain <span className="text-blue-600">T25</span>
-                </h3>
-              </div>
-            </div>
-            {/* Card 3 */}
-            <div className="relative w-full max-w-[560px] rounded-xl overflow-hidden bg-white/0 flex flex-col">
-              <div className="w-full aspect-[5/4] md:aspect-[5/4] lg:aspect-[6/5]">
-                <ModelCanvas path={GLB_1} scale={1.08} />
-              </div>
-              <div className="pt-0 md:pt-1 text-center">
-                <h3 className="text-2xl md:text-3xl font-extrabold uppercase leading-tight">
-                  FT <span className="text-blue-600">Flume</span>
-                </h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Section 3: Product Specifications */}
+      <section className="w-full bg-white py-8 md:py-12">
+        <div className="w-full px-6 md:px-12 lg:px-20 xl:px-24 mx-auto max-w-7xl space-y-6">
 
-      {/* Section 3: Product Showcase (Fullscreen, transparent background, full width) */}
-      <section className="w-full h-screen bg-transparent text-slate-900 flex flex-col">
-        <div className="px-6 pt-0 pb-0 text-center">
+          {/* Row: FT Flume */}
+          <article className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+            <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
+              <Image src="/product/Drain/images/FtFlume.png" alt="FT Flume" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" priority />
+            </div>
+            <div className="flex-1 w-full">
+              <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">FT <span className="text-blue-600">Flume</span></h3>
+              <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-slate-700 text-sm md:text-base">
+                <li><span className="font-semibold text-slate-800">Sizes:</span> 600×800 mm to 2500×1800 mm</li>
+                <li><span className="font-semibold text-slate-800">Loading:</span> Pedestrian; 2.4 T/m² surcharge</li>
+                <li><span className="font-semibold text-slate-800">Location:</span> Edge of road</li>
+                <li><span className="font-semibold text-slate-800">Connection:</span> Groove + sealant; flange bolt</li>
+                <li><span className="font-semibold text-slate-800">Lifting:</span> Special arrangement</li>
+              </ul>
+            </div>
+          </article>
 
-        </div>
-        <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-3 gap-8 px-6 md:px-12 lg:px-20 xl:px-28 pb-8">
-          {/* FT Flume */}
-          <div className="group relative h-full rounded-2xl overflow-hidden bg-white text-slate-900 shadow-2xl ring-1 ring-black/5 flex flex-col">
-            <div className="relative h-[46%] bg-gradient-to-b from-slate-50 to-slate-100">
-              <Image src="/product/Drain/images/FtFlume.png" alt="FT Flume" fill sizes="(min-width: 768px) 33vw, 90vw" className="object-contain p-6 group-hover:scale-[1.03] transition-transform duration-500" priority />
+          {/* Row: U Shape Drain T6 */}
+          <article className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+            <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
+              <Image src="/product/Drain/images/UShapeDrainT6.png" alt="U Shape Drain T6" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
             </div>
-            <div className="flex-1 p-8 flex flex-col items-center text-center">
-              <h3 className="text-2xl font-extrabold uppercase">
-                FT <span className="text-blue-600">Flume</span>
-              </h3>
-              <div className="mt-6 space-y-5">
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Sizes</div>
-                  <div className="text-gray-600">600 mmx800 mm to<br/>2500 mmx1800 mm</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Loading</div>
-                  <div className="text-gray-600">Pedestrian load,<br/>Live load surcharge of 2.4T/m²</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Location</div>
-                  <div className="text-gray-600">Edge of the road</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Connection</div>
-                  <div className="text-gray-600">Groove filled with sealants,<br/>and flange bolt connection</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Lifting</div>
-                  <div className="text-gray-600">Special arrangement</div>
-                </div>
-              </div>
-              <button className="mt-6 inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded shadow">DOWNLOAD PDF</button>
+            <div className="flex-1 w-full">
+              <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">U Shape Drain <span className="text-blue-600">T6</span></h3>
+              <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-slate-700 text-sm md:text-base">
+                <li><span className="font-semibold text-slate-800">Sizes:</span> 300×300 mm to 900×900 mm</li>
+                <li><span className="font-semibold text-slate-800">Loading:</span> Pedestrian/LMV; 2.4 T/m² surcharge</li>
+                <li><span className="font-semibold text-slate-800">Location:</span> Edge of road with kerb</li>
+                <li><span className="font-semibold text-slate-800">Connection:</span> Groove with sealants</li>
+                <li><span className="font-semibold text-slate-800">Lifting:</span> Inbuilt inserts</li>
+              </ul>
             </div>
-          </div>
+          </article>
 
-          {/* U-Shape Drain T6 (R8) */}
-          <div className="group relative h-full rounded-2xl overflow-hidden bg-white text-slate-900 shadow-2xl ring-1 ring-black/5 flex flex-col">
-            <div className="relative h-[46%] bg-gradient-to-b from-slate-50 to-slate-100">
-              <Image src="/product/Drain/images/UShapeDrainT6.png" alt="U-Shape Drain T6" fill sizes="(min-width: 768px) 33vw, 90vw" className="object-contain p-6 group-hover:scale-[1.03] transition-transform duration-500" />
+          {/* Row: U Shape Drain T25 */}
+          <article className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+            <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
+              <Image src="/product/Drain/images/UshapeDrainT25.png" alt="U Shape Drain T25" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
             </div>
-            <div className="flex-1 p-8 flex flex-col items-center text-center">
-              <h3 className="text-2xl font-extrabold uppercase">
-                U Shape Drain <span className="text-blue-600">T6</span>
-              </h3>
-              <div className="mt-6 space-y-5">
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Sizes</div>
-                  <div className="text-gray-600">300 mmx300 mm to<br/>900 mmx900 mm</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Loading</div>
-                  <div className="text-gray-600">Pedestrian load or LMV,<br/>Live load surcharge of 2.4T/m²</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Location</div>
-                  <div className="text-gray-600">Edge of the road with kerb stone</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Connection</div>
-                  <div className="text-gray-600">Groove filled<br/>with sealants</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Lifting</div>
-                  <div className="text-gray-600">Inbuilt inserts</div>
-                </div>
-              </div>
-              <button className="mt-6 inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded shadow">DOWNLOAD PDF</button>
+            <div className="flex-1 w-full">
+              <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">U Shape Drain <span className="text-blue-600">T25</span></h3>
+              <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-slate-700 text-sm md:text-base">
+                <li><span className="font-semibold text-slate-800">Sizes:</span> 300×300 mm to 1200×1200 mm</li>
+                <li><span className="font-semibold text-slate-800">Loading:</span> 5 T wheel; 2.4 T/m² surcharge</li>
+                <li><span className="font-semibold text-slate-800">Location:</span> Part of the road</li>
+                <li><span className="font-semibold text-slate-800">Connection:</span> Groove with sealants</li>
+                <li><span className="font-semibold text-slate-800">Lifting:</span> Inbuilt inserts</li>
+              </ul>
             </div>
-          </div>
-
-          {/* U-Shape Drain T25 */}
-          <div className="group relative h-full rounded-2xl overflow-hidden bg-white text-slate-900 shadow-2xl ring-1 ring-black/5 flex flex-col">
-            <div className="relative h-[46%] bg-gradient-to-b from-slate-50 to-slate-100">
-              <Image src="/product/Drain/images/UshapeDrainT25.png" alt="T-25 Drain" fill sizes="(min-width: 768px) 33vw, 90vw" className="object-contain p-6 group-hover:scale-[1.03] transition-transform duration-500" />
-            </div>
-            <div className="flex-1 p-8 flex flex-col items-center text-center">
-              <h3 className="text-2xl font-extrabold uppercase">
-                U Shape Drain <span className="text-blue-600">T25</span>
-              </h3>
-              <div className="mt-6 space-y-5">
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Sizes</div>
-                  <div className="text-gray-600">300 mmx300 mm to<br/>1200 mmx1200 mm</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Loading</div>
-                  <div className="text-gray-600">5T wheel load,<br/>Live load surcharge of 2.4T/m²</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Location</div>
-                  <div className="text-gray-600">Part of the road</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Connection</div>
-                  <div className="text-gray-600">Groove filled<br/>with sealants</div>
-                </div>
-                <div>
-                  <div className="font-extrabold uppercase tracking-wide text-gray-800">Lifting</div>
-                  <div className="text-gray-600">Inbuilt inserts</div>
-                </div>
-              </div>
-              <button className="mt-6 inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded shadow">DOWNLOAD PDF</button>
-            </div>
-          </div>
+          </article>
         </div>
       </section>
     </div>
