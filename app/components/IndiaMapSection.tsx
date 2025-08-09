@@ -28,7 +28,7 @@ const IndiaMapSection = () => {
         width: '100%',
         minHeight: 1100,
         height: '100vh',
-        background: `url('/IndiaMapStatus.png') center/cover no-repeat`,
+  background: `url('/Home/IndiaMap.jpg') center/cover no-repeat`,
         paddingTop: '6vw',
         paddingBottom: '6vw',
         display: 'flex',
@@ -56,7 +56,7 @@ const IndiaMapSection = () => {
         <h2 style={{ color: '#fff', fontWeight: 800, fontSize: '2.4rem', marginBottom: 18, letterSpacing: 1 }}>
           Our Presence Spans the Heart of India
         </h2>
-        <p style={{ color: '#fff', fontWeight: 500, fontSize: '1.18rem', marginBottom: 12, lineHeight: 1.6 }}>
+  <p style={{ color: '#000', fontWeight: 500, fontSize: '1.18rem', marginBottom: 12, lineHeight: 1.6 }}>
           From the peaks of the Himalayas to the coasts of Kanyakumari, <b>3gInfraTech</b> is powering progress in every region. Our projects connect cities, empower rural communities, and drive economic growth in every state.<br /><br />
           Whether it’s the bustling metros of Mumbai and Delhi, the vibrant tech corridors of Bengaluru and Hyderabad, or the heartlands of Uttar Pradesh and Bihar, our footprint is everywhere. We bring world-class infrastructure to remote villages, modernize transport in growing towns, and support sustainable development in every corner of the country.<br /><br />
         </p>

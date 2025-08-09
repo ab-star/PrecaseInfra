@@ -51,11 +51,11 @@ const FujiSilvertechLanding = () => {
         transition: 'background-image 1.2s cubic-bezier(.4,0,.2,1)'
       }} />
       
-      {/* Dynamic Text Overlay - Centered with black text */}
-      {hoveredSector !== null && (
+    {/* Dynamic Text Overlay - Centered with white text (guarded) */}
+  {hoveredSector !== null && (sectors as any)[hoveredSector]?.hoverText && (
         <div className="absolute z-30 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full px-4">
-          <p className="text-black text-3xl md:text-5xl font-bold tracking-wide">
-            {sectors[hoveredSector].hoverText}
+      <p className="text-white text-3xl md:text-5xl font-bold tracking-wide drop-shadow-[0_0_10px_rgba(0,0,0,0.55)]">
+    {(sectors as any)[hoveredSector].hoverText}
           </p>
         </div>
       )}
@@ -77,24 +77,27 @@ const FujiSilvertechLanding = () => {
         ))}
       </div>
 
-      {/* Sectors bar */}
-      <div className="absolute left-0 bottom-0 w-full z-50 bg-transparent flex flex-row">
+      {/* Sectors labels overlay (full-height, centered vertically) */}
+      <div className="absolute inset-0 z-50 bg-transparent flex flex-row pointer-events-none">
         {sectors.map((sector, index) => (
           <React.Fragment key={sector.name}>
             <div
-              className="group flex-1 h-full min-h-[64px] flex flex-col justify-center items-center cursor-pointer transition-all duration-500 relative"
-              onMouseEnter={() => setHoveredSector(index)}
+              className="flex-1 h-full flex justify-center items-center transition-all duration-500 relative"
             >
               <button
-                className={`w-full h-full flex-1 flex flex-col justify-center items-center text-center transition-all duration-300 truncate bg-transparent border-none outline-none text-white text-lg sm:text-xl md:text-2xl font-bold ${hoveredSector === index ? 'drop-shadow-[0_0_16px_rgba(59,130,246,0.7)] text-blue-300 scale-105' : ''}`}
+                className={`w-full h-full flex-1 flex justify-center items-center text-center transition-all duration-300 bg-transparent border-none outline-none text-white text-xl sm:text-2xl md:text-3xl font-bold ${hoveredSector === index ? 'drop-shadow-[0_0_16px_rgba(255,255,255,0.85)] scale-105' : ''}`}
                 tabIndex={0}
+                style={{
+                  color: '#fff',
+                  writingMode: 'vertical-rl',
+                  textOrientation: 'mixed',
+                  transform: 'rotate(180deg)',
+                  letterSpacing: '0.08em',
+                  pointerEvents: 'none'
+                }}
               >
-                {sector.icon}
                 {sector.name}
               </button>
-              {index < sectors.length - 1 && (
-                <span className="absolute top-0 right-0 w-px h-full bg-white opacity-60" aria-hidden="true"></span>
-              )}
             </div>
           </React.Fragment>
         ))}
