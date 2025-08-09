@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Box Culvert Image Transition Test</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: white;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background-color: white;
+    }
+    
+    .heading {
+      font-size: 32px;
+      color: #000;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .content-row {
+      display: flex;
+      flex-direction: row;
+      gap: 30px;
+      align-items: center;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .text-content {
+      flex: 1;
+      padding: 20px;
+      background-color: white;
+      border: 2px solid blue;
+      border-radius: 8px;
+    }
+    
+    .step {
+      display: inline-block;
+      background-color: #e6f0ff;
+      color: #0047ab;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    
+    .title {
+      font-size: 28px;
+      color: #000;
+      margin-bottom: 16px;
+    }
+    
+    .description {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .tip {
+      background-color: #f5f5f5;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #555;
+    }
+    
+    .image-content {
+      flex: 1;
+      height: 350px;
+      position: relative;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: white;
+    }
+    
+    .image-content img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 40px;
+    }
+    
+    .nav-button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .nav-button-active {
+      background-color: #0047ab;
+      color: white;
+    }
+    
+    .nav-button-disabled {
+      background-color: #ddd;
+      color: #999;
+      cursor: not-allowed;
+    }
+    
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #ccc;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+    
+    .dot-active {
+      background-color: #0047ab;
+    }
+    
+    @media (max-width: 768px) {
+      .content-row {
+        flex-direction: column;
+      }
+      
+      .text-content, .image-content {
+        width: 100%;
+      }
+      
+      .image-content {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="heading">Box Culvert Installation Process</h1>
+    
+    <div class="content-row">
+      <div class="text-content">
+        <span class="step">Step 1 of 6</span>
+        <h2 class="title">Site Preparation</h2>
+        <p class="description">The first step involves thorough site preparation, including excavation, grading, and ensuring proper drainage conditions for the box culvert installation.</p>
+        <div class="tip">
+          <strong>Pro tip:</strong> Ensure proper site drainage before installation.
+        </div>
+      </div>
+      
+      <div class="image-content">
+        <img src="/product/BoxCulvertProduct/transition/1.png" alt="Site Preparation" />
+      </div>
+    </div>
+    
+    <div class="navigation">
+      <button class="nav-button nav-button-disabled" disabled>Previous Step</button>
+      
+      <div class="dots">
+        <button class="dot dot-active" aria-label="Go to step 1"></button>
+        <button class="dot" aria-label="Go to step 2"></button>
+        <button class="dot" aria-label="Go to step 3"></button>
+        <button class="dot" aria-label="Go to step 4"></button>
+        <button class="dot" aria-label="Go to step 5"></button>
+        <button class="dot" aria-label="Go to step 6"></button>
+      </div>
+      
+      <button class="nav-button nav-button-active">Next Step</button>
+    </div>
+  </div>
+  
+  <script>
+    // Static demo - in real app would have interaction logic here
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Page loaded - this is a static demo of step 1');
+    });
+  </script>
+</body>
+</html>

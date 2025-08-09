@@ -8,33 +8,33 @@ const FujiSilvertechLanding = () => {
   const sectors = [
     {
       name: "POWER",
-      hoverText: "Innovative power distribution systems for modern cities",
-      bgImage: "/HomeTransition/HomeProd1.jpeg",
+      bgImage: "/Home/1P.png",
       icon: <FaBolt className="text-4xl md:text-5xl mb-2 text-yellow-400 drop-shadow" />
     },
     {
       name: "WATER & SEWAGE",
-      hoverText: "Eco-friendly water treatment and drainage solutions",
-      bgImage: "/HomeTransition/HomeProd2.jpeg",
+      bgImage: "/Home/2P.png",
       icon: <FaTint className="text-4xl md:text-5xl mb-2 text-blue-300 drop-shadow" />
     },
     {
       name: "RAILWAYS",
-      hoverText: "Durable railway components for high-speed transit",
-      bgImage: "/HomeTransition/HomeProd3.jpeg",
+      bgImage: "/Home/3P.png",
       icon: <FaTrain className="text-4xl md:text-5xl mb-2 text-gray-200 drop-shadow" />
     },
     {
       name: "INDUSTRIAL",
-      hoverText: "Heavy-duty industrial construction materials",
-      bgImage: "/HomeTransition/HomeProd4.jpeg",
+      bgImage: "/Home/4P.png",
       icon: <FaIndustry className="text-4xl md:text-5xl mb-2 text-gray-400 drop-shadow" />
     },
     {
       name: "ROADS & BRIDGES",
-      hoverText: "Long-lasting road and bridge construction systems",
-      bgImage: "/HomeTransition/HomeProd5.jpeg",
+      bgImage: "/Home/5p.png", // note: filename is lowercase 'p' per directory listing
       icon: <FaRoad className="text-4xl md:text-5xl mb-2 text-amber-200 drop-shadow" />
+    },
+    {
+      name: "URBAN INFRA",
+      bgImage: "/Home/6P.png",
+      icon: <FaIndustry className="text-4xl md:text-5xl mb-2 text-slate-200 drop-shadow" />
     }
   ];
 
