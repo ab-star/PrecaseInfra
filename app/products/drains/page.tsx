@@ -106,6 +106,18 @@ export default function DrainsPage() {
         </div>
       </section>
 
+      {/* Full-viewport image between 3D models and specs */}
+      <section className="relative w-full h-screen overflow-hidden">
+        <Image
+          src="/Home/2P.png"
+          alt="Drain systems showcase"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+      </section>
+
       {/* Section 3: Product Specifications */}
       <section className="w-full bg-white py-8 md:py-12">
         <div className="w-full">
