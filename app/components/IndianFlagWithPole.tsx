@@ -130,7 +130,8 @@ const IndianFlagWithPole = () => {
           transition: 'box-shadow 0.3s',
           alignSelf: 'flex-end',
           marginBottom: 140,
-          marginTop: 140
+          marginTop: 140,
+          paddingTop: '15rem',
         }}
       >
         <h2 style={{ color: '#1a2a3a', fontWeight: 800, fontSize: '2.5rem', marginBottom: 16, letterSpacing: 1 }}>
