@@ -20,12 +20,11 @@ const IndianFlagWithPole = () => {
 
   return (
     <div
-      className="flex flex-row items-end justify-start relative overflow-visible"
+      className="flex flex-row items-center justify-start relative overflow-visible" // Changed to items-center
       style={{
         width: "100%",
-        minHeight: 480,
+        minHeight: "60rem",
         isolation: 'isolate',
-        alignItems: 'flex-end',
         paddingLeft: '3.5rem',
         marginRight: 'auto',
         boxShadow: "0 8px 32px 0 #8886, 0 0 0 4px #fff8 inset",
@@ -34,7 +33,7 @@ const IndianFlagWithPole = () => {
       }}
     >
       {/* Flag and pole group */}
-      <div className="relative flex flex-col items-center" style={{ height: 600, zIndex: 2, alignItems: 'flex-start', marginBottom: '4rem' }}>
+      <div className="relative flex flex-col items-center" style={{ height: 600, zIndex: 2, alignItems: 'flex-start' }}>
         <div style={{ position: 'relative', height: 600, width: 32, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {/* Ball on top */}
           <div
@@ -95,9 +94,8 @@ const IndianFlagWithPole = () => {
             }}
           />
         </div>
-        {/* Platform for flag - wide, concrete, with a right-side stem, no text */}
+        {/* Platform for flag */}
         <div style={{ position: 'relative', width: 'calc(min(80vw, 600px) + 20rem)', minWidth: 320, marginTop: 24, marginBottom: 8, zIndex: 10, display: 'flex', alignItems: 'flex-end', marginLeft: 0, left: 0 }}>
-          {/* Main platform */}
           <div
             className="flex flex-col justify-center items-center"
             style={{
@@ -116,7 +114,7 @@ const IndianFlagWithPole = () => {
           />
         </div>
       </div>
-      {/* Animated text to the right of the flag, no background */}
+      {/* Text section - now properly aligned */}
       <div
         ref={textRef}
         style={{
@@ -124,14 +122,14 @@ const IndianFlagWithPole = () => {
           transform: 'translateX(120px) scale(1.04)',
           filter: 'blur(16px)',
           marginLeft: 48,
-          marginRight: 0,
           width: 'calc(100% - (min(80vw, 600px) + 20rem) - 4.5rem)',
           minWidth: 320,
-          transition: 'box-shadow 0.3s',
-          alignSelf: 'flex-end',
-          marginBottom: 140,
-          marginTop: 140,
-          paddingTop: '15rem',
+          alignSelf: 'center', // Changed to center alignment
+          paddingTop: 0, // Removed excessive padding
+          marginBottom: 0, // Removed bottom margin
+          marginTop: 0, // Removed top margin
+          position: 'relative',
+          top: '-2rem' // Fine-tune vertical position
         }}
       >
         <h2 style={{ color: '#1a2a3a', fontWeight: 800, fontSize: '2.5rem', marginBottom: 16, letterSpacing: 1 }}>
@@ -139,7 +137,7 @@ const IndianFlagWithPole = () => {
         </h2>
         <p style={{ fontSize: '1.18em', color: '#fff', width: '100%' }}>
           At <b>3gInfraTech</b>, we are not just constructing structures—we are shaping the dreams of a billion people. Our cutting-edge precast solutions, visionary engineering, and relentless pursuit of excellence are powering India&apos;s leap into a new era of smart cities, sustainable highways, and world-class infrastructure.<br /><br />
-          With every project, we strive to set new benchmarks in quality, safety, and sustainability. Our team is dedicated to delivering innovative solutions that not only meet today’s needs but also anticipate tomorrow’s challenges. From iconic bridges to vital water systems, we are committed to building a stronger, more resilient nation—one that stands tall for generations to come.
+          With every project, we strive to set new benchmarks in quality, safety, and sustainability. Our team is dedicated to delivering innovative solutions that not only meet today's needs but also anticipate tomorrow's challenges. From iconic bridges to vital water systems, we are committed to building a stronger, more resilient nation—one that stands tall for generations to come.
         </p>
       </div>
     </div>
@@ -147,4 +145,3 @@ const IndianFlagWithPole = () => {
 };
 
 export default IndianFlagWithPole;
-
