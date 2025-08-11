@@ -120,10 +120,10 @@ export default function DrainsPage() {
 
       {/* Section 3: Product Specifications */}
       <section className="w-full bg-white py-8 md:py-12">
-        <div className="w-full">
+        <div className="w-full" style={{paddingTop: "3rem"}}>
 
           {/* Row: FT Flume */}
-          <article className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
             <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
               <Image src="/product/Drain/images/FtFlume.png" alt="FT Flume" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" priority />
             </div>
@@ -140,7 +140,7 @@ export default function DrainsPage() {
           </article>
 
           {/* Row: U Shape Drain T6 */}
-          <article className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
             <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
               <Image src="/product/Drain/images/UShapeDrainT6.png" alt="U Shape Drain T6" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
             </div>
@@ -157,7 +157,7 @@ export default function DrainsPage() {
           </article>
 
           {/* Row: U Shape Drain T25 */}
-          <article className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
             <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
               <Image src="/product/Drain/images/UshapeDrainT25.png" alt="U Shape Drain T25" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
             </div>

@@ -28,7 +28,7 @@ const Footer = () => (
 		className="relative z-[90] w-full overflow-hidden text-white flex flex-col md:flex-row gap-16 md:gap-0 justify-between items-start shadow-2xl border-t-0"
 		style={{
 			background:
-				"url('/footerBackground.jpg') center/cover no-repeat, linear-gradient(135deg, #1e293b 60%, #181e29 100%)",
+				"url('/product/Drain/background/uShapedDrainBg.jpg') center/cover no-repeat, linear-gradient(135deg, #1e293b 60%, #181e29 100%)",
 			padding: "96px 64px 96px 64px",
 			minHeight: "520px",
 			fontSize: "1.25rem", // 20px
@@ -76,7 +76,7 @@ const Footer = () => (
 				style={{ fontFamily: "inherit" }}
 			>
 				<div
-					className="w-full max-w-3xl mx-auto p-16 rounded-[2.5rem] shadow-2xl border-2 border-white/20 bg-[url('/footerBackground.jpg')] bg-cover bg-center bg-no-repeat flex flex-col items-center"
+					className="w-full max-w-3xl mx-auto p-16 rounded-[2.5rem] shadow-2xl border-2 border-white/20 bg-[url('/product/Drain/background/uShapedDrainBg.jpg')] bg-cover bg-center bg-no-repeat flex flex-col items-center"
 					style={{
 						backgroundColor: "rgba(20,24,36,0.98)",
 						boxShadow: "0 16px 64px 0 #000c",
@@ -147,7 +147,7 @@ const Footer = () => (
 					Branch Offices
 				</h4>
 			</div>
-			{branches.map((branch, idx) => (
+			{branches.map((branch) => (
 				<div key={branch.city} className="flex items-start gap-4 group">
 					<span className="mt-1 text-2xl text-amber-400 group-hover:scale-110 group-hover:text-blue-400 transition-all animate-float">
 						<FaMapMarkerAlt />

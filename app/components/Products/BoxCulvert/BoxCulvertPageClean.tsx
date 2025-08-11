@@ -82,10 +82,10 @@ const BoxCulvertPageClean = () => {
           priority
         />
         <div className="absolute inset-0 bg-black/20" />
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-10 flex items-center h-full py-8">
+    <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-10 flex items-center h-full py-8 text-white [&_p]:text-white [&_h1]:text-white [&_h2]:text-white">
           <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 lg:gap-20">
             {/* Left: Text */}
-            <div className="w-full md:w-[42%] text-left text-white">
+      <div className="w-full md:w-[42%] text-left">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white uppercase tracking-wide">LOOKS STRONG.</h2>
               <p className="mt-6 text-base md:text-lg text-white leading-relaxed">
                 To build strong and sustainable precast bridges, we designed them to comply with Indian loading conditions for
@@ -112,6 +112,18 @@ const BoxCulvertPageClean = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Full-Viewport Image Section */}
+      <section className="relative w-full h-screen overflow-hidden">
+        <Image
+          src="/Home/5p.png"
+          alt="Box Culvert showcase"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+        />
       </section>
 
       {/* Feature Details Section (alternating image/text) */}
