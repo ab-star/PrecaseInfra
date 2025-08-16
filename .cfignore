@@ -1,0 +1,13 @@
+# Exclude Next.js build cache and other large/dev-only directories from Cloudflare Pages upload
+.next/cache/
+.next/server/app/**/*.js.map
+node_modules/
+*.log
+*.tgz
+coverage/
+dist/
+tmp/
+**/.DS_Store
+
+# Keep the .vercel output produced by next-on-pages build
+!.vercel/output/**

@@ -1,13 +1,12 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
 
 interface Project { id: string; title: string; description: string; imgUrl1?: string; imgUrl2?: string; imgUrl3?: string; }
 
 export default function ProjectsAdminPage(){
-  const router = useRouter();
   const [projects,setProjects] = useState<Project[]>([]);
   const [title,setTitle] = useState('');
   const [description,setDescription] = useState('');
@@ -15,8 +14,8 @@ export default function ProjectsAdminPage(){
   const [saving,setSaving] = useState(false);
   const [error,setError] = useState<string|null>(null);
 
-  useEffect(()=>{ if(!sessionStorage.getItem('adminUser')) router.push('/admin/login'); },[router]);
-  useEffect(()=>{ (async()=>{ const snap = await getDocs(collection(db,'projects')); setProjects(snap.docs.map(d=>({ id:d.id, ...(d.data() as any) }))); })(); },[]);
+  // Auth protection enforced via middleware + cookie.
+  useEffect(()=>{ (async()=>{ const snap = await getDocs(collection(db,'projects')); setProjects(snap.docs.map(d=>{ const data = d.data() as Omit<Project,'id'>; return { id:d.id, ...data }; })); })(); },[]);
 
   async function createProject(){
     if(!title.trim()) return;
@@ -33,7 +32,7 @@ export default function ProjectsAdminPage(){
       const ref = await addDoc(collection(db,'projects'), { title, description, imgUrl1: urls[0]||undefined, imgUrl2: urls[1]||undefined, imgUrl3: urls[2]||undefined });
       setProjects(prev=>[{ id: ref.id, title, description, imgUrl1: urls[0]||undefined, imgUrl2: urls[1]||undefined, imgUrl3: urls[2]||undefined }, ...prev]);
       setTitle(''); setDescription(''); setFiles([null,null,null]);
-    } catch(e:any){ setError(e.message||'Save failed'); }
+  } catch(e){ const msg = e instanceof Error ? e.message : 'Save failed'; setError(msg); }
     finally { setSaving(false); }
   }
 
@@ -66,7 +65,11 @@ export default function ProjectsAdminPage(){
             <h4 className="font-semibold">{p.title}</h4>
             <p className="text-xs text-gray-600 mb-2">{p.description}</p>
             <div className="flex gap-2">
-              {[p.imgUrl1,p.imgUrl2,p.imgUrl3].filter(Boolean).map((u,i)=>(<img key={i} src={u} className="w-16 h-16 object-cover rounded" />))}
+              {[p.imgUrl1,p.imgUrl2,p.imgUrl3].filter(Boolean).map((u,i)=>(
+                <div key={i} className="relative w-16 h-16">
+                  <Image src={u as string} alt={p.title + ' image ' + (i+1)} fill className="object-cover rounded" sizes="64px" />
+                </div>
+              ))}
             </div>
             <div className="mt-2 flex gap-2">
               <button onClick={()=>deleteProject(p.id)} className="text-xs text-red-600 hover:underline">Delete</button>

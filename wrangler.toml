@@ -1,3 +1,10 @@
 name = "infrastire"
 compatibility_date = "2024-09-23"
-compatibility_flags = ["nodejs_compat", "nodejs_compat_populate_process_env"]
+compatibility_flags = ["nodejs_compat"]
+
+# Cloudflare Pages specific: tell Wrangler where the built assets are
+pages_build_output_dir = ".vercel/output/static"
+
+# Use [vars] section for environment variables if desired (secrets via dashboard or wrangler secret)
+# [vars]
+# EXAMPLE_PUBLIC_VAR = "value"

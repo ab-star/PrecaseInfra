@@ -1,20 +1,18 @@
 "use client";
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { collection, addDoc, getDocs, orderBy, query, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
 
 interface GalleryItem { id: string; imageUrl: string; createdAt?: Date }
 
 export default function GalleryAdminPage() {
-  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => { if (!sessionStorage.getItem('adminUser')) router.push('/admin/login'); }, [router]);
+  // Auth handled by middleware + httpOnly cookie; optional client fallback could be added.
 
   const publicBase = process.env.NEXT_PUBLIC_R2_BASE || process.env.R2_PUBLIC_BASE_URL || '';
 
