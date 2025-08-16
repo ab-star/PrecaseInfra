@@ -1,14 +1,13 @@
 // components/PrecastBoxCulverts.jsx
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 
 const PrecastBoxCulverts = () => {
   const [rotation, setRotation] = useState({ x: -15, y: 30 });
   const [isHovered, setIsHovered] = useState(false);
-  const [activePart, setActivePart] = useState(null);
+  const [activePart, setActivePart] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
-  const modelRef = useRef(null);
+  const modelRef = useRef<HTMLDivElement | null>(null);
   
   // Culvert parts data
   const culvertParts = [
@@ -87,7 +86,7 @@ const PrecastBoxCulverts = () => {
   ];
   
   // Handle mouse movement for 3D rotation
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!modelRef.current) return;
     
     const rect = modelRef.current.getBoundingClientRect();
@@ -112,7 +111,7 @@ const PrecastBoxCulverts = () => {
   
   // Reset rotation when not hovering
   useEffect(() => {
-    let timeout;
+  let timeout: ReturnType<typeof setTimeout> | undefined;
     if (!isHovered) {
       timeout = setTimeout(() => {
         setRotation({ x: -15, y: 30 });

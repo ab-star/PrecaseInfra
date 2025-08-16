@@ -1,11 +1,11 @@
 // components/ConcreteBoxModel.jsx
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, OrbitControls, useTexture } from '@react-three/drei';
 
 const ConcreteBox = () => {
-  const boxRef = useRef();
+  const boxRef = useRef<THREE.Mesh>(null);
   const concreteTexture = useTexture('/concrete_texture.jpg');
   
   // Configure concrete material
@@ -19,9 +19,10 @@ const ConcreteBox = () => {
   
   // Rotate box slowly
   useFrame(({ clock }) => {
-    if (boxRef.current) {
-      boxRef.current.rotation.y = clock.getElapsedTime() * 0.2;
-      boxRef.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.5) * 0.1;
+    const mesh = boxRef.current;
+    if (mesh) {
+      mesh.rotation.y = clock.getElapsedTime() * 0.2;
+      mesh.rotation.x = Math.sin(clock.getElapsedTime() * 0.5) * 0.1;
     }
   });
 

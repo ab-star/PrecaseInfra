@@ -23,7 +23,7 @@ const MainHeader = () => {
       {/* Background image */}
       <div  className="absolute inset-0 w-full h-full overflow-hidden">
         <Image
-          src="/navBg.jpg"
+          src="/navBgUt.jpg"
           alt="Concrete background"
           layout="fill"
           objectFit="cover"
@@ -102,6 +102,10 @@ const MainHeader = () => {
 
           <Link href="/aboutus" className="text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide">
             ABOUT US
+          </Link>
+          
+          <Link href="/gallery" className="text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide">
+            GALLERY
           </Link>
         </nav>
         

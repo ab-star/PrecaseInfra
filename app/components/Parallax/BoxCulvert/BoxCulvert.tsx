@@ -5,11 +5,11 @@ import "./BoxCulvert.css"
 const ScrollImageTransition = () => {
   const [currentImage, setCurrentImage] = useState(1);
   const [isLocked, setIsLocked] = useState(false);
-  const componentRef = useRef(null);
-  const touchStartY = useRef(0);
-  const scrollCount = useRef(0);
+  const componentRef = useRef<HTMLDivElement | null>(null);
+  const touchStartY = useRef<number>(0);
+  const scrollCount = useRef<number>(0);
   const SCROLLS_PER_TRANSITION = 3;
-  const scrollTimeout = useRef(null);
+  // removed unused scrollTimeout
 
   // More tolerant viewport check
   const isInViewport = useCallback((threshold = 0.5) => {
@@ -22,10 +22,10 @@ const ScrollImageTransition = () => {
   }, []);
 
   // Handle scroll direction and image transitions
-  const handleScroll = useCallback((e) => {
+  const handleScroll = useCallback((e: WheelEvent) => {
     if (!isInViewport()) return;
 
-    const delta = e.deltaY || e.detail || -e.wheelDelta;
+  const delta = e.deltaY;
     const isScrollingDown = delta > 0;
 
     // If we're at the boundaries, allow natural scroll
@@ -49,12 +49,12 @@ const ScrollImageTransition = () => {
   }, [currentImage, isInViewport, isLocked]);
 
   // Enhanced touch handling
-  const handleTouchStart = useCallback((e) => {
+  const handleTouchStart = useCallback((e: TouchEvent) => {
     if (!isInViewport()) return;
     touchStartY.current = e.touches[0].clientY;
   }, [isInViewport]);
 
-  const handleTouchMove = useCallback((e) => {
+  const handleTouchMove = useCallback((e: TouchEvent) => {
     if (!isInViewport()) return;
     
     const touchY = e.touches[0].clientY;

@@ -11,11 +11,8 @@ const GLB_2 = "/product/Drain/glb/UShapeDrainT6.glb";
 const GLB_3 = "/product/Drain/glb/UShapeDrainT25.glb";
 
 // Preload models
-// @ts-expect-error useGLTF exposes a static preload helper at runtime
 useGLTF.preload?.(GLB_1);
-// @ts-expect-error useGLTF exposes a static preload helper at runtime
 useGLTF.preload?.(GLB_2);
-// @ts-expect-error useGLTF exposes a static preload helper at runtime
 useGLTF.preload?.(GLB_3);
 
 function DrainModel({ path, scale = 1.5 }: { path: string; scale?: number }) {

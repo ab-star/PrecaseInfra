@@ -37,9 +37,7 @@ const IndiaMapSection = () => {
         margin: 0,
         boxShadow: '0 8px 32px 0 #8886',
         borderRadius: 0,
-        overflow: 'hidden',
-        paddingTop: '25rem',
-        paddingBottom: "30rem"
+  overflow: 'hidden'
       }}
     >
       <div

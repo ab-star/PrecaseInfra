@@ -1,14 +1,14 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, OrbitControls, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
 const BoxCulvert = () => {
-  const boxRef = useRef();
+  const boxRef = useRef<THREE.Mesh>(null);
   const texture = useTexture('/concrete-texture.jpg');
   
   useFrame(() => {
-    boxRef.current.rotation.y += 0.005;
+    if (boxRef.current) boxRef.current.rotation.y += 0.005;
   });
 
   return (

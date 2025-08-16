@@ -51,7 +51,7 @@ const FujiSilvertechLanding = () => {
       <div className="absolute inset-0 z-0 transition-all duration-[1600ms] ease-[cubic-bezier(.4,0,.2,1)]" style={{
         backgroundImage: hoveredSector !== null && typeof hoveredSector === 'number'
           ? `url(${sectors[hoveredSector].bgImage})`
-          : `url(/HomeTransition/MainBackground.jpeg)`,
+          : `url(/HomeTransition/MainBackground.png)`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
