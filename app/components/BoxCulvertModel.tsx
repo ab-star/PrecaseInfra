@@ -5,7 +5,7 @@ import * as THREE from 'three';
 
 const BoxCulvert = () => {
   const boxRef = useRef<THREE.Mesh>(null);
-  const texture = useTexture('/concrete-texture.jpg');
+  const texture = useTexture('/concrete-texture.webp');
   
   useFrame(() => {
     if (boxRef.current) boxRef.current.rotation.y += 0.005;

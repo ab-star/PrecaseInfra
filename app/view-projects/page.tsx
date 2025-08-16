@@ -56,7 +56,7 @@ export default function ViewProjectsPage() {
   const variants = { enterLeft:{opacity:0,x:-90,y:-20}, enterRight:{opacity:0,x:90,y:-20}, enterTop:{opacity:0,y:-120}, visible:{opacity:1,x:0,y:0} };
 
   return (
-    <div className="min-h-screen bg-[url('/concrete_texture.jpg')] bg-fixed bg-cover bg-center relative">
+  <div className="min-h-screen bg-[url('/concrete_texture.webp'),_url('/concrete_texture.jpg')] bg-fixed bg-cover bg-center relative">
       <div className="absolute inset-0 bg-slate-900/90" />
       <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-24">
         <div className="bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl mb-12">

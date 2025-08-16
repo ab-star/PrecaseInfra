@@ -35,7 +35,7 @@ const sectors = [
 const SectorsShowcase = () => (
   <section
     className="w-full pt-[36px] pb-[20px] px-2 sm:px-8 md:px-16 xl:px-32 flex flex-col justify-start items-center min-h-[700px]"
-    style={{ background: "url('/concrete4.jpg') center/cover, #181818" }}
+  style={{ background: "url('/concrete4.webp') center/cover, #181818" }}
   >
     <h2 className="text-4xl font-bold mb-16 text-gray-800 text-center w-full" style={{paddingTop: "4rem" , paddingBottom: "4rem"}}>
       <span className="border-b-4 border-blue-600 pb-1 pr-2">Sectors Catered</span>
@@ -55,7 +55,7 @@ const SectorsShowcase = () => (
             whileHover={{ scale: 1.08, rotate: 2, boxShadow: "0 32px 64px -12px #0006" }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, delay: i * 0.15, type: "spring", stiffness: 60 }}
-            style={{ perspective: 1000, background: "url('/tiles.jpg') center/cover, #1e293b" }}
+            style={{ perspective: 1000, background: "url('/tiles.webp') center/cover, #1e293b" }}
           >
             <div className="flex flex-col items-center gap-4 mb-6 w-full">
               <span className="flex items-center justify-center">

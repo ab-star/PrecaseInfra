@@ -23,7 +23,7 @@ const tilePositions = [
 ];
 
 const FutureReadyAnimated = () => (
-  <motion.section className="w-full min-h-[700px] py-32 px-6 md:px-20 flex items-center justify-center" style={{ background: "url('/concrete3.jpg') center/cover, #222" }}
+  <motion.section className="w-full min-h-[700px] py-32 px-6 md:px-20 flex items-center justify-center" style={{ background: "url('/concrete3.webp'), url('/concrete3.jpg') center/cover, #222" }}
     initial={{ opacity: 0, y: 80 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8, type: "spring", stiffness: 60 }}
@@ -50,7 +50,7 @@ const FutureReadyAnimated = () => (
               top: 0,
               width: 400,
               minHeight: 100,
-              background: "url('/concrete_texture.jpg') center/cover, #e0e0e0",
+              background: "url('/concrete_texture.webp'), url('/concrete_texture.jpg') center/cover, #e0e0e0",
               boxShadow: "0 12px 36px 0 #0008",
               borderRadius: 16,
               display: "flex",

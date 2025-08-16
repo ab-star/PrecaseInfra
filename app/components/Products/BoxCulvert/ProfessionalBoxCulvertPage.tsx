@@ -35,12 +35,12 @@ import Image from 'next/image';
 
 // Scroll-Locked Image Transition Component
 const transitionImages = [
-  '/product/BoxCulvertProduct/transition/1.png',
-  '/product/BoxCulvertProduct/transition/2.png',
-  '/product/BoxCulvertProduct/transition/3.png',
-  '/product/BoxCulvertProduct/transition/4.png',
-  '/product/BoxCulvertProduct/transition/5.png',
-  '/product/BoxCulvertProduct/transition/6.png',
+  '/product/BoxCulvertProduct/transition/1.webp',
+  '/product/BoxCulvertProduct/transition/2.webp',
+  '/product/BoxCulvertProduct/transition/3.webp',
+  '/product/BoxCulvertProduct/transition/4.webp',
+  '/product/BoxCulvertProduct/transition/5.webp',
+  '/product/BoxCulvertProduct/transition/6.webp',
 ];
 
 function ScrollLockedImageTransition() {
@@ -261,7 +261,7 @@ const ProfessionalBoxCulvertPage = () => {
           </ul>
         </div>
         <div className="flex-1 flex items-center justify-center h-full p-8">
-          <Image src="/product/BoxCulvertProduct/strong/strong.png" alt="Box Culvert Strength" width={600} height={600} className="object-contain rounded-xl shadow-2xl max-h-[70vh]" />
+          <Image src="/product/BoxCulvertProduct/strong/strong.webp" alt="Box Culvert Strength" width={600} height={600} className="object-contain rounded-xl shadow-2xl max-h-[70vh]" />
         </div>
       </section>
 
@@ -276,9 +276,9 @@ const ProfessionalBoxCulvertPage = () => {
         <h2 className="text-4xl md:text-5xl font-bold mb-8 text-yellow-400 text-center">Project Gallery</h2>
         <p className="text-lg max-w-2xl mb-10 text-center text-blue-100">See our Box Culverts in action across major infrastructure projects. Built for reliability, trusted by industry leaders.</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
-          <Image src="/product/BoxCulvertProduct/gallery/1.jpg" alt="Project 1" width={400} height={300} className="rounded-lg shadow-lg object-cover w-full h-64" />
-          <Image src="/product/BoxCulvertProduct/gallery/2.jpg" alt="Project 2" width={400} height={300} className="rounded-lg shadow-lg object-cover w-full h-64" />
-          <Image src="/product/BoxCulvertProduct/gallery/3.jpg" alt="Project 3" width={400} height={300} className="rounded-lg shadow-lg object-cover w-full h-64" />
+          <Image src="/product/BoxCulvertProduct/gallery/1.webp" alt="Project 1" width={400} height={300} className="rounded-lg shadow-lg object-cover w-full h-64" />
+          <Image src="/product/BoxCulvertProduct/gallery/2.webp" alt="Project 2" width={400} height={300} className="rounded-lg shadow-lg object-cover w-full h-64" />
+          <Image src="/product/BoxCulvertProduct/gallery/3.webp" alt="Project 3" width={400} height={300} className="rounded-lg shadow-lg object-cover w-full h-64" />
         </div>
       </section>
 

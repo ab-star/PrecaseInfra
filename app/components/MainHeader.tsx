@@ -23,7 +23,7 @@ const MainHeader = () => {
       {/* Background image */}
       <div  className="absolute inset-0 w-full h-full overflow-hidden">
         <Image
-          src="/navBgUt.jpg"
+          src="/navBgUt.webp"
           alt="Concrete background"
           layout="fill"
           objectFit="cover"

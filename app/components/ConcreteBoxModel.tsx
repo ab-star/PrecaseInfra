@@ -6,7 +6,7 @@ import { Environment, OrbitControls, useTexture } from '@react-three/drei';
 
 const ConcreteBox = () => {
   const boxRef = useRef<THREE.Mesh>(null);
-  const concreteTexture = useTexture('/concrete_texture.jpg');
+  const concreteTexture = useTexture('/concrete_texture.webp');
   
   // Configure concrete material
   const material = new THREE.MeshStandardMaterial({

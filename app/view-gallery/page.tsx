@@ -73,7 +73,7 @@ export default function ViewGalleryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[url('/concrete_texture.jpg')] bg-fixed bg-cover bg-center relative">
+  <div className="min-h-screen bg-[url('/concrete_texture.webp'),_url('/concrete_texture.jpg')] bg-fixed bg-cover bg-center relative">
       <div className="absolute inset-0 bg-slate-900/85 backdrop-blur-[2px]" />
       <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-24">
         {/* Intro */}

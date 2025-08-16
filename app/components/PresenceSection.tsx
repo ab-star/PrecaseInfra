@@ -6,7 +6,7 @@ const PresenceSection = () => {
     className="w-full flex items-center justify-center py-32 px-4 md:px-12 relative"
       style={{
         minHeight: "520px",
-        backgroundImage: "url(/concrete1.jpg)",
+  backgroundImage: "url(/concrete1.webp)",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -29,7 +29,7 @@ const PresenceSection = () => {
         {/* Right: Indian Map */}
         <div className="flex-1 flex items-center justify-end">
           <img
-            src="/indianMap.png"
+            src="/Home/IndiaMap.webp"
             alt="India Map"
             className="w-full max-w-md h-auto rounded-2xl shadow-2xl border-4 border-white/80 bg-white/60"
             style={{ minWidth: "260px", maxHeight: "400px", padding: 12 }}

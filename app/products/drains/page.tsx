@@ -80,7 +80,7 @@ export default function DrainsPage() {
       </section>
 
       {/* Section 2: Interactive 3D Models with Alternating Text */}
-      <section style={{background: "url(/product/Drain/background/uShapedDrainBg.jpg)" , padding: "5rem 0"}} className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50" >
+  <section style={{background: "url(/product/Drain/background/uShapedDrainBg.webp)" , padding: "5rem 0"}} className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50" >
         <div className="w-full py-5">
           <div className="flex flex-col items-center gap-8 md:gap-10">
               {models.map((m, index) => (
@@ -90,7 +90,7 @@ export default function DrainsPage() {
                       >
                         <div
                           className="relative w-full md:w-[68%] h-[360px] md:h-[480px] rounded-lg overflow-hidden bg-center bg-cover"
-                          style={{ backgroundImage: `url(/product/Drain/background/${(index % 3) + 1}.jpg)` }}
+                          style={{ backgroundImage: `url(/product/Drain/background/${(index % 3) + 1}.webp)` }}
                         >
                           <ModelCanvas path={m.path} scale={m.scale} />
                         </div>
@@ -106,7 +106,7 @@ export default function DrainsPage() {
       {/* Full-viewport image between 3D models and specs */}
       <section className="relative w-full h-screen overflow-hidden">
         <Image
-          src="/Home/2P.png"
+          src="/Home/2P.webp"
           alt="Drain systems showcase"
           fill
           priority
@@ -122,7 +122,7 @@ export default function DrainsPage() {
           {/* Row: FT Flume */}
           <article style={{marginBottom: "5rem"}} className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
             <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
-              <Image src="/product/Drain/images/FtFlume.png" alt="FT Flume" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" priority />
+              <Image src="/product/Drain/images/FtFlume.webp" alt="FT Flume" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" priority />
             </div>
             <div className="flex-1 w-full">
               <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">FT <span className="text-blue-600">Flume</span></h3>
@@ -139,7 +139,7 @@ export default function DrainsPage() {
           {/* Row: U Shape Drain T6 */}
           <article style={{marginBottom: "5rem"}} className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
             <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
-              <Image src="/product/Drain/images/UShapeDrainT6.png" alt="U Shape Drain T6" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
+              <Image src="/product/Drain/images/UShapeDrainT6.webp" alt="U Shape Drain T6" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
             </div>
             <div className="flex-1 w-full">
               <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">U Shape Drain <span className="text-blue-600">T6</span></h3>
@@ -156,7 +156,7 @@ export default function DrainsPage() {
           {/* Row: U Shape Drain T25 */}
           <article style={{marginBottom: "5rem"}} className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
             <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
-              <Image src="/product/Drain/images/UshapeDrainT25.png" alt="U Shape Drain T25" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
+              <Image src="/product/Drain/images/UshapeDrainT25.webp" alt="U Shape Drain T25" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
             </div>
             <div className="flex-1 w-full">
               <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">U Shape Drain <span className="text-blue-600">T25</span></h3>
