@@ -74,7 +74,7 @@ export default function AdminLoginPage() {
             {loading ? 'Logging in...' : 'Login'}
           </button>
           <div className="text-center mt-2">
-            <button type="button" className="text-[11px] text-gray-500 hover:text-gray-700">Forgot password?</button>
+            <button type="button" className="text-[11px] text-gray-500 hover:text-gray-700">Forgot password please choose this option?</button>
           </div>
         </form>
       </div>
