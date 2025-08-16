@@ -107,6 +107,12 @@ const MainHeader = () => {
           <Link href="/gallery" className="text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide">
             GALLERY
           </Link>
+          <Link href="/view-gallery" className="text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide">
+            VIEW GALLERY
+          </Link>
+          <Link href="/view-projects" className="text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide">
+            VIEW PROJECTS
+          </Link>
         </nav>
         
         {/* Mobile menu button */}
