@@ -115,9 +115,9 @@ const BoxCulvertPageClean = () => {
       </section>
 
       {/* Extra Video Section (R2 sequence 2) */}
-      <section className="relative w-full h-[70vh] overflow-hidden">
+    <section className="relative w-screen bg-black left-1/2 right-1/2 -mx-[50vw]">
         <video
-          className="absolute inset-0 w-full h-full object-cover"
+      className="w-screen h-auto block object-contain object-top"
           src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxDrainTruckVideo2.mp4"
           autoPlay
           muted
@@ -127,7 +127,7 @@ const BoxCulvertPageClean = () => {
       </section>
 
       {/* Full-Viewport Image Section */}
-      <section className="relative w-full h-screen overflow-hidden">
+      {/* <section className="relative w-full h-screen overflow-hidden">
         <Image
           src="/Home/5p.png"
           alt="Box Culvert showcase"
@@ -136,7 +136,7 @@ const BoxCulvertPageClean = () => {
           className="object-cover"
           priority
         />
-      </section>
+      </section> */}
 
       {/* Feature Details Section (alternating image/text) */}
       <AlternatingFeatures />

@@ -51,10 +51,11 @@ const FujiSilvertechLanding = () => {
       <div className="absolute inset-0 z-0 transition-all duration-[1600ms] ease-[cubic-bezier(.4,0,.2,1)]" style={{
         backgroundImage: hoveredSector !== null && typeof hoveredSector === 'number'
           ? `url(${sectors[hoveredSector].bgImage})`
-          : `url(/HomeTransition/MainBackground.png)`,
+          : `url(/HomeTransition/MainBackground.jpg)`,
         backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
+  backgroundPosition: 'center center',
+  backgroundSize: '100% auto',
+        backgroundColor: '#000',
         transition: 'background-image 1.2s cubic-bezier(.4,0,.2,1)'
       }} />
       
@@ -81,6 +82,7 @@ const FujiSilvertechLanding = () => {
             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-full flex flex-col items-center">
               <span
                 className={`text-center transition-all duration-300 text-white text-base sm:text-lg md:text-xl font-semibold ${hoveredSector === index ? 'drop-shadow-[0_0_16px_rgba(255,255,255,0.85)] scale-110' : 'drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]'}`}
+                style={{ color: '#fff' }}
               >
                 {sector.name}
               </span>

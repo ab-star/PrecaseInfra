@@ -1,8 +1,10 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 const IndiaMapSection = () => {
   const textRef = useRef<HTMLDivElement>(null);
+  const [sectionHeight, setSectionHeight] = useState<number | null>(null);
+  const imgRatioRef = useRef<number | null>(null); // width / height
   useEffect(() => {
     if (typeof window !== 'undefined') {
       import('gsap').then(gsapModule => {
@@ -22,19 +24,50 @@ const IndiaMapSection = () => {
     }
   }, []);
 
+  // Ensure full image is visible at 100% viewport width without bottom cutoff
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const img = new Image();
+    img.src = '/Home/IndiaMap.jpg';
+    const updateHeight = () => {
+      if (!imgRatioRef.current) return;
+      const vw = window.innerWidth;
+      const paddingV = 0.08 * vw; // 4vw top + 4vw bottom
+      const imgDisplayHeight = vw / imgRatioRef.current; // height of the background image at 100% width
+      // Set content height so that total section height (content + padding) equals the image height
+  const h = Math.max(Math.ceil(imgDisplayHeight - paddingV), 0);
+      setSectionHeight(h);
+    };
+    const onLoad = () => {
+      if (img.naturalWidth && img.naturalHeight) {
+        imgRatioRef.current = img.naturalWidth / img.naturalHeight;
+        updateHeight();
+      }
+    };
+    if (img.complete) {
+      onLoad();
+    } else {
+      img.onload = onLoad;
+    }
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
   return (
     <section
-      style={{
-        width: '100%',
-  minHeight: 560,
-  height: 'auto',
-  background: `url('/Home/IndiaMap.jpg') center/cover no-repeat`,
-  paddingTop: '3vw',
-  paddingBottom: '3vw',
+    style={{
+    width: '100vw',
+    marginLeft: 'calc(50% - 50vw)',
+    marginRight: 'calc(50% - 50vw)',
+  height: sectionHeight ?? 'auto',
+  background: `url('/Home/IndiaMap.jpg') center top / 100% auto no-repeat`,
+  backgroundColor: 'transparent',
+  paddingTop: '4vw',
+  paddingBottom: '4vw',
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
-        margin: 0,
         boxShadow: '0 8px 32px 0 #8886',
         borderRadius: 0,
   overflow: 'hidden'

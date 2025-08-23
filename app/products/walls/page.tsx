@@ -70,30 +70,29 @@ export default function WallsPage() {
         </div>
       </section>
 
-      {/* Section 3: Secondary Video - Increased height and spacing */}
-      <section className="relative w-full min-h-screen pt-32 pb-20 md:pt-40 md:pb-24 flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 w-full h-full">
-          <video 
-            className="w-full h-full object-cover" 
-            src={MID_VIDEO} 
-            autoPlay 
-            muted 
-            loop 
-            playsInline 
-          />
-        </div>
-        <div className="relative z-10 w-full max-w-5xl h-[80vh] mx-auto px-4">
-          {/* Optional content container */}
-        </div>
+      {/* Section 3: Secondary Video - full-bleed, full width, no cropping */}
+     
+      <section className="relative w-screen overflow-hidden bg-black ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
+        <video className="block w-screen h-auto object-contain" src={EXTRA_VIDEO} autoPlay muted loop playsInline />
       </section>
+     
 
-      {/* Section 3b: Extra video if present */}
-      <section className="relative w-full h-[70vh] overflow-hidden">
-        <video className="absolute inset-0 w-full h-full object-cover" src={EXTRA_VIDEO} autoPlay muted loop playsInline />
-      </section>
+
+      {/* Section 3b: Extra video if present - full-bleed, full width, no cropping */}
 
       {/* Section 4: Alternating Features */}
       <AlternatingFeaturesWalls />
+
+            <section className="relative w-screen overflow-hidden bg-black ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] pt-32 pb-20 md:pt-40 md:pb-24">
+        <video 
+          className="block w-screen h-auto object-contain"
+          src={MID_VIDEO} 
+          autoPlay 
+          muted 
+          loop 
+          playsInline 
+        />
+      </section>
     </div>
   );
 }

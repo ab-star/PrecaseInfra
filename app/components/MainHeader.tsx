@@ -2,10 +2,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const MainHeader = () => {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -17,6 +19,32 @@ const MainHeader = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Prefetch common routes on mount for snappier navigation
+  useEffect(() => {
+    const routes = [
+      "/",
+      "/aboutus",
+      "/gallery",
+      "/view-gallery",
+      "/view-projects",
+      "/products/box-culvert",
+      "/products/drains",
+      "/products/walls",
+    ];
+    routes.forEach((r) => router.prefetch(r));
+  }, [router]);
+
+  // Prefetch product routes when dropdown opens
+  useEffect(() => {
+    if (isProductsOpen) {
+      [
+        "/products/box-culvert",
+        "/products/drains",
+        "/products/walls",
+      ].forEach((r) => router.prefetch(r));
+    }
+  }, [isProductsOpen, router]);
 
   return (
     <header style={{ padding: '0px 3rem' }} className="relative w-full h-28 bg-gray-900 overflow-visible"> {/* Changed to overflow-visible */}
@@ -54,17 +82,18 @@ const MainHeader = () => {
         
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-x-6 lg:gap-x-8 pr-4 sm:pr-6 relative">
-          <Link href="/" className="text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide">
+          <Link href="/" onMouseEnter={() => router.prefetch('/')} onFocus={() => router.prefetch('/')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
             HOME
           </Link>
           
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsProductsOpen(!isProductsOpen)}
-              className="flex items-center text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide"
+              className="flex items-center text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal"
+              style={{ fontSize: '14px', fontWeight: 500 }}
             >
               PRODUCTS
-              <svg className={`ml-2 h-5 w-5 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`}>
+              <svg className={`ml-2 h-4 w-4 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`}>
                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             </button>
@@ -74,21 +103,21 @@ const MainHeader = () => {
               isProductsOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
             }`}>
               <div className="py-1 border-t-2 border-amber-500">
-                <Link href="/products/box-culvert" className="flex items-center px-6 py-3 text-gray-800 hover:bg-amber-50 hover:text-amber-600 group">
+                <Link href="/products/box-culvert" prefetch onClick={() => setIsProductsOpen(false)} className="flex items-center px-6 py-3 text-gray-800 hover:bg-amber-50 hover:text-amber-600 group">
                   <span className="mr-3 w-2 h-2 bg-amber-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   <span className="flex-1 font-medium">Box Culvert</span>
                   <svg className="w-4 h-4 text-gray-400 group-hover:text-amber-600" fill="none" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                   </svg>
                 </Link>
-                <Link href="/products/box-culvert" className="flex items-center px-6 py-3 text-gray-800 hover:bg-amber-50 hover:text-amber-600 group">
+                <Link href="/products/drains" prefetch onClick={() => setIsProductsOpen(false)} className="flex items-center px-6 py-3 text-gray-800 hover:bg-amber-50 hover:text-amber-600 group">
                   <span className="mr-3 w-2 h-2 bg-amber-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   <span className="flex-1 font-medium">Drains</span>
                   <svg className="w-4 h-4 text-gray-400 group-hover:text-amber-600" fill="none" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                   </svg>
                 </Link>
-                <Link href="/products/box-culvert" className="flex items-center px-6 py-3 text-gray-800 hover:bg-amber-50 hover:text-amber-600 group">
+                <Link href="/products/walls" prefetch onClick={() => setIsProductsOpen(false)} className="flex items-center px-6 py-3 text-gray-800 hover:bg-amber-50 hover:text-amber-600 group">
                   <span className="mr-3 w-2 h-2 bg-amber-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   <span className="flex-1 font-medium">Walls</span>
                   <svg className="w-4 h-4 text-gray-400 group-hover:text-amber-600" fill="none" stroke="currentColor">
@@ -100,17 +129,17 @@ const MainHeader = () => {
             </div>
           </div>
 
-          <Link href="/aboutus" className="text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide">
+          <Link href="/aboutus" onMouseEnter={() => router.prefetch('/aboutus')} onFocus={() => router.prefetch('/aboutus')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
             ABOUT US
           </Link>
           
-          <Link href="/gallery" className="text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide">
+          <Link href="/gallery" onMouseEnter={() => router.prefetch('/gallery')} onFocus={() => router.prefetch('/gallery')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
             GALLERY
           </Link>
-          <Link href="/view-gallery" className="text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide">
+          <Link href="/view-gallery" onMouseEnter={() => router.prefetch('/view-gallery')} onFocus={() => router.prefetch('/view-gallery')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
             VIEW GALLERY
           </Link>
-          <Link href="/view-projects" className="text-white hover:text-amber-300 transition-colors duration-300 text-lg font-semibold tracking-wide">
+          <Link href="/view-projects" onMouseEnter={() => router.prefetch('/view-projects')} onFocus={() => router.prefetch('/view-projects')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
             VIEW PROJECTS
           </Link>
         </nav>

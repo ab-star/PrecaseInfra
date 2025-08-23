@@ -104,7 +104,7 @@ export default function DrainsPage() {
       </section>
 
       {/* Full-viewport image between 3D models and specs */}
-      <section className="relative w-full h-screen overflow-hidden">
+      {/* <section className="relative w-full h-screen overflow-hidden">
         <Image
           src="/Home/2P.webp"
           alt="Drain systems showcase"
@@ -113,12 +113,12 @@ export default function DrainsPage() {
           sizes="100vw"
           className="object-cover"
         />
-      </section>
+      </section> */}
 
       {/* Additional Videos (R2) in sequence */}
-      <section className="relative w-full h-[70vh] overflow-hidden">
+      <section className="relative w-screen overflow-hidden bg-black ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
         <video
-          className="absolute inset-0 w-full h-full object-cover"
+      className="block w-screen h-auto object-contain"
           src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/TrainDrain2.mp4"
           autoPlay
           muted
@@ -126,16 +126,7 @@ export default function DrainsPage() {
           playsInline
         />
       </section>
-      <section className="relative w-full h-[70vh] overflow-hidden">
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/MountainDrain3.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
-      </section>
+
 
       {/* Section 3: Product Specifications */}
       <section className="w-full bg-white py-8 md:py-12">
@@ -192,6 +183,17 @@ export default function DrainsPage() {
             </div>
           </article>
         </div>
+      </section>
+
+          <section className="relative w-screen overflow-hidden bg-black ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
+        <video
+      className="block w-screen h-auto object-contain"
+          src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/MountainDrain3.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
       </section>
     </div>
   );
