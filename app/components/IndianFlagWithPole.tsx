@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useEffect } from "react";
+import Image from "next/image";
 
 const IndianFlagWithPole = () => {
   const textRef = useRef<HTMLDivElement>(null);
@@ -19,21 +20,23 @@ const IndianFlagWithPole = () => {
   }, []);
 
   return (
-    <div
-      className="flex flex-row items-center justify-start relative overflow-visible" // Changed to items-center
+  <div
+    className="flex flex-row flex-wrap items-center justify-start relative overflow-hidden" // wrap and clip to avoid overflow
       style={{
         width: "100%",
-        minHeight: "60rem",
+  minHeight: "auto",
         isolation: 'isolate',
         paddingLeft: '3.5rem',
+        paddingRight: '3.5rem',
+  paddingBottom: '2.5rem',
         marginRight: 'auto',
         boxShadow: "0 8px 32px 0 #8886, 0 0 0 4px #fff8 inset",
-        borderRadius: 18,
-        background: "url('/lightGreenGranite.jpg') center/cover, #f3f4f6"
+  borderRadius: 0,
+        background: "url('/bgFlag.jpg') center/cover, #f3f4f6"
       }}
     >
       {/* Flag and pole group */}
-      <div className="relative flex flex-col items-center" style={{ height: 600, zIndex: 2, alignItems: 'flex-start' }}>
+    <div className="relative flex flex-col items-center" style={{ height: 'auto', zIndex: 2, alignItems: 'flex-start', flex: '1 1 640px', maxWidth: '100%' }}>
         <div style={{ position: 'relative', height: 600, width: 32, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {/* Ball on top */}
           <div
@@ -44,7 +47,7 @@ const IndianFlagWithPole = () => {
               borderRadius: "50%",
               boxShadow: "0 2px 8px 0 #bfa76a99, 0 0 0 2px #bfa76a inset",
               position: "absolute",
-              top: "-8rem",
+              top: "3rem",
               left: '350%',
               transform: 'translateX(-50%)',
               zIndex: 60
@@ -54,7 +57,7 @@ const IndianFlagWithPole = () => {
           <div
             style={{
               position: 'absolute',
-              top: "-9rem",
+              top: "2rem",
               left: '7rem',
               transform: 'translateX(0)',
               width: 180,
@@ -64,9 +67,11 @@ const IndianFlagWithPole = () => {
               marginLeft: 8
             }}
           >
-            <img
+            <Image
               src="https://fujisilvertech.com/wp-content/themes/fujisilvertech/assets/img/indian-flag.gif"
               alt="Indian Flag"
+              width={180}
+              height={200}
               style={{
                 width: '100%',
                 height: '200px',
@@ -75,6 +80,7 @@ const IndianFlagWithPole = () => {
                 display: 'block'
               }}
               draggable={false}
+              priority
             />
           </div>
           {/* Steel pole, bottom flush with platform */}
@@ -89,13 +95,13 @@ const IndianFlagWithPole = () => {
               left: '350%',
               transform: 'translateX(-50%)',
               bottom: 0,
-              top: "-7rem",
+              top: "4rem",
               height: '35rem'
             }}
           />
         </div>
         {/* Platform for flag */}
-        <div style={{ position: 'relative', width: 'calc(min(80vw, 600px) + 20rem)', minWidth: 320, marginTop: 24, marginBottom: 8, zIndex: 10, display: 'flex', alignItems: 'flex-end', marginLeft: 0, left: 0 }}>
+  <div style={{ position: 'relative', width: 'min(80vw, 600px)', minWidth: 320, marginTop: 24, marginBottom: 0, zIndex: 10, display: 'flex', alignItems: 'flex-end', marginLeft: 0, left: 0 }}>
           <div
             className="flex flex-col justify-center items-center"
             style={{
@@ -115,14 +121,15 @@ const IndianFlagWithPole = () => {
         </div>
       </div>
       {/* Text section - now properly aligned */}
-      <div
+    <div
         ref={textRef}
         style={{
           opacity: 0,
           transform: 'translateX(120px) scale(1.04)',
           filter: 'blur(16px)',
-          marginLeft: 48,
-          width: 'calc(100% - (min(80vw, 600px) + 20rem) - 4.5rem)',
+      marginLeft: 32,
+      flex: '1 1 420px',
+      maxWidth: '100%',
           minWidth: 320,
           alignSelf: 'center', // Changed to center alignment
           paddingTop: 0, // Removed excessive padding
@@ -137,7 +144,7 @@ const IndianFlagWithPole = () => {
         </h2>
         <p style={{ fontSize: '1.18em', color: '#fff', width: '100%' }}>
           At <b>3gInfraTech</b>, we are not just constructing structures—we are shaping the dreams of a billion people. Our cutting-edge precast solutions, visionary engineering, and relentless pursuit of excellence are powering India&apos;s leap into a new era of smart cities, sustainable highways, and world-class infrastructure.<br /><br />
-          With every project, we strive to set new benchmarks in quality, safety, and sustainability. Our team is dedicated to delivering innovative solutions that not only meet today's needs but also anticipate tomorrow's challenges. From iconic bridges to vital water systems, we are committed to building a stronger, more resilient nation—one that stands tall for generations to come.
+          With every project, we strive to set new benchmarks in quality, safety, and sustainability. Our team is dedicated to delivering innovative solutions that not only meet today&apos;s needs but also anticipate tomorrow&apos;s challenges. From iconic bridges to vital water systems, we are committed to building a stronger, more resilient nation—one that stands tall for generations to come.
         </p>
       </div>
     </div>
