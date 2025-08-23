@@ -47,7 +47,7 @@ const MainHeader = () => {
   }, [isProductsOpen, router]);
 
   return (
-    <header style={{ padding: '0px 3rem' }} className="relative w-full h-28 bg-gray-900 overflow-visible"> {/* Changed to overflow-visible */}
+    <header style={{ padding: '0px 3rem' }} className="relative w-full h-28 bg-gray-900 overflow-visible z-[1200]"> {/* keep dropdown above page content */}
       {/* Background image */}
       <div  className="absolute inset-0 w-full h-full overflow-hidden">
         <Image
@@ -99,37 +99,25 @@ const MainHeader = () => {
             </button>
             
             {/* Dropdown positioned absolutely below header */}
-            <div className={`absolute left-0 top-full mt-0 w-64 bg-white rounded-b-lg shadow-xl transition-all duration-300 z-50 ${
+            <div className={`absolute right-0 top-full mt-0 w-64 max-w-[calc(100vw-1rem)] bg-emerald-600 text-white rounded-b-lg shadow-xl border border-emerald-700 transition-all duration-300 z-[1300] ${
               isProductsOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
             }`}>
-              <div className="py-1 border-t-2 border-amber-500">
-                <Link href="/products/box-culvert" prefetch onClick={() => setIsProductsOpen(false)} className="flex items-center px-6 py-3 text-gray-800 hover:bg-amber-50 hover:text-amber-600 group">
-                  <span className="mr-3 w-2 h-2 bg-amber-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  <span className="flex-1 font-medium">Box Culvert</span>
-                  <svg className="w-4 h-4 text-gray-400 group-hover:text-amber-600" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
+              <div className="py-3 px-3">
+                <Link href="/products/box-culvert" prefetch onClick={() => setIsProductsOpen(false)} className="flex w-full items-center rounded-md px-6 py-3 hover:bg-emerald-500 text-xs sm:text-sm">
+                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '12px' , padding: "0.7rem 1rem" }}>Box Culvert</span>
                 </Link>
-                <Link href="/products/drains" prefetch onClick={() => setIsProductsOpen(false)} className="flex items-center px-6 py-3 text-gray-800 hover:bg-amber-50 hover:text-amber-600 group">
-                  <span className="mr-3 w-2 h-2 bg-amber-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  <span className="flex-1 font-medium">Drains</span>
-                  <svg className="w-4 h-4 text-gray-400 group-hover:text-amber-600" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
+                <Link href="/products/drains" prefetch onClick={() => setIsProductsOpen(false)} className="flex w-full items-center rounded-md px-6 py-3 hover:bg-emerald-500 text-xs sm:text-sm">
+                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '12px' , padding: "0.7rem 1rem" }}>Drains</span>
                 </Link>
-                <Link href="/products/walls" prefetch onClick={() => setIsProductsOpen(false)} className="flex items-center px-6 py-3 text-gray-800 hover:bg-amber-50 hover:text-amber-600 group">
-                  <span className="mr-3 w-2 h-2 bg-amber-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  <span className="flex-1 font-medium">Walls</span>
-                  <svg className="w-4 h-4 text-gray-400 group-hover:text-amber-600" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
+                <Link href="/products/walls" prefetch onClick={() => setIsProductsOpen(false)} className="flex w-full items-center rounded-md px-6 py-3 hover:bg-emerald-500 text-xs sm:text-sm">
+                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '12px' , padding: "0.7rem 1rem" }}>Walls</span>
                 </Link>
                 {/* Other product links... */}
               </div>
             </div>
           </div>
 
-          <Link href="/aboutus" onMouseEnter={() => router.prefetch('/aboutus')} onFocus={() => router.prefetch('/aboutus')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
+          {/* <Link href="/aboutus" onMouseEnter={() => router.prefetch('/aboutus')} onFocus={() => router.prefetch('/aboutus')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
             ABOUT US
           </Link>
           
@@ -141,7 +129,7 @@ const MainHeader = () => {
           </Link>
           <Link href="/view-projects" onMouseEnter={() => router.prefetch('/view-projects')} onFocus={() => router.prefetch('/view-projects')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
             VIEW PROJECTS
-          </Link>
+          </Link> */}
         </nav>
         
         {/* Mobile menu button */}

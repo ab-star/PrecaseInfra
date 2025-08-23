@@ -160,6 +160,12 @@ body {
     color: var(--secondaryColor);
 }
 
+/* Prevent unwanted horizontal scrolling from full-bleed sections (100vw) */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .parallax-outer {
     overflow: hidden;
 }

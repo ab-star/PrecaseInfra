@@ -115,9 +115,24 @@ const BoxCulvertPageClean = () => {
       </section>
 
       {/* Extra Video Section (R2 sequence 2) */}
-    <section className="relative w-screen bg-black left-1/2 right-1/2 -mx-[50vw]">
+      <section
+        className="relative bg-black"
+        style={{
+          width: '100vw',
+          marginLeft: 'calc(50% - 50vw)',
+          marginRight: 'calc(50% - 50vw)',
+          // Prefer small viewport units to ignore scrollbar width when supported
+          // @ts-expect-error CSS var unit override for modern browsers
+          width: '100svw',
+          // @ts-expect-error modern units override
+          marginLeft: 'calc(50% - 50svw)',
+          // @ts-expect-error modern units override
+          marginRight: 'calc(50% - 50svw)',
+          overflowX: 'hidden',
+        }}
+      >
         <video
-      className="w-screen h-auto block object-contain object-top"
+          className="block w-full h-auto object-contain object-top"
           src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxDrainTruckVideo2.mp4"
           autoPlay
           muted
