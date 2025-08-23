@@ -59,7 +59,7 @@ export default function WallsPage() {
       <section className="relative w-full h-[70vh] md:h-screen overflow-hidden">
         <video className="absolute inset-0 w-full h-full object-cover" src={HERO_VIDEO} autoPlay muted loop playsInline />
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-          <h1 className="text-white text-4xl md:text-6xl font-extrabold">Walls</h1>
+          {/* <h1 className="text-white text-4xl md:text-6xl font-extrabold">Walls</h1> */}
         </div>
       </section>
 

@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Breadcrumbs from "./Breadcrumbs";
 
 const MainHeader = () => {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
@@ -64,10 +65,10 @@ const MainHeader = () => {
       <div className="absolute inset-0 bg-black/20"></div>
       
       {/* Main container */}
-      <div className="relative z-20 h-full mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 flex items-center justify-between">
+  <div className="relative z-20 h-full mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 flex items-center justify-between">
         
         {/* Logo */}
-        <div className="flex items-center pl-4 sm:pl-6">
+        <div className="flex items-center pl-4 sm:pl-6 gap-4 md:gap-6">
           <div className="rounded-full p-1 bg-white/10 backdrop-blur-sm border border-white/20">
             <Image 
               src="/brandIcon.jpeg" 
@@ -77,6 +78,10 @@ const MainHeader = () => {
               className="rounded-full border-2 border-white/80 shadow-lg"
               quality={100}
             />
+          </div>
+          {/* Header breadcrumbs */}
+          <div className="hidden md:block max-w-[40vw] truncate">
+            <Breadcrumbs variant="header" />
           </div>
         </div>
         
