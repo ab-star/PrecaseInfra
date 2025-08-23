@@ -82,7 +82,7 @@ const MainHeader = () => {
         
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-x-6 lg:gap-x-8 pr-4 sm:pr-6 relative">
-          <Link href="/" onMouseEnter={() => router.prefetch('/')} onFocus={() => router.prefetch('/')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
+          <Link href="/" onMouseEnter={() => router.prefetch('/')} onFocus={() => router.prefetch('/')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
             HOME
           </Link>
           
@@ -90,7 +90,7 @@ const MainHeader = () => {
             <button
               onClick={() => setIsProductsOpen(!isProductsOpen)}
               className="flex items-center text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal"
-              style={{ fontSize: '14px', fontWeight: 500 }}
+              style={{ fontSize: '16px', fontWeight: 500 }}
             >
               PRODUCTS
               <svg className={`ml-2 h-4 w-4 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`}>

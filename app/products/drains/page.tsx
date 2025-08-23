@@ -94,8 +94,8 @@ export default function DrainsPage() {
                         >
                           <ModelCanvas path={m.path} scale={m.scale} />
                         </div>
-                        <div className="w-full md:w-[32%] flex flex-col items-center text-center px-2 text-white" style={{color: "white !important"}}>
-                          <h3 className="text-xl md:text-2xl font-extrabold uppercas" style={{color: "white !important"}}>{m.title}</h3>
+                          <div className="w-full md:w-[32%] flex flex-col items-center text-center px-2 !text-white" style={{ color: '#fff' }}>
+                            <h3 className="text-xl md:text-2xl font-extrabold uppercase !text-white" style={{ color: '#fff' }}>{m.title}</h3>
                         </div>
                       </article>
                     ))}
