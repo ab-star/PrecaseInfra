@@ -84,7 +84,7 @@ const FinalHeroSection = () => {
           onLoadedData={handleVideoLoad}
           onError={handleVideoError}
         >
-          <source src="/box-culvert-hero.mp4" type="video/mp4" />
+          <source src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4" type="video/mp4" />
         </video>
       )}
 
@@ -145,7 +145,7 @@ const FinalHeroSection = () => {
           {/* Status Information */}
           <div className="text-sm text-gray-300 space-y-1">
             {videoStatus === 'fallback' && (
-              <p className="text-blue-400">📷 High-quality image mode - Click "Load Video" to switch to video</p>
+              <p className="text-blue-400">📷 High-quality image mode - Click &quot;Load Video&quot; to switch to video</p>
             )}
             {videoStatus === 'error' && (
               <p className="text-red-400">⚠ Video unavailable - Check your connection and try again</p>

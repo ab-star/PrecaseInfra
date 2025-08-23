@@ -40,11 +40,11 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 const BoxCulvertPageClean = () => {
   return (
     <div className="bg-white">
-      {/* Hero Video Section */}
+    {/* Hero Video Section (R2) */}
       <section className="relative w-full h-screen overflow-hidden">
         <video
           className="absolute inset-0 w-full h-full object-cover"
-          src="/product/BoxCulvertProduct/video/box-video.mp4"
+      src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4"
           autoPlay
           muted
           loop
@@ -112,6 +112,18 @@ const BoxCulvertPageClean = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Extra Video Section (R2 sequence 2) */}
+      <section className="relative w-full h-[70vh] overflow-hidden">
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxDrainTruckVideo2.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
       </section>
 
       {/* Full-Viewport Image Section */}

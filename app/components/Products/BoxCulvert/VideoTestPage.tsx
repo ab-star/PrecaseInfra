@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Image from 'next/image';
 
 const VideoTestPage = () => {
   return (
@@ -17,7 +18,7 @@ const VideoTestPage = () => {
             loop
             preload="auto"
           >
-            <source src="/box-culvert-hero.mp4" type="video/mp4" />
+            <source src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <p className="mt-4 text-sm text-gray-600">
@@ -30,7 +31,7 @@ const VideoTestPage = () => {
           <h2 className="text-2xl font-bold mb-4">Direct Link Test</h2>
           <p className="mb-4">Test if the video file can be accessed directly:</p>
           <a 
-            href="/box-culvert-hero.mp4" 
+            href="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4" 
             target="_blank" 
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
@@ -41,11 +42,14 @@ const VideoTestPage = () => {
         {/* Fallback image test */}
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold mb-4">Fallback Image Test</h2>
-          <img 
-            src="/BoxCulvert/BoxIntro.jpeg" 
-            alt="Box Culvert"
-            className="w-full h-64 object-cover"
-          />
+          <div className="relative w-full h-64">
+            <Image 
+              src="/BoxCulvert/BoxIntro.jpeg" 
+              alt="Box Culvert"
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
       </div>
     </div>

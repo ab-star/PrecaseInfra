@@ -37,7 +37,7 @@ const TestVideoSection = () => {
             playsInline
             controls
           >
-            <source src="/box-culvert-hero.mp4" type="video/mp4" />
+            <source src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4" type="video/mp4" />
             <p>Your browser does not support the video tag.</p>
           </video>
         </div>

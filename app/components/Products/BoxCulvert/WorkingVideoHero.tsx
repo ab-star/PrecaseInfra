@@ -12,7 +12,7 @@ const WorkingVideoHero = () => {
         controls
         poster="/concreteBoxLegacy.jpg"
       >
-        <source src="/box-culvert-hero.mp4" type="video/mp4" />
+        <source src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 

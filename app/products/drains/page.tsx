@@ -67,11 +67,11 @@ export default function DrainsPage() {
 
   return (
     <div className="bg-white">
-      {/* Section 1: Fullscreen Video */}
+    {/* Section 1: Fullscreen Video (R2) */}
       <section className="relative w-full h-screen overflow-hidden">
         <video
           className="absolute inset-0 w-full h-full object-cover"
-          src="/product/Drain/video/video02.mp4"
+      src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/UShapeDrain1.mp4"
           autoPlay
           muted
           loop
@@ -112,6 +112,28 @@ export default function DrainsPage() {
           priority
           sizes="100vw"
           className="object-cover"
+        />
+      </section>
+
+      {/* Additional Videos (R2) in sequence */}
+      <section className="relative w-full h-[70vh] overflow-hidden">
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/TrainDrain2.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      </section>
+      <section className="relative w-full h-[70vh] overflow-hidden">
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/MountainDrain3.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
         />
       </section>
 

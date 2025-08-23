@@ -189,12 +189,12 @@ const ProfessionalBoxCulvertPage = () => {
 
   return (
     <div className="bg-white font-sans pt-28">
-      {/* Hero Section - Fullscreen Video */}
+    {/* Hero Section - Fullscreen Video (R2) */}
       <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-black bg-opacity-30 pointer-events-none" />
         <video
           className="absolute top-0 left-0 w-full h-full object-cover"
-          src="/product/BoxCulvertProduct/video/box-video.mp4"
+      src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4"
           autoPlay
           muted
           loop

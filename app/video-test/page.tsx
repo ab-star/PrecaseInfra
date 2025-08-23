@@ -9,7 +9,7 @@ export default function VideoTest() {
           muted
           loop
           controls
-          src="/box-culvert-hero.mp4"
+          src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4"
         >
           Video not supported
         </video>
