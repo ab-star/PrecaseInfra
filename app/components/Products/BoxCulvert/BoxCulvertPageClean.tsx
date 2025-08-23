@@ -86,13 +86,13 @@ const BoxCulvertPageClean = () => {
           <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 lg:gap-20">
             {/* Left: Text */}
       <div className="w-full md:w-[42%] text-left">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white uppercase tracking-wide">LOOKS STRONG.</h2>
-              <p className="mt-6 text-base md:text-lg text-white leading-relaxed">
+              <h2 style={{paddingBottom: "1.5rem"}} className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white uppercase tracking-wide">LOOKS STRONG.</h2>
+              <p className="mt-6 text-base md:text-lg !text-white leading-relaxed" style={{ color: '#fff' }}>
                 To build strong and sustainable precast bridges, we designed them to comply with Indian loading conditions for
                 Highways and Railways. We made it with high-performance self-compacting concrete as per Japanese
                 Industrial manufacturing standards.
               </p>
-              <p className="mt-4 text-base md:text-lg text-white leading-relaxed">
+              <p className="mt-4 text-base md:text-lg !text-white leading-relaxed" style={{ color: '#fff' }}>
                 Our reinforced concrete culverts deliver exceptional strength and durability even in the most challenging environments,
                 with precision engineering that ensures perfect alignment during installation.
               </p>

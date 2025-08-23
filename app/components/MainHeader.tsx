@@ -104,13 +104,13 @@ const MainHeader = () => {
             }`}>
               <div className="py-3 px-3">
                 <Link href="/products/box-culvert" prefetch onClick={() => setIsProductsOpen(false)} className="flex w-full items-center rounded-md px-6 py-3 hover:bg-emerald-500 text-xs sm:text-sm">
-                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '12px' , padding: "0.7rem 1rem" }}>Box Culvert</span>
+                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '16px' , padding: "0.7rem 1rem" }}>Box Culvert</span>
                 </Link>
                 <Link href="/products/drains" prefetch onClick={() => setIsProductsOpen(false)} className="flex w-full items-center rounded-md px-6 py-3 hover:bg-emerald-500 text-xs sm:text-sm">
-                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '12px' , padding: "0.7rem 1rem" }}>Drains</span>
+                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '16px' , padding: "0.7rem 1rem" }}>Drains</span>
                 </Link>
                 <Link href="/products/walls" prefetch onClick={() => setIsProductsOpen(false)} className="flex w-full items-center rounded-md px-6 py-3 hover:bg-emerald-500 text-xs sm:text-sm">
-                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '12px' , padding: "0.7rem 1rem" }}>Walls</span>
+                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '16px' , padding: "0.7rem 1rem" }}>Walls</span>
                 </Link>
                 {/* Other product links... */}
               </div>
