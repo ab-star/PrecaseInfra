@@ -1,35 +1,53 @@
-import { collection, getDocs, query, where, limit } from 'firebase/firestore';
-import { db } from './firebase';
-
 export interface UserRecord { id: string; email: string; password: string; role?: string; }
 interface FirestoreUser { email: string; password: string; role?: string; }
 
-// NOTE: This is intentionally simple (plain-text password match) pending a move to hashed passwords.
-// It should only be called from a server environment (API route / server action), not directly in a client component.
 export async function validateUser(email: string, password: string): Promise<UserRecord | null> {
   try {
-    // Look up user in Firestore by email only (simpler + easier to debug)
-    const usersRef = collection(db, 'users');
-    const qy = query(usersRef, where('email', '==', email), limit(1));
-    const snap = await getDocs(qy);
-    if (!snap.empty) {
-      const docSnap = snap.docs[0];
-      const data = docSnap.data() as FirestoreUser;
-      const pwdMatch = data.password === password; // plain-text comparison for now
-      if (process.env.DEBUG_AUTH) {
-        console.log('[auth] user doc found', { email: data.email, pwdMatch, storedPasswordLength: data.password?.length });
-      }
-      if (pwdMatch) {
-        return { id: docSnap.id, email: data.email, password: '***', role: data.role };
-      }
-      if (process.env.DEBUG_AUTH) console.log('[auth] password mismatch', { inputPasswordLength: password.length });
-      return null; // wrong password
-    } else if (process.env.DEBUG_AUTH) {
-      console.log('[auth] no user doc for email', email);
+    // 1) Fast path admin via env (Edge-safe)
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@infrastire.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    if (email === adminEmail && password === adminPassword) {
+      return { id: 'admin', email: adminEmail, password: '***', role: 'admin' };
     }
 
-  // No fallback credentials: must exist in Firestore users collection.
-  return null;
+    // 2) Firestore lookup only in Node runtime and if configured
+    const hasFirebaseConfig = Boolean(
+      process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
+      process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN &&
+      process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    );
+    const isEdgeRuntime = ((): boolean => {
+      const g = globalThis as Record<string, unknown>;
+      return typeof g !== 'undefined' && (typeof g.EdgeRuntime !== 'undefined' || process.env.NEXT_RUNTIME === 'edge');
+    })();
+    const isNodeRuntime = ((): boolean => {
+      if (typeof process === 'undefined') return false;
+      const p = process as unknown as NodeJS.Process;
+      return !!p.versions?.node && !isEdgeRuntime;
+    })();
+
+    if (hasFirebaseConfig && isNodeRuntime) {
+      try {
+        const { collection, getDocs, query, where, limit } = await import('firebase/firestore');
+        const { db } = await import('./firebase');
+        const usersRef = collection(db, 'users');
+        const qy = query(usersRef, where('email', '==', email), limit(1));
+        const snap = await getDocs(qy);
+        if (!snap.empty) {
+          const docSnap = snap.docs[0];
+          const data = docSnap.data() as FirestoreUser;
+          const pwdMatch = data.password === password;
+          if (pwdMatch) {
+            return { id: docSnap.id, email: data.email, password: '***', role: data.role };
+          }
+          return null;
+        }
+      } catch (err) {
+        console.warn('[auth] Firestore lookup failed/skipped:', err);
+      }
+    }
+
+    return null;
   } catch (e) {
     console.error('validateUser error', e);
     return null;

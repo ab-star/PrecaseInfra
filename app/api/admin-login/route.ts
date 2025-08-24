@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 import { validateUser } from '../../../lib/auth';
 
 export async function POST(req: NextRequest) {
