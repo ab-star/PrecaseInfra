@@ -68,7 +68,7 @@ export default function DrainsPage() {
   return (
     <div className="bg-white">
       {/* Section 1: Full-bleed Video (non-cropping, larger on mobile/tablet) */}
-    <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[60svh] md:min-h-[70svh]">
+  <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[100svh]">
         <video
       className="absolute inset-0 w-full h-full object-cover"
           src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/UShapeDrain1.mp4"
@@ -116,7 +116,7 @@ export default function DrainsPage() {
       </section> */}
 
       {/* Additional Videos (R2) in sequence */}
-  <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[50svh] md:min-h-[60svh]">
+  <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[100svh]">
     <video
   className="absolute inset-0 w-full h-full object-cover"
           src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/TrainDrain2.mp4"
@@ -185,7 +185,7 @@ export default function DrainsPage() {
         </div>
       </section>
 
-      <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[50svh] md:min-h-[60svh]">
+  <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[100svh]">
         <video
     className="absolute inset-0 w-full h-full object-cover"
           src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/MountainDrain3.mp4"
