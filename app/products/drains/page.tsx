@@ -67,11 +67,11 @@ export default function DrainsPage() {
 
   return (
     <div className="bg-white">
-    {/* Section 1: Fullscreen Video (R2) */}
-      <section className="relative w-full h-screen overflow-hidden">
+      {/* Section 1: Full-bleed Video (non-cropping, larger on mobile/tablet) */}
+    <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[60svh] md:min-h-[70svh]">
         <video
-          className="absolute inset-0 w-full h-full object-cover"
-      src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/UShapeDrain1.mp4"
+      className="absolute inset-0 w-full h-full object-cover"
+          src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/UShapeDrain1.mp4"
           autoPlay
           muted
           loop
@@ -89,7 +89,7 @@ export default function DrainsPage() {
                 className={`w-full max-w-6xl mx-auto rounded-xl ring-1 ring-black/5  shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 ${m.textPosition === 'left' ? 'md:flex-row-reverse' : ''} ${(index === 0 || index === models.length - 1) ? 'md:ml-auto md:mr-0' : ''}`}
                       >
                         <div
-                          className="relative w-full md:w-[68%] h-[360px] md:h-[480px] rounded-lg overflow-hidden bg-center bg-cover"
+                          className="relative w-full md:w-[68%] h-[300px] sm:h-[360px] md:h-[480px] rounded-lg overflow-hidden bg-center bg-cover"
                           style={{ backgroundImage: `url(/product/Drain/background/${(index % 3) + 1}.webp)` }}
                         >
                           <ModelCanvas path={m.path} scale={m.scale} />
@@ -116,9 +116,9 @@ export default function DrainsPage() {
       </section> */}
 
       {/* Additional Videos (R2) in sequence */}
-      <section className="relative w-screen overflow-hidden bg-black ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
-        <video
-      className="block w-screen h-auto object-contain"
+  <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[50svh] md:min-h-[60svh]">
+    <video
+  className="absolute inset-0 w-full h-full object-cover"
           src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/TrainDrain2.mp4"
           autoPlay
           muted
@@ -185,9 +185,9 @@ export default function DrainsPage() {
         </div>
       </section>
 
-          <section className="relative w-screen overflow-hidden bg-black ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
+      <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[50svh] md:min-h-[60svh]">
         <video
-      className="block w-screen h-auto object-contain"
+    className="absolute inset-0 w-full h-full object-cover"
           src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/DrainVideo/MountainDrain3.mp4"
           autoPlay
           muted

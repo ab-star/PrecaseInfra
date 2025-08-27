@@ -7,6 +7,7 @@ import Breadcrumbs from "./Breadcrumbs";
 
 const MainHeader = () => {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -17,7 +18,7 @@ const MainHeader = () => {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+  document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
@@ -48,7 +49,7 @@ const MainHeader = () => {
   }, [isProductsOpen, router]);
 
   return (
-    <header style={{ padding: '0px 3rem' }} className="relative w-full h-28 bg-gray-900 overflow-visible z-[1200]"> {/* keep dropdown above page content */}
+  <header style={{ padding: '0px 3rem' }} className="relative w-full h-28 bg-gray-900 overflow-visible z-[2000]"> {/* keep dropdown above page content */}
       {/* Background image */}
       <div  className="absolute inset-0 w-full h-full overflow-hidden">
         <Image
@@ -138,11 +139,31 @@ const MainHeader = () => {
         </nav>
         
         {/* Mobile menu button */}
-        <button className="md:hidden text-white p-2 mr-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
+        <button onClick={() => setMobileOpen((v) => !v)} aria-expanded={mobileOpen} aria-controls="mobile-menu" className="md:hidden text-white p-2 mr-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
+      </div>
+      {/* Mobile overlay and drawer */}
+      <div className={`md:hidden fixed inset-0 ${mobileOpen ? 'pointer-events-auto' : 'pointer-events-none'} z-[2100]`}> 
+        <div onClick={() => setMobileOpen(false)} className={`absolute inset-0 bg-black/40 transition-opacity ${mobileOpen ? 'opacity-100' : 'opacity-0'}`} />
+        <div id="mobile-menu" className={`absolute right-0 top-0 h-full w-72 max-w-[85vw] bg-emerald-700 text-white shadow-2xl border-l border-emerald-600 transform transition-transform duration-300 ${mobileOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="p-4 flex items-center justify-between border-b border-emerald-600">
+            <span className="font-semibold tracking-wide">Menu</span>
+            <button onClick={() => setMobileOpen(false)} className="p-2 rounded hover:bg-emerald-600/60" aria-label="Close menu">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M6.225 4.811a1 1 0 0 1 1.414 0L12 9.172l4.361-4.361a1 1 0 1 1 1.415 1.414L13.415 10.586l4.36 4.361a1 1 0 1 1-1.414 1.414L12 12l-4.361 4.361a1 1 0 1 1-1.414-1.414l4.36-4.361-4.36-4.361a1 1 0 0 1 0-1.414Z"/></svg>
+            </button>
+          </div>
+          <div className="py-2">
+            <Link href="/" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Home</Link>
+            <div className="mt-1 border-t border-emerald-600/60" />
+            <div className="px-5 pt-3 pb-1 text-xs uppercase tracking-wider text-emerald-200/80">Products</div>
+            <Link href="/products/box-culvert" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Box Culvert</Link>
+            <Link href="/products/drains" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Drains</Link>
+            <Link href="/products/walls" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Walls</Link>
+          </div>
+        </div>
       </div>
     </header>
   );

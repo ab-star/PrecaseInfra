@@ -25,16 +25,17 @@ const branches = [
 
 const Footer = () => (
 	<footer
-		className="relative z-[90] w-full overflow-hidden text-white flex flex-col md:flex-row gap-16 md:gap-0 justify-between items-start shadow-2xl border-t-0"
+		className="relative z-[90] w-[100dvw] ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] overflow-hidden text-white flex flex-col md:flex-row gap-16 md:gap-0 justify-between items-start shadow-2xl border-t-0 px-6 sm:px-8 md:px-10 lg:px-16 py-16"
 		style={{
 			background:
 				"url('/product/Drain/background/uShapedDrainBg.jpg') center/cover no-repeat, linear-gradient(135deg, #1e293b 60%, #181e29 100%)",
-			padding: "96px 64px 96px 64px",
 			minHeight: "520px",
 			fontSize: "1.25rem", // 20px
 			fontFamily: "Segoe UI, Arial, Helvetica Neue, Helvetica, sans-serif",
 			letterSpacing: "0.02em",
 			fontWeight: 500,
+			padding: "2rem",
+			paddingRight: "3rem",	
 		}}
 	>
 		{/* Geometric/abstract background shapes */}
@@ -82,10 +83,10 @@ const Footer = () => (
 						boxShadow: "0 16px 64px 0 #000c",
 					}}
 				>
-					<div className="flex items-center gap-12 mb-12">
+		    <div className="flex items-center gap-6 sm:gap-8 md:gap-12 mb-12">
 						<FaPhoneAlt className="text-6xl text-amber-300 drop-shadow-2xl" />
 						<span
-							className="text-5xl font-extrabold tracking-widest select-all"
+			    className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-widest select-all break-words break-all md:break-normal"
 							style={{
 								color: "#fff",
 								background: "#181e29",
@@ -98,10 +99,10 @@ const Footer = () => (
 							+91 22 1234 5678
 						</span>
 					</div>
-					<div className="flex items-center gap-12">
+		    <div className="flex items-center gap-6 sm:gap-8 md:gap-12">
 						<FaEnvelope className="text-6xl text-blue-300 drop-shadow-2xl" />
 						<span
-							className="text-5xl font-extrabold tracking-widest select-all"
+			    className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-widest select-all break-words break-all md:break-normal"
 							style={{
 								color: "#fff",
 								background: "#181e29",

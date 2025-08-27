@@ -76,21 +76,21 @@ const FujiSilvertechLanding = () => {
   }, [hoveredSector, sectors, activeBg]);
 
   return (
-    <div className="relative overflow-hidden font-sans w-full h-screen">
+  <div className="relative overflow-hidden font-sans h-[100svh] w-[100dvw]">
       {/* Background layers: base + overlay crossfade */}
       <div className="absolute inset-0 z-0" style={{
         backgroundImage: `url(${activeBg})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
-        backgroundSize: '100% auto',
+        backgroundSize: 'cover',
         backgroundColor: '#000',
       }} />
-      <div className={`absolute inset-0 z-10 transition-opacity duration-700 ease-[cubic-bezier(.4,0,.2,1)] ${overlayVisible && overlayBg ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+    <div className={`absolute inset-0 z-10 transition-opacity duration-700 ease-[cubic-bezier(.4,0,.2,1)] ${overlayVisible && overlayBg ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         style={{
-          backgroundImage: overlayBg ? `url(${overlayBg})` : undefined,
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center center',
-          backgroundSize: '100% auto',
+      backgroundImage: overlayBg ? `url(${overlayBg})` : undefined,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center center',
+      backgroundSize: 'cover',
         }}
       />
       

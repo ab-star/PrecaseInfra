@@ -154,6 +154,26 @@ function ScrollLockedImageTransition() {
           ))}
         </div>
       </div>
+
+      {/* Navigator buttons */}
+      <div className="absolute inset-0 flex items-center justify-between px-4 z-30 pointer-events-none">
+        <button
+          onClick={() => setIndex((prev) => Math.max(prev - 1, 0))}
+          className="pointer-events-auto h-12 w-12 rounded-full bg-black/60 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-sm border border-white/20"
+          aria-label="Previous"
+        >
+          <span className="sr-only">Previous</span>
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <button
+          onClick={() => setIndex((prev) => Math.min(prev + 1, transitionImages.length - 1))}
+          className="pointer-events-auto h-12 w-12 rounded-full bg-black/60 hover:bg-black/70 text-white flex items-center justify-center backdrop-blur-sm border border-white/20"
+          aria-label="Next"
+        >
+          <span className="sr-only">Next</span>
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="m10 6-1.41 1.41L13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+      </div>
       
       {/* Image counter and description */}
       <div className="absolute top-12 left-12 z-20 text-white">
@@ -167,7 +187,7 @@ function ScrollLockedImageTransition() {
         </div>
       </div>
       
-      {/* Scroll instruction */}
+  {/* Scroll instruction */}
       {index === 0 && (
         <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 z-20 text-white text-center animate-bounce">
           <div className="bg-black bg-opacity-60 px-4 py-2 rounded-lg backdrop-blur-sm">

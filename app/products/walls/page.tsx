@@ -55,25 +55,25 @@ function WallCanvas({ path, scale = 1.0 }: { path: string; scale?: number }) {
 export default function WallsPage() {
   return (
     <div className="bg-white">
-      {/* Section 1: Hero Video */}
-      <section className="relative w-full h-[70vh] md:h-screen overflow-hidden">
+      {/* Section 1: Hero Video (full-bleed, non-cropping, larger on mobile/tablet) */}
+      <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[60svh] md:min-h-[70svh]">
         <video className="absolute inset-0 w-full h-full object-cover" src={HERO_VIDEO} autoPlay muted loop playsInline />
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+        <div className="absolute inset-0 pointer-events-none">
           {/* <h1 className="text-white text-4xl md:text-6xl font-extrabold">Walls</h1> */}
         </div>
       </section>
 
       {/* Section 2: 3D Model - Increased height and top spacing */}
-      <section className="w-full min-h-screen pt-32 pb-20 md:pt-40 md:pb-24 flex items-center justify-center bg-transparent">
-  <div className="w-full max-w-5xl h-[80vh] mx-auto px-4">  {/* Increased height */}
+      <section className="w-full min-h-[70vh] md:min-h-screen pt-16 md:pt-32 pb-16 md:pb-24 flex items-center justify-center bg-transparent">
+        <div className="w-full max-w-5xl h-[60vh] md:h-[70vh] mx-auto px-4">
           <WallCanvas path={WALL_GLB} scale={1.0} />
         </div>
       </section>
 
       {/* Section 3: Secondary Video - full-bleed, full width, no cropping */}
      
-      <section className="relative w-screen overflow-hidden bg-black ml-[calc(50%-50vw)] mr-[calc(50%-50vw)]">
-        <video className="block w-screen h-auto object-contain" src={EXTRA_VIDEO} autoPlay muted loop playsInline />
+      <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[50svh] md:min-h-[60svh]">
+        <video className="absolute inset-0 w-full h-full object-cover" src={EXTRA_VIDEO} autoPlay muted loop playsInline />
       </section>
      
 
@@ -81,17 +81,10 @@ export default function WallsPage() {
       {/* Section 3b: Extra video if present - full-bleed, full width, no cropping */}
 
       {/* Section 4: Alternating Features */}
-      <AlternatingFeaturesWalls />
+  <AlternatingFeaturesWalls />
 
-            <section className="relative w-screen overflow-hidden bg-black ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] pt-32 pb-20 md:pt-40 md:pb-24">
-        <video 
-          className="block w-screen h-auto object-contain"
-          src={MID_VIDEO} 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-        />
+      <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] pt-16 md:pt-24 pb-16 md:pb-24 min-h-[50svh] md:min-h-[60svh]">
+        <video className="absolute inset-0 w-full h-full object-cover" src={MID_VIDEO} autoPlay muted loop playsInline />
       </section>
     </div>
   );
