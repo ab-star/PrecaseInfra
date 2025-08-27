@@ -16,14 +16,16 @@ export async function validateUser(email: string, password: string): Promise<Use
       process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN &&
       process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
     );
-    const isEdgeRuntime = ((): boolean => {
-      const g = globalThis as Record<string, unknown>;
-      return typeof g !== 'undefined' && (typeof g.EdgeRuntime !== 'undefined' || process.env.NEXT_RUNTIME === 'edge');
-    })();
     const isNodeRuntime = ((): boolean => {
-      if (typeof process === 'undefined') return false;
-      const p = process as unknown as NodeJS.Process;
-      return !!p.versions?.node && !isEdgeRuntime;
+      try {
+        // Consider Node present whenever process.versions.node exists, even if an Edge flag is set
+        // (Cloudflare nodejs_compat exposes Node APIs alongside Edge globals).
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const p = (process as any);
+        return !!p?.versions?.node;
+      } catch {
+        return false;
+      }
     })();
 
     if (hasFirebaseConfig && isNodeRuntime) {
