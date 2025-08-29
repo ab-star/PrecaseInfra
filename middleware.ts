@@ -13,13 +13,16 @@ export function middleware(req: NextRequest) {
 
   // Allow /admin/login always; clear any lingering session and page lock
   if (path.startsWith('/admin/login')) {
-    const res = NextResponse.next();
+  const res = NextResponse.next();
     if (session) {
       res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/admin', maxAge: 0 });
       res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/', maxAge: 0 });
     }
     res.cookies.set({ name: PAGE_COOKIE, value: '', path: '/admin', maxAge: 0 });
     res.cookies.set({ name: PAGE_COOKIE, value: '', path: '/', maxAge: 0 });
+  res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+  res.headers.set('Pragma', 'no-cache');
+  res.headers.set('Vary', 'Cookie');
     return res;
   }
 
@@ -29,13 +32,20 @@ export function middleware(req: NextRequest) {
       const url = req.nextUrl.clone();
       url.pathname = '/admin/login';
       url.searchParams.set('next', path);
-      return NextResponse.redirect(url);
+      const res = NextResponse.redirect(url);
+      res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+      res.headers.set('Pragma', 'no-cache');
+      res.headers.set('Vary', 'Cookie');
+      return res;
     }
     const bound = req.cookies.get(PAGE_COOKIE)?.value;
     // First entry after login: bind the session to this specific page
     if (!bound) {
       const res = NextResponse.next();
       res.cookies.set({ name: PAGE_COOKIE, value: path, path: '/admin', sameSite: 'lax' });
+      res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+      res.headers.set('Pragma', 'no-cache');
+      res.headers.set('Vary', 'Cookie');
       return res;
     }
     // If trying to access a different admin page than the one bound, force re-login
@@ -48,9 +58,16 @@ export function middleware(req: NextRequest) {
   res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/', maxAge: 0 });
   res.cookies.set({ name: PAGE_COOKIE, value: '', path: '/admin', maxAge: 0 });
   res.cookies.set({ name: PAGE_COOKIE, value: '', path: '/', maxAge: 0 });
+      res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+      res.headers.set('Pragma', 'no-cache');
+      res.headers.set('Vary', 'Cookie');
       return res;
     }
-    return NextResponse.next();
+    const res = NextResponse.next();
+    res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+    res.headers.set('Pragma', 'no-cache');
+    res.headers.set('Vary', 'Cookie');
+    return res;
   }
 
   // Any other route (including other /admin pages): clear the session so revisiting allowed pages requires login again
@@ -60,9 +77,16 @@ export function middleware(req: NextRequest) {
     res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/', maxAge: 0 });
     res.cookies.set({ name: PAGE_COOKIE, value: '', path: '/admin', maxAge: 0 });
     res.cookies.set({ name: PAGE_COOKIE, value: '', path: '/', maxAge: 0 });
+    res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+    res.headers.set('Pragma', 'no-cache');
+    res.headers.set('Vary', 'Cookie');
     return res;
   }
-  return NextResponse.next();
+  const res = NextResponse.next();
+  res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+  res.headers.set('Pragma', 'no-cache');
+  res.headers.set('Vary', 'Cookie');
+  return res;
 }
 
 export const config = {

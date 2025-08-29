@@ -28,6 +28,9 @@ export async function POST(req: NextRequest) {
       const bound = next.endsWith('/') ? next.slice(0, -1) : next;
       res.cookies.set({ name: 'adminPage', value: bound, path: '/admin', sameSite: 'lax' });
     }
+  res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+  res.headers.set('Pragma', 'no-cache');
+  res.headers.set('Vary', 'Cookie');
     return res;
   } catch (e) {
     console.error('Login API error', e);

@@ -5,8 +5,9 @@ export async function GET(request: Request) {
   // In Edge runtime, cookies are available via headers
   const cookie = request.headers.get('cookie') || '';
   const has = /(?:^|;\s*)adminSession=/.test(cookie);
-  if (!has) {
-    return NextResponse.json({ ok: false }, { status: 401 });
-  }
-  return NextResponse.json({ ok: true });
+  const res = NextResponse.json({ ok: !!has }, { status: has ? 200 : 401 });
+  res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+  res.headers.set('Pragma', 'no-cache');
+  res.headers.set('Vary', 'Cookie');
+  return res;
 }
