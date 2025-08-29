@@ -57,9 +57,9 @@ export default function ViewProjectsPage() {
 
   return (
   <div className="min-h-screen bg-[url('/concrete_texture.webp'),_url('/concrete_texture.jpg')] bg-fixed bg-cover bg-center relative">
-      <div className="absolute inset-0 bg-slate-900/90" />
-      <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-24">
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl mb-12">
+  <div className="absolute inset-0 bg-slate-900/90" />
+  <div style={{padding: "5rem"}} className="relative w-screen box-border ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 2xl:px-32 pt-24 md:pt-28 pb-28">
+        <div style={{marginBottom: "3rem" , padding: "2rem"}} className="bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">Our Precast Project Portfolio</h1>
           <p className="text-gray-300 text-lg max-w-3xl leading-relaxed">Browse selected precast infrastructure projects highlighting modular efficiency, faster deployment, and long-term performance. Each project card shows up to three representative images.</p>
         </div>
@@ -68,7 +68,7 @@ export default function ViewProjectsPage() {
         {error && !loading && <div className="py-10 text-center text-red-400">{error}</div>}
         {!loading && !error && (
           <>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
               <AnimatePresence>
                 {pageProjects.map((proj, idx)=>{
                   const which = idx % 3; const initial = which===0?'enterTop': which===1?'enterLeft':'enterRight';

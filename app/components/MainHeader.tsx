@@ -91,7 +91,7 @@ const MainHeader = () => {
           <Link href="/" onMouseEnter={() => router.prefetch('/')} onFocus={() => router.prefetch('/')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
             HOME
           </Link>
-          
+    
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsProductsOpen(!isProductsOpen)}
@@ -123,6 +123,12 @@ const MainHeader = () => {
             </div>
           </div>
 
+          <Link href="/view-gallery" onMouseEnter={() => router.prefetch('/view-gallery')} onFocus={() => router.prefetch('/view-gallery')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
+            GALLERY
+          </Link>
+          <Link href="/view-projects" onMouseEnter={() => router.prefetch('/view-projects')} onFocus={() => router.prefetch('/view-projects')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
+            PROJECTS
+          </Link>
           {/* <Link href="/aboutus" onMouseEnter={() => router.prefetch('/aboutus')} onFocus={() => router.prefetch('/aboutus')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
             ABOUT US
           </Link>
@@ -162,6 +168,9 @@ const MainHeader = () => {
             <Link href="/products/box-culvert" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Box Culvert</Link>
             <Link href="/products/drains" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Drains</Link>
             <Link href="/products/walls" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Walls</Link>
+            <div className="mt-1 border-t border-emerald-600/60" />
+            <Link href="/view-gallery" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Gallery</Link>
+            <Link href="/view-projects" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Projects</Link>
           </div>
         </div>
       </div>

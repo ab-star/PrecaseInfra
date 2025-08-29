@@ -1,3 +1,5 @@
+import GalleryPage from "../view-gallery/page";
+export default GalleryPage;
 "use client";
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';

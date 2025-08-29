@@ -75,9 +75,9 @@ export default function ViewGalleryPage() {
   return (
   <div className="min-h-screen bg-[url('/concrete_texture.webp'),_url('/concrete_texture.jpg')] bg-fixed bg-cover bg-center relative">
       <div className="absolute inset-0 bg-slate-900/85 backdrop-blur-[2px]" />
-      <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-24">
+  <div style={{padding: "5rem"}} className="relative w-screen box-border ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 2xl:px-32 pt-24 md:pt-28 pb-28">
         {/* Intro */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl mb-12">
+        <div style={{marginBottom: "5rem"}} className="bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
             Our Precast Construction Gallery
           </h1>
@@ -93,7 +93,7 @@ export default function ViewGalleryPage() {
         {error && !loading && <div className="py-10 text-center text-red-400">{error}</div>}
         {!loading && !error && (
           <>
-            <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div style={{marginBottom: "2rem"}} className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7">
               <AnimatePresence>
                 {pageImages.map((img, idx) => {
                   const which = idx % 3;
