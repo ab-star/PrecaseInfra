@@ -40,6 +40,40 @@ If Cloudflare build reports `.vercel/output/static` not found, verify the build 
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Environment & Cloudflare Setup
+
+Required environment inputs by feature:
+
+- R2 public base (used to render images/videos)
+	- NEXT_PUBLIC_R2_BASE or R2_PUBLIC_BASE_URL
+- Admin fallback login (Edge-safe)
+	- ADMIN_EMAIL, ADMIN_PASSWORD
+- Optional Firebase (only if using Firestore login path)
+	- NEXT_PUBLIC_FIREBASE_API_KEY, NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN, NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+		NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET, NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID, NEXT_PUBLIC_FIREBASE_APP_ID
+- Legacy AWS SDK R2 flows (only for Node runtime/local tools)
+	- R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME, R2_REGION (default auto)
+
+Local dev:
+
+1) Copy .env.example to .env.local and fill values you need (at minimum set NEXT_PUBLIC_R2_BASE).
+2) Run npm run dev and visit /api/r2-upload (GET) for a readiness status.
+
+Cloudflare Pages:
+
+1) Set Environment Variables (Project > Settings > Environment variables)
+	 - NEXT_PUBLIC_R2_BASE or R2_PUBLIC_BASE_URL
+	 - ADMIN_EMAIL, ADMIN_PASSWORD
+	 - (Optional) Firebase NEXT_PUBLIC_* if using Firestore auth path
+2) Bind R2 bucket (Project > Settings > Functions > R2 bindings)
+	 - Name: R2_BUCKET (or R2), Bucket: your-bucket
+3) Build uses @cloudflare/next-on-pages with nodejs_compat (see next-on-pages.config.js)
+4) Verify /api/r2-upload (GET) returns { ready: true } after deploy
+
+Notes:
+- The Edge upload route (/api/r2-upload) requires an R2 binding; it does not use AWS keys.
+- The legacy AWS SDK utilities in lib/r2Storage.ts are for local/Node-only flows and should not be used on Edge.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

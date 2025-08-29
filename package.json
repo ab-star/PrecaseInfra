@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "cf:build": "next-on-pages",
+  "cf:build": "next-on-pages",
+  "vercel:build": "vercel build",
     "start": "next start",
     "lint": "next lint",
     "optimize:images": "node scripts/optimize-images.mjs",

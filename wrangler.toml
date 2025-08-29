@@ -8,3 +8,10 @@ pages_build_output_dir = ".vercel/output/static"
 # Use [vars] section for environment variables if desired (secrets via dashboard or wrangler secret)
 # [vars]
 # EXAMPLE_PUBLIC_VAR = "value"
+
+# R2 binding for Pages Functions (Edge). The dashboard shows
+# "Bindings are managed through wrangler.toml", so we declare it here.
+# Change bucket_name to your actual R2 bucket.
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "site01"
