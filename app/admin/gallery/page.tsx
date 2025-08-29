@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+import { useRequireAdminSession } from "../_hooks/useRequireAdminSession";
 import Image from "next/image";
 import {
   collection,
@@ -20,6 +21,7 @@ interface GalleryItem {
 }
 
 export default function GalleryAdminPage() {
+  useRequireAdminSession();
   const [file, setFile] = useState<File | null>(null);
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [uploading, setUploading] = useState(false);

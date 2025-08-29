@@ -3,12 +3,14 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { useRequireAdminSession } from '../_hooks/useRequireAdminSession';
 import Image from 'next/image';
 import { uploadImageToR2, deleteImageFromR2, testR2Connection } from '../../../lib/r2Storage';
 import { GalleryDataStore, GalleryImageData } from '../../../lib/dataStore';
 import toast from 'react-hot-toast';
 
 const AdminGalleryR2 = () => {
+  useRequireAdminSession();
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [images, setImages] = useState<GalleryImageData[]>([]);

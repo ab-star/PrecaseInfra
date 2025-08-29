@@ -3,12 +3,14 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { useRequireAdminSession } from '../_hooks/useRequireAdminSession';
 import { uploadMultipleImagesToR2, deleteImageFromR2, testR2Connection } from '../../../lib/r2Storage';
 import { ProjectsDataStore, ProjectData } from '../../../lib/dataStore';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 
 const AdminProjectsR2 = () => {
+  useRequireAdminSession();
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const [projects, setProjects] = useState<ProjectData[]>([]);

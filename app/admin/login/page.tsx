@@ -7,22 +7,26 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  // router retained if needed for future enhancements; hard nav used below
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
     try {
-      const res = await fetch('/api/admin-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+  const params = new URLSearchParams(window.location.search);
+  const nextParam = params.get('next') || '/admin/gallery';
+  const res = await fetch('/api/admin-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, next: nextParam }) });
       if (!res.ok) {
         const data = await res.json().catch(()=>({ error: 'Invalid credentials'}));
         setError(data.error || 'Login failed');
         return;
       }
-      const { user } = await res.json();
-      sessionStorage.setItem('adminUser', JSON.stringify(user));
-  router.push('/admin/gallery');
+  const { user } = await res.json();
+  sessionStorage.setItem('adminUser', JSON.stringify(user));
+  const next = nextParam;
+  // Use hard navigation so middleware executes on the new route reliably
+  window.location.href = next;
   } catch {
       setError('Network error');
     } finally {

@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
+import { useRequireAdminSession } from "../_hooks/useRequireAdminSession";
 import Image from "next/image";
 import {
   collection,
@@ -31,6 +32,7 @@ type ProjectDoc = {
 };
 
 export default function ProjectsAdminPage() {
+  useRequireAdminSession();
   const [projects, setProjects] = useState<Project[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

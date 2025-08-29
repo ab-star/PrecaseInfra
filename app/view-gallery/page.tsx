@@ -15,6 +15,7 @@ export default function ViewGalleryPage() {
   const [error, setError] = useState<string|null>(null);
   const [page, setPage] = useState(1);
   const [mounted, setMounted] = useState(false); // trigger entrance animation once
+  const [selected, setSelected] = useState<GalleryDoc | null>(null);
 
   const publicBase = process.env.NEXT_PUBLIC_R2_BASE || process.env.R2_PUBLIC_BASE_URL || '';
 
@@ -52,6 +53,21 @@ export default function ViewGalleryPage() {
     finally { setLoading(false); setMounted(true); }
   })(); }, [normalize]);
 
+  // Close modal with ESC and lock scroll when open
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelected(null);
+    };
+    window.addEventListener('keydown', onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [selected]);
+
   const totalPages = Math.max(1, Math.ceil(images.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const pageImages = useMemo(()=> images.slice((currentPage-1)*PAGE_SIZE, currentPage*PAGE_SIZE), [images, currentPage]);
@@ -77,8 +93,8 @@ export default function ViewGalleryPage() {
       <div className="absolute inset-0 bg-slate-900/85 backdrop-blur-[2px]" />
   <div style={{padding: "5rem"}} className="relative w-screen box-border ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 2xl:px-32 pt-24 md:pt-28 pb-28">
         {/* Intro */}
-        <div style={{marginBottom: "5rem"}} className="bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+        <div style={{marginBottom: "5rem" , padding: "3rem"}} className="bg-white/5 border border-white/10 rounded-2xl p-10 shadow-2xl mb-12">
+          <h1 style={{marginBottom: "1rem"}} className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
             Our Precast Construction Gallery
           </h1>
             <p className="text-gray-300 text-lg max-w-3xl leading-relaxed">
@@ -106,7 +122,12 @@ export default function ViewGalleryPage() {
                       initial={mounted ? undefined : (initial as keyof typeof variants)}
                       animate="visible"
                       transition={{ duration: 0.65, ease: 'easeOut', delay: mounted ? 0 : idx * 0.06 }}
-                      className="group relative rounded-xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-700 shadow-[0_4px_18px_-4px_rgba(0,0,0,0.45)] ring-1 ring-white/5 hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.55)] transition-shadow"
+                      className="group relative rounded-xl overflow-hidden bg-gradient-to-br from-slate-800 to-slate-700 shadow-[0_4px_18px_-4px_rgba(0,0,0,0.45)] ring-1 ring-white/5 hover:shadow-[0_8px_30px_-6px_rgba(0,0,0,0.55)] transition-shadow cursor-zoom-in"
+                      role="button"
+                      tabIndex={0}
+                      aria-label="Open image in modal"
+                      onClick={() => setSelected(img)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(img); } }}
                     >
                       <div className="relative aspect-[4/3]">
                         {img.imageUrl && (
@@ -122,7 +143,6 @@ export default function ViewGalleryPage() {
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                       <div className="p-3">
-                        <h3 className="text-sm font-semibold text-white tracking-wide">Precast Installation</h3>
                         {img.uploadedAt && <p className="text-[11px] mt-1 text-slate-400">{img.uploadedAt.toLocaleDateString()}</p>}
                       </div>
                     </motion.div>
@@ -166,6 +186,60 @@ export default function ViewGalleryPage() {
         {!loading && !error && images.length === 0 && (
           <div className="text-center py-32 text-gray-400">No images available yet.</div>
         )}
+
+        {/* Modal */}
+        <AnimatePresence>
+          {selected && (
+            <motion.div
+              key="modal-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4"
+              onClick={() => setSelected(null)}
+            >
+              <motion.div
+                key="modal-content"
+                initial={{ opacity: 0, scale: 0.96, y: 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.98, y: 8 }}
+                transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                className="relative w-full max-w-6xl"
+                onClick={(e) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+              >
+                <button
+                  onClick={() => setSelected(null)}
+                  className="absolute -top-12 right-0 text-white/90 hover:text-white focus:outline-none"
+                  aria-label="Close"
+                >
+                  <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                  </svg>
+                </button>
+                <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden ring-1 ring-white/10">
+                  {selected.imageUrl && (
+                    <Image
+                      src={selected.imageUrl}
+                      alt="Selected gallery image"
+                      fill
+                      className="object-contain"
+                      sizes="100vw"
+                      unoptimized={selected.imageUrl.startsWith('/uploads/')}
+                    />
+                  )}
+                </div>
+                <div className="mt-3 flex items-center justify-between text-slate-200 text-sm">
+                  <span>Tap outside or press Esc to close</span>
+                  {selected.uploadedAt && (
+                    <span className="text-slate-400">{selected.uploadedAt.toLocaleDateString()}</span>
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
