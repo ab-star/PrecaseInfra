@@ -1,6 +1,8 @@
 import React from 'react';
 import AdminHostGate from './AdminHostGate';
 import AdminAutoLogoutOnLeave from './AdminAutoLogoutOnLeave';
+import AdminHeader from './AdminHeader';
+import AdminMain from './AdminMain';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,16 +15,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-gray-100 text-gray-900">
   <AdminHostGate />
   <AdminAutoLogoutOnLeave />
-      <header className="bg-gray-800 text-white px-6 py-4 flex justify-between">
-        <h1 className="font-semibold">Admin Portal</h1>
-        <nav className="space-x-4 text-sm">
-          <a href="/admin/gallery" className="hover:underline">Gallery</a>
-          <a href="/admin/projects" className="hover:underline">Projects</a>
-          <a href="/admin/contacts" className="hover:underline">Contacts</a>
-          <a href="/admin/login" className="hover:underline">Login</a>
-        </nav>
-      </header>
-      <main className="max-w-4xl mx-auto p-6">{children}</main>
+  <AdminHeader />
+  <AdminMain>{children}</AdminMain>
     </div>
   );
 }

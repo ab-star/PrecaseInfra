@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRequireAdminSession } from "../_hooks/useRequireAdminSession";
 import Image from "next/image";
 import {
@@ -11,6 +11,10 @@ import {
   serverTimestamp,
   deleteDoc,
   doc,
+  limit,
+  startAfter,
+  type QueryDocumentSnapshot,
+  type DocumentData,
 } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 
@@ -20,10 +24,20 @@ interface GalleryItem {
   createdAt?: Date;
 }
 
+function hasToDate(x: unknown): x is { toDate?: () => Date } {
+  return !!x && typeof x === 'object' && 'toDate' in (x as Record<string, unknown>);
+}
+
 export default function GalleryAdminPage() {
   useRequireAdminSession();
   const [file, setFile] = useState<File | null>(null);
-  const [items, setItems] = useState<GalleryItem[]>([]);
+  // Pagination state
+  const [pages, setPages] = useState<GalleryItem[][]>([]);
+  const [page, setPage] = useState(0);
+  const [cursors, setCursors] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
+  const [hasMore, setHasMore] = useState<boolean[]>([]);
+  const pageSize = 12;
+  const items = pages[page] || [];
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
@@ -50,32 +64,78 @@ export default function GalleryAdminPage() {
     [publicBase]
   );
 
-  const load = useCallback(async () => {
-    const qy = query(collection(db, "gallery"), orderBy("uploadDate", "desc"));
-    const snap = await getDocs(qy);
-    setItems(
-      snap.docs.map((d) => {
-        const data = d.data() as {
-          imageUrl?: string;
-          url?: string;
-          uploadDate?: { toDate?: () => Date };
-        };
-        let raw = (data.imageUrl || data.url || "").trim();
-        if (raw && !raw.startsWith("http://") && !raw.startsWith("https://") && !raw.startsWith("/"))
-          raw = "/" + raw;
-        if (raw.startsWith("/gallery/")) raw = raw.slice(1);
-        return {
-          id: d.id,
-          imageUrl: normalize(raw),
-          createdAt: data.uploadDate?.toDate?.(),
-        };
-      })
-    );
-  }, [normalize]);
+  const baseQuery = useMemo(
+    () => query(collection(db, "gallery"), orderBy("uploadDate", "desc")),
+    []
+  );
+
+  const toItem = useCallback(
+    (d: QueryDocumentSnapshot<DocumentData>): GalleryItem => {
+      const data = d.data() as {
+        imageUrl?: string;
+        url?: string;
+        uploadDate?: { toDate?: () => Date } | Date;
+      };
+      let raw = (data.imageUrl || data.url || "").trim();
+      if (raw && !raw.startsWith("http://") && !raw.startsWith("https://") && !raw.startsWith("/")) raw = "/" + raw;
+      if (raw.startsWith("/gallery/")) raw = raw.slice(1);
+      return {
+        id: d.id,
+        imageUrl: normalize(raw),
+        createdAt: hasToDate(data.uploadDate) ? data.uploadDate.toDate?.() : (data.uploadDate as Date | undefined),
+      };
+    },
+    [normalize]
+  );
+
+  const loadFirstPage = useCallback(async () => {
+    try {
+      const snap = await getDocs(query(baseQuery, limit(pageSize)));
+      const docs = snap.docs;
+      setPages([docs.map(toItem)]);
+      setCursors(docs.length ? [docs[docs.length - 1]] : []);
+      setHasMore([docs.length === pageSize]);
+      setPage(0);
+    } catch {
+      // Fallback if some docs miss uploadDate
+      const fallback = query(collection(db, "gallery"), orderBy("imageUrl", "asc"));
+      const snap = await getDocs(query(fallback, limit(pageSize)));
+      const docs = snap.docs;
+      setPages([docs.map(toItem)]);
+      setCursors(docs.length ? [docs[docs.length - 1]] : []);
+      setHasMore([docs.length === pageSize]);
+      setPage(0);
+    }
+  }, [baseQuery, pageSize, toItem]);
+
+  const loadNextPage = useCallback(async () => {
+    if (pages[page + 1]) {
+      setPage((p) => p + 1);
+      return;
+    }
+    const last = cursors[page];
+    if (!last) return;
+    const snap = await getDocs(query(baseQuery, startAfter(last), limit(pageSize)));
+    const docs = snap.docs;
+    if (!docs.length) return;
+    setPages((prev) => [...prev, docs.map(toItem)]);
+    setCursors((prev) => [...prev, docs[docs.length - 1]]);
+    setHasMore((prev) => {
+      const copy = [...prev];
+      copy[page] = true;
+      copy[page + 1] = docs.length === pageSize;
+      return copy;
+    });
+    setPage((p) => p + 1);
+  }, [baseQuery, cursors, page, pageSize, pages, toItem]);
+
+  const loadPrevPage = useCallback(() => {
+    if (page > 0) setPage((p) => p - 1);
+  }, [page]);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    loadFirstPage();
+  }, [loadFirstPage]);
 
   const handleUpload = async () => {
     if (!file) return;
@@ -97,14 +157,14 @@ export default function GalleryAdminPage() {
         storeValue = url.substring(publicBase.length).replace(/^\//, "");
       }
 
-      await addDoc(collection(db, "gallery"), {
+  await addDoc(collection(db, "gallery"), {
         imageUrl: storeValue,
         uploadDate: serverTimestamp(),
       });
 
-      setFile(null);
-      setMessage({ type: "success", text: "Image uploaded successfully" });
-      await load();
+  setFile(null);
+  setMessage({ type: "success", text: "Image uploaded successfully" });
+  await loadFirstPage();
     } catch (e) {
       setMessage({ type: "error", text: e instanceof Error ? e.message : "Upload failed" });
     } finally {
@@ -115,7 +175,7 @@ export default function GalleryAdminPage() {
   const handleDelete = async (id: string) => {
     if (confirm("Delete this image?")) {
       await deleteDoc(doc(db, "gallery", id));
-      setItems(items.filter((i) => i.id !== id));
+      await loadFirstPage();
       setMessage({ type: "success", text: "Image deleted successfully" });
     }
   };
@@ -124,24 +184,25 @@ export default function GalleryAdminPage() {
     <div
       className="relative w-screen box-border ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 text-center"
     >
-      <h2 className="text-3xl font-semibold text-gray-800 mb-6">Gallery Admin</h2>
+  <h1 className="text-3xl font-semibold text-gray-900 mb-6">Admin Portal</h1>
 
       {/* Upload Section */}
-      <div className="bg-white shadow-md rounded-xl p-8 md:p-10 lg:p-12 mb-10 flex flex-col items-center justify-center gap-6 mx-auto w-full">
-        <label className="w-full max-w-3xl flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-10 md:p-12 cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition mx-auto">
-          <span className="text-gray-600 text-sm md:text-base">{file ? file.name : "Click or drag an image here"}</span>
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
-          />
-        </label>
-        <button
-                  style={{padding: "0px 1rem"}}
+      <div className="bg-white shadow-md rounded-2xl p-6 md:p-8 mb-10 flex flex-col items-center justify-center gap-6 mx-auto w-full max-w-4xl">
+        <div className="w-full flex flex-col items-center gap-6">
+          <label className="w-full max-w-3xl self-center flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-10 md:p-12 cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition mx-auto">
+            <span className="text-gray-600 text-sm md:text-base">{file ? file.name : "Click or drag an image here"}</span>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
+            />
+          </label>
+          <button
+      style={{ padding: "0px 1rem" }}
           disabled={!file || uploading}
           onClick={handleUpload}
-          className="inline-flex items-center justify-center gap-2.5 px-7 md:px-9 py-3 md:py-3.5 whitespace-nowrap bg-gradient-to-b from-blue-600 to-blue-700 hover:from-blue-600 hover:to-blue-800 active:to-blue-900 text-white rounded-full shadow-lg ring-1 ring-blue-500/20 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-300 tracking-wide leading-6 font-medium"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide self-center"
         >
           {uploading ? (
             <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -154,8 +215,9 @@ export default function GalleryAdminPage() {
               <path d="M12 13a1 1 0 01-1-1V7.414l-1.293 1.293a1 1 0 01-1.414-1.414l3-3a1 1 0 011.32-.083l.094.083 3 3a1 1 0 01-1.414 1.414L13 7.414V12a1 1 0 01-1 1z" />
             </svg>
           )}
-          <span className="text-sm md:text-base">{uploading ? "Uploading..." : "Upload"}</span>
-        </button>
+      <span className="text-sm md:text-base">{uploading ? "Uploading..." : "Upload"}</span>
+          </button>
+        </div>
         {message && (
           <p
 
@@ -208,15 +270,35 @@ export default function GalleryAdminPage() {
                     <span className="sr-only">Delete image</span>
                   </button>
                 </div>
-                {it.createdAt && (
-                  <div className="p-2 text-xs text-gray-500">
-                    {it.createdAt.toLocaleDateString()}
-                  </div>
-                )}
+            <div className="p-2 text-xs text-gray-500 flex items-center justify-between">
+              <span>Gallery item</span>
+              <span>{it.createdAt ? it.createdAt.toLocaleDateString() : ""}</span>
+            </div>
               </div>
             ))}
           </div>
         )}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-center gap-4 mt-8">
+        <button
+          onClick={loadPrevPage}
+          disabled={page === 0}
+          className="h-10 w-10 rounded-full bg-gray-900 text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+          aria-label="Previous page"
+        >
+          <span className="text-lg">‹</span>
+        </button>
+        <span className="text-gray-800 font-medium">{page + 1}</span>
+        <button
+          onClick={loadNextPage}
+          disabled={!hasMore[page]}
+          className="h-10 w-10 rounded-full bg-white text-gray-900 ring-1 ring-gray-300 flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+          aria-label="Next page"
+        >
+          <span className="text-lg">›</span>
+        </button>
       </div>
     </div>
   );

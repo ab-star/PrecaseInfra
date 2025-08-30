@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRequireAdminSession } from "../_hooks/useRequireAdminSession";
 import Image from "next/image";
 import {
@@ -9,6 +9,12 @@ import {
   deleteDoc,
   doc,
   serverTimestamp,
+  query,
+  orderBy,
+  limit,
+  startAfter,
+  type QueryDocumentSnapshot,
+  type DocumentData,
 } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 
@@ -33,7 +39,15 @@ type ProjectDoc = {
 
 export default function ProjectsAdminPage() {
   useRequireAdminSession();
-  const [projects, setProjects] = useState<Project[]>([]);
+  // Pagination state
+  const [pages, setPages] = useState<Project[][]>([]);
+  const [page, setPage] = useState(0);
+  const [cursors, setCursors] = useState<QueryDocumentSnapshot<DocumentData>[]>([]);
+  const [hasMore, setHasMore] = useState<boolean[]>([]);
+  const pageSize = 8;
+
+  // Derived list for current page
+  const projects = pages[page] || [];
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState<(File | null)[]>([null, null, null]);
@@ -61,32 +75,81 @@ export default function ProjectsAdminPage() {
     [publicBase]
   );
 
-  const load = useCallback(async () => {
-    const snap = await getDocs(collection(db, "projects"));
-    setProjects(
-      snap.docs.map((d) => {
-        const data = d.data() as ProjectDoc;
-        return {
-          id: d.id,
-          title: (data.title || "Untitled").toString(),
-          description: (data.description || "").toString(),
-          imgUrl1: normalize((data.imgUrl1 || "").trim()),
-          imgUrl2: normalize((data.imgUrl2 || "").trim()),
-          imgUrl3: normalize((data.imgUrl3 || "").trim()),
-          uploadDate:
-            typeof data.uploadDate === "object" &&
-            data.uploadDate &&
-            "toDate" in data.uploadDate
-              ? (data.uploadDate as { toDate?: () => Date }).toDate?.()
-              : (data.uploadDate as Date | undefined),
-        };
-      })
-    );
-  }, [normalize]);
+  const baseQuery = useMemo(
+    () => query(collection(db, "projects"), orderBy("uploadDate", "desc")),
+    []
+  );
+
+  const toProject = useCallback(
+    (d: QueryDocumentSnapshot<DocumentData>): Project => {
+      const data = d.data() as ProjectDoc;
+      return {
+        id: d.id,
+        title: (data.title || "Untitled").toString(),
+        description: (data.description || "").toString(),
+        imgUrl1: normalize((data.imgUrl1 || "").trim()),
+        imgUrl2: normalize((data.imgUrl2 || "").trim()),
+        imgUrl3: normalize((data.imgUrl3 || "").trim()),
+        uploadDate:
+          typeof data.uploadDate === "object" &&
+          data.uploadDate &&
+          "toDate" in data.uploadDate
+            ? (data.uploadDate as { toDate?: () => Date }).toDate?.()
+            : (data.uploadDate as Date | undefined),
+      };
+    },
+    [normalize]
+  );
+
+  const loadFirstPage = useCallback(async () => {
+    try {
+      const snap = await getDocs(query(baseQuery, limit(pageSize)));
+      const docs = snap.docs;
+      setPages([docs.map(toProject)]);
+      setCursors(docs.length ? [docs[docs.length - 1]] : []);
+      setHasMore([docs.length === pageSize]);
+      setPage(0);
+    } catch {
+      // Fallback ordering if "uploadDate" is missing on older docs
+      const fallback = query(collection(db, "projects"), orderBy("title", "asc"));
+      const snap = await getDocs(query(fallback, limit(pageSize)));
+      const docs = snap.docs;
+      setPages([docs.map(toProject)]);
+      setCursors(docs.length ? [docs[docs.length - 1]] : []);
+      setHasMore([docs.length === pageSize]);
+      setPage(0);
+    }
+  }, [baseQuery, pageSize, toProject]);
+
+  const loadNextPage = useCallback(async () => {
+    // If we already fetched next page, just move cursor
+    if (pages[page + 1]) {
+      setPage((p) => p + 1);
+      return;
+    }
+    const last = cursors[page];
+    if (!last) return;
+    const snap = await getDocs(query(baseQuery, startAfter(last), limit(pageSize)));
+    const docs = snap.docs;
+    if (!docs.length) return; // no next page
+    setPages((prev) => [...prev, docs.map(toProject)]);
+    setCursors((prev) => [...prev, docs[docs.length - 1]]);
+    setHasMore((prev) => {
+      const copy = [...prev];
+      copy[page] = true; // we could navigate here, so current had more
+      copy[page + 1] = docs.length === pageSize; // next page may or may not have more
+      return copy;
+    });
+    setPage((p) => p + 1);
+  }, [baseQuery, cursors, page, pageSize, pages, toProject]);
+
+  const loadPrevPage = useCallback(() => {
+    if (page > 0) setPage((p) => p - 1);
+  }, [page]);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    loadFirstPage();
+  }, [loadFirstPage]);
 
   async function createProject() {
     if (!title.trim()) {
@@ -139,19 +202,9 @@ export default function ProjectsAdminPage() {
         uploadDate: serverTimestamp(),
       };
 
-      const ref = await addDoc(collection(db, "projects"), payload);
-      setProjects((prev) => [
-        {
-          id: ref.id,
-          title: payload.title,
-          description: payload.description,
-          imgUrl1: normalize(payload.imgUrl1 || ""),
-          imgUrl2: normalize(payload.imgUrl2 || ""),
-          imgUrl3: normalize(payload.imgUrl3 || ""),
-          uploadDate: undefined,
-        },
-        ...prev,
-      ]);
+  await addDoc(collection(db, "projects"), payload);
+  // After creating, reload the first page to reflect newest item
+  await loadFirstPage();
 
       setTitle("");
       setDescription("");
@@ -170,17 +223,19 @@ export default function ProjectsAdminPage() {
   async function deleteProject(id: string) {
     if (!confirm("Delete this project?")) return;
     await deleteDoc(doc(db, "projects", id));
-    setProjects((p) => p.filter((x) => x.id !== id));
-    setMessage({ type: "success", text: "Project deleted" });
+  // Reload from the first page to keep ordering consistent
+  await loadFirstPage();
+  setMessage({ type: "success", text: "Project deleted" });
   }
 
   return (
-    <div className="relative w-screen box-border ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 text-center">
-      <h2 className="text-3xl font-semibold text-gray-800 mb-6">Projects Admin</h2>
+    <div style={{padding: "3rem"}} className="relative w-screen box-border ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 text-center">
+      <h1 className="text-3xl font-semibold text-gray-900 mb-4">Admin Portal</h1>
 
       {/* Create Project Section */}
-      <div className="bg-white shadow-md rounded-xl p-8 md:p-10 lg:p-12 mb-10 flex flex-col items-center justify-center gap-6 mx-auto w-full text-left">
-        <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div style={{marginBottom: "3rem"}} className="bg-white shadow-md rounded-2xl p-6 md:p-8 mb-10 mx-auto w-full max-w-5xl text-left">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Projects Admin</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex flex-col gap-3">
             <label className="text-sm text-gray-700">Title</label>
             <input
@@ -198,18 +253,15 @@ export default function ProjectsAdminPage() {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
-
           <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="flex flex-wrap gap-3">
               {files.map((f, i) => (
                 <label
                   key={i}
-                  className="w-full h-28 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-4 cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition"
+                  className="inline-flex h-14 w-20 md:w-24 items-center justify-center rounded-xl border border-gray-300 bg-white px-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 hover:border-gray-400 transition"
                   title={`Image ${i + 1}`}
                 >
-                  <span className="text-gray-600 text-xs">
-                    {f ? f.name : `Image ${i + 1}`}
-                  </span>
+                  {f ? f.name : `Image ${i + 1}`}
                   <input
                     type="file"
                     accept="image/*"
@@ -223,12 +275,12 @@ export default function ProjectsAdminPage() {
                 </label>
               ))}
             </div>
-            <div className="flex justify-start">
+      <div className="flex justify-start">
               <button
-                style={{ padding: "0px 1rem" }}
                 onClick={createProject}
                 disabled={saving}
-                className="inline-flex items-center justify-center gap-2.5 px-7 md:px-9 py-3 md:py-3.5 whitespace-nowrap bg-gradient-to-b from-blue-600 to-blue-700 hover:from-blue-600 hover:to-blue-800 active:to-blue-900 text-white rounded-full shadow-lg ring-1 ring-blue-500/20 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-300 tracking-wide leading-6 font-medium"
+                style={{padding: "0.5rem"}}
+        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide"
               >
                 {saving ? (
                   <svg
@@ -238,34 +290,12 @@ export default function ProjectsAdminPage() {
                     xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true"
                   >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                    ></path>
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                   </svg>
-                ) : (
-                  <svg
-                    className="h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path d="M3 16.5A4.5 4.5 0 017.5 12H9a1 1 0 010 2H7.5A2.5 2.5 0 005 16.5V17a1 1 0 01-2 0v-.5zM15 6a1 1 0 011-1 5 5 0 014.995 4.783L21 10v.126A4 4 0 0119 21H9a4 4 0 01-3.995-3.8L5 17h2a1 1 0 010 2H9a2 2 0 001.995-1.85L11 17h2l.001.15A2 2 0 0015 19h4a2 2 0 001.995-1.85L21 17a2 2 0 00-1.85-1.995L19 15H9a4 4 0 01-3.995-3.8L5 11V10a7 7 0 016.293-6.965L12 3a1 1 0 011 1v2z" />
-                    <path d="M12 13a1 1 0 01-1-1V7.414l-1.293 1.293a1 1 0 01-1.414-1.414l3-3a1 1 0 011.32-.083l.094.083 3 3a1 1 0 01-1.414 1.414L13 7.414V12a1 1 0 01-1 1z" />
-                  </svg>
-                )}
-                <span className="text-sm md:text-base">
-                  {saving ? "Saving..." : "Create Project"}
+                ) : null}
+                <span className="text-sm font-medium">
+                  {saving ? "Creating..." : "Create Project"}
                 </span>
               </button>
             </div>
@@ -289,7 +319,7 @@ export default function ProjectsAdminPage() {
             No projects yet
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {projects.map((p) => {
               const thumbs = [p.imgUrl1, p.imgUrl2, p.imgUrl3].filter(Boolean) as string[];
               return (
@@ -361,6 +391,27 @@ export default function ProjectsAdminPage() {
             })}
           </div>
         )}
+      </div>
+
+      {/* Pagination Controls */}
+    <div className="flex items-center justify-center gap-4 mt-8">
+        <button
+          onClick={loadPrevPage}
+          disabled={page === 0}
+          className="h-10 w-10 rounded-full bg-gray-900 text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+          aria-label="Previous page"
+        >
+          <span className="text-lg">‹</span>
+        </button>
+        <span className="text-gray-800 font-medium">{page + 1}</span>
+        <button
+          onClick={loadNextPage}
+      disabled={!hasMore[page]}
+          className="h-10 w-10 rounded-full bg-white text-gray-900 ring-1 ring-gray-300 flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+          aria-label="Next page"
+        >
+          <span className="text-lg">›</span>
+        </button>
       </div>
     </div>
   );
