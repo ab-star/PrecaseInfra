@@ -14,6 +14,8 @@ export async function POST(req: NextRequest) {
     }
   const res = NextResponse.json({ user: { email: user.email } });
     // Set a short-lived session cookie (ephemeral). Extend/secure as needed.
+    const isSecure = (req.headers.get('x-forwarded-proto') || '').toLowerCase() === 'https';
+
     res.cookies.set({
       name: 'adminSession',
       value: '1',
@@ -21,12 +23,13 @@ export async function POST(req: NextRequest) {
       path: '/',
       maxAge: 60 * 60, // 1 hour
       sameSite: 'lax',
+      secure: isSecure,
     });
     // If a next path points to an allowed admin page, bind it immediately.
     if (typeof next === 'string' && next.startsWith('/admin/')) {
       // Normalize trailing slash for consistency with middleware
       const bound = next.endsWith('/') ? next.slice(0, -1) : next;
-      res.cookies.set({ name: 'adminPage', value: bound, path: '/admin', sameSite: 'lax' });
+  res.cookies.set({ name: 'adminPage', value: bound, path: '/admin', sameSite: 'lax', secure: isSecure });
     }
   res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
   res.headers.set('Pragma', 'no-cache');

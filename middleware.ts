@@ -10,6 +10,19 @@ export function middleware(req: NextRequest) {
   // Normalize path to avoid trailing slash mismatches
   const path = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
   const session = req.cookies.get(SESSION_COOKIE)?.value;
+  const mode = (req.headers.get('sec-fetch-mode') || '').toLowerCase();
+  const dest = (req.headers.get('sec-fetch-dest') || '').toLowerCase();
+  const purpose = (req.headers.get('purpose') || req.headers.get('sec-purpose') || '').toLowerCase();
+  const isNavDoc = mode === 'navigate' && dest === 'document';
+  const isPrefetch = purpose === 'prefetch';
+  const referer = req.headers.get('referer') || '';
+  let refererPath = '';
+  try {
+    const u = new URL(referer);
+    refererPath = u.pathname.endsWith('/') && u.pathname !== '/' ? u.pathname.slice(0, -1) : u.pathname;
+  } catch {
+    refererPath = referer;
+  }
 
   // Allow /admin/login always; clear any lingering session and page lock
   if (path.startsWith('/admin/login')) {
@@ -70,8 +83,11 @@ export function middleware(req: NextRequest) {
     return res;
   }
 
-  // Any other route (including other /admin pages): clear the session so revisiting allowed pages requires login again
-  if (session) {
+  // Any other route (including other /admin pages): clear the session on real navigations
+  // Also clear when coming from an admin page (client-side nav / RSC fetch), even if not a full document navigation
+  const cameFromAdmin = ALLOWED_ADMIN_PAGES.some((p) => refererPath.startsWith(p));
+  const leavingAdmin = !path.startsWith('/admin') || !ALLOWED_ADMIN_PAGES.includes(path);
+  if (session && ((isNavDoc && !isPrefetch) || (cameFromAdmin && leavingAdmin))) {
     const res = NextResponse.next();
     res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/admin', maxAge: 0 });
     res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/', maxAge: 0 });
