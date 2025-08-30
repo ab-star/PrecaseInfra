@@ -182,12 +182,21 @@ export default function GalleryAdminPage() {
 
   return (
     <div
+    style={{padding: "0px 5rem"}}
       className="relative w-screen box-border ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 text-center"
     >
-  <h1 className="text-3xl font-semibold text-gray-900 mb-6">Admin Portal</h1>
+    <div style={{
+          padding:"1rem 0px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+    }}>
+
+  <h1 className="text-3xl font-semibold text-gray-900 mb-6">Gallery Portal</h1>
 
       {/* Upload Section */}
-      <div className="bg-white shadow-md rounded-2xl p-6 md:p-8 mb-10 flex flex-col items-center justify-center gap-6 mx-auto w-full max-w-4xl">
+      <div style={{marginBottom:"1rem"}} className="bg-white shadow-md rounded-2xl p-6 md:p-8 mb-10 flex flex-col items-center justify-center gap-6 mx-auto w-full max-w-4xl">
         <div className="w-full flex flex-col items-center gap-6">
           <label className="w-full max-w-3xl self-center flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-10 md:p-12 cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition mx-auto">
             <span className="text-gray-600 text-sm md:text-base">{file ? file.name : "Click or drag an image here"}</span>
@@ -199,7 +208,7 @@ export default function GalleryAdminPage() {
             />
           </label>
           <button
-      style={{ padding: "0px 1rem" }}
+      style={{ padding: "0px 1rem" , marginBottom: "1rem" }}
           disabled={!file || uploading}
           onClick={handleUpload}
           className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide self-center"
@@ -229,9 +238,10 @@ export default function GalleryAdminPage() {
           </p>
         )}
       </div>
+      </div>
 
       {/* Gallery Grid */}
-  <div className="w-full mt-6">
+  <div style={{marginBottom: "5rem"}} className="w-full mt-6">
         {items.length === 0 ? (
           <div className="bg-gray-50 border border-dashed rounded-lg p-10 text-gray-500">
             No images yet
@@ -281,7 +291,7 @@ export default function GalleryAdminPage() {
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex items-center justify-center gap-4 mt-8">
+      <div  style={{marginBottom: "3rem"}} className="flex items-center justify-center gap-4 mt-8">
         <button
           onClick={loadPrevPage}
           disabled={page === 0}

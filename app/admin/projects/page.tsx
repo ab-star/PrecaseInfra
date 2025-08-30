@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRequireAdminSession } from "../_hooks/useRequireAdminSession";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   collection,
   addDoc,
@@ -48,6 +49,7 @@ export default function ProjectsAdminPage() {
 
   // Derived list for current page
   const projects = pages[page] || [];
+  const [previewProject, setPreviewProject] = useState<Project | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState<(File | null)[]>([null, null, null]);
@@ -193,18 +195,26 @@ export default function ProjectsAdminPage() {
         }
       }
 
-      const payload = {
+      // Require at least one image
+      const hasAtLeastOne = urls.some((u) => u && u.trim().length > 0);
+      if (!hasAtLeastOne) {
+        setMessage({ type: "error", text: "Please upload at least one image" });
+        return;
+      }
+
+      // Build payload without undefined fields (Firestore rejects undefined)
+      const payload: { title: string; description: string; uploadDate: ReturnType<typeof serverTimestamp>; imgUrl1?: string; imgUrl2?: string; imgUrl3?: string } = {
         title: title.trim(),
         description: description.trim(),
-        imgUrl1: urls[0] || undefined,
-        imgUrl2: urls[1] || undefined,
-        imgUrl3: urls[2] || undefined,
         uploadDate: serverTimestamp(),
       };
+      if (urls[0]) payload.imgUrl1 = urls[0];
+      if (urls[1]) payload.imgUrl2 = urls[1];
+      if (urls[2]) payload.imgUrl3 = urls[2];
 
-  await addDoc(collection(db, "projects"), payload);
-  // After creating, reload the first page to reflect newest item
-  await loadFirstPage();
+      await addDoc(collection(db, "projects"), payload);
+      // After creating, reload the first page to reflect newest item
+      await loadFirstPage();
 
       setTitle("");
       setDescription("");
@@ -223,9 +233,9 @@ export default function ProjectsAdminPage() {
   async function deleteProject(id: string) {
     if (!confirm("Delete this project?")) return;
     await deleteDoc(doc(db, "projects", id));
-  // Reload from the first page to keep ordering consistent
-  await loadFirstPage();
-  setMessage({ type: "success", text: "Project deleted" });
+    // Reload from the first page to keep ordering consistent
+    await loadFirstPage();
+    setMessage({ type: "success", text: "Project deleted" });
   }
 
   return (
@@ -258,10 +268,12 @@ export default function ProjectsAdminPage() {
               {files.map((f, i) => (
                 <label
                   key={i}
-                  className="inline-flex h-14 w-20 md:w-24 items-center justify-center rounded-xl border border-gray-300 bg-white px-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 hover:border-gray-400 transition"
+                  className="inline-flex h-12 min-w-[8rem] max-w-[16rem] items-center justify-center rounded-xl border border-gray-300 bg-white px-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 hover:border-gray-400 transition"
                   title={`Image ${i + 1}`}
                 >
-                  {f ? f.name : `Image ${i + 1}`}
+                  <span title={f ? f.name : undefined} className="truncate w-full text-center">
+                    {f ? f.name : `Image ${i + 1}`}
+                  </span>
                   <input
                     type="file"
                     accept="image/*"
@@ -319,13 +331,14 @@ export default function ProjectsAdminPage() {
             No projects yet
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {projects.map((p) => {
               const thumbs = [p.imgUrl1, p.imgUrl2, p.imgUrl3].filter(Boolean) as string[];
               return (
                 <div
                   key={p.id}
-                  className="bg-white rounded-lg shadow hover:shadow-md overflow-hidden relative group w-full text-left"
+      className="bg-white rounded-lg shadow hover:shadow-md overflow-hidden relative group w-full text-left cursor-pointer"
+      onClick={() => setPreviewProject(p)}
                 >
                   <div className="relative h-48 w-full">
                     {thumbs.length > 0 ? (
@@ -392,6 +405,45 @@ export default function ProjectsAdminPage() {
           </div>
         )}
       </div>
+
+      {/* Preview Modal */}
+      <AnimatePresence>
+        {previewProject && (
+          <motion.div
+            key="admin-proj-modal-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setPreviewProject(null)}
+          >
+            <motion.div
+              key="admin-proj-modal"
+              initial={{ opacity: 0, scale: 0.96, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98, y: 8 }}
+              transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+              className="relative w-full max-w-5xl"
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+            >
+              <button onClick={() => setPreviewProject(null)} className="absolute -top-12 right-0 text-white/90 hover:text-white focus:outline-none" aria-label="Close">
+                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+              <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden ring-1 ring-white/10">
+                {previewProject.imgUrl1 && (
+                  <Image src={previewProject.imgUrl1} alt={previewProject.title} fill className="object-contain" sizes="100vw" unoptimized={previewProject.imgUrl1.startsWith('/uploads/')} />
+                )}
+              </div>
+              <div className="mt-3 text-white">
+                <h3 className="text-lg font-semibold">{previewProject.title}</h3>
+                {previewProject.description && <p className="text-slate-200 text-sm">{previewProject.description}</p>}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Pagination Controls */}
     <div className="flex items-center justify-center gap-4 mt-8">
