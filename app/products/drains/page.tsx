@@ -26,15 +26,21 @@ function DrainModel({ path, scale = 1.5 }: { path: string; scale?: number }) {
 
 function ModelCanvas({ path, scale = 1.5 }: { path: string; scale?: number }) {
   return (
-    <Canvas 
-  camera={{ position: [5, 3, 5], fov: 45, far: 1000 }} 
-  style={{ width: "100%", height: "100%" }}
-  gl={{ alpha: true, antialias: true }}
+    <Canvas
+      camera={{ position: [5, 3, 5], fov: 45, far: 1000 }}
+      style={{ width: "100%", height: "100%" }}
+      gl={{ alpha: true, antialias: true }}
       frameloop="always"
+      onCreated={({ gl }) => {
+        gl.toneMapping = THREE.ACESFilmicToneMapping;
+        (gl as unknown as { outputColorSpace?: THREE.ColorSpace }).outputColorSpace = THREE.SRGBColorSpace;
+        gl.toneMappingExposure = 1.15;
+      }}
     >
-      <ambientLight intensity={0.8} />
-      <directionalLight position={[10, 10, 5]} intensity={1.2} />
-      <directionalLight position={[-10, -10, -5]} intensity={0.4} />
+      <ambientLight intensity={1.15} />
+      <hemisphereLight color={0xffffff} groundColor={0x666666} intensity={0.6} />
+      <directionalLight position={[10, 10, 5]} intensity={2.0} />
+      <directionalLight position={[-10, -10, -5]} intensity={0.8} />
       <Suspense fallback={
         <mesh>
           <boxGeometry args={[1.6, 1, 1.2]} />
@@ -133,7 +139,7 @@ export default function DrainsPage() {
         <div className="w-full" style={{paddingTop: "3rem"}}>
 
           {/* Row: FT Flume */}
-          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
             <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
               <Image src="/product/Drain/images/FtFlume.webp" alt="FT Flume" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" priority />
             </div>
@@ -150,7 +156,7 @@ export default function DrainsPage() {
           </article>
 
           {/* Row: U Shape Drain T6 */}
-          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
             <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
               <Image src="/product/Drain/images/UShapeDrainT6.webp" alt="U Shape Drain T6" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
             </div>
@@ -167,7 +173,7 @@ export default function DrainsPage() {
           </article>
 
           {/* Row: U Shape Drain T25 */}
-          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl ring-1 ring-black/5 bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
             <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
               <Image src="/product/Drain/images/UshapeDrainT25.webp" alt="U Shape Drain T25" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
             </div>

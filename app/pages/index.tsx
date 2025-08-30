@@ -19,32 +19,32 @@ const FujiSilvertechLanding = () => {
 
   const sectors: Sector[] = useMemo(() => ([
     {
-      name: "Product 1",
+      name: "U Shape Drain - H Weight",
       bgImage: "/Home/1P.png",
       icon: <FaBolt className="text-4xl md:text-5xl mb-2 text-yellow-400 drop-shadow" />
     },
     {
-      name: "Product 2",
+      name: "L Shape Wall",
       bgImage: "/Home/2P.png",
       icon: <FaTint className="text-4xl md:text-5xl mb-2 text-blue-300 drop-shadow" />
     },
     {
-      name: "Product 3",
+      name: "Box Culvert",
       bgImage: "/Home/3P.png",
       icon: <FaTrain className="text-4xl md:text-5xl mb-2 text-gray-200 drop-shadow" />
     },
     {
-      name: "Product 4",
+      name: "U Shape Big Drain",
       bgImage: "/Home/4P.png",
       icon: <FaIndustry className="text-4xl md:text-5xl mb-2 text-gray-400 drop-shadow" />
     },
     {
-      name: "Product 5",
+      name: "U Shape Drain - L Weight",
       bgImage: "/Home/5p.png",
       icon: <FaRoad className="text-4xl md:text-5xl mb-2 text-amber-200 drop-shadow" />
     },
     {
-      name: "Product 6",
+      name: "Retaining Wall",
       bgImage: "/Home/6P.png",
       icon: <FaIndustry className="text-4xl md:text-5xl mb-2 text-slate-200 drop-shadow" />
     }
@@ -116,7 +116,7 @@ const FujiSilvertechLanding = () => {
             {/* Vertical label container */}
             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-full flex flex-col items-center">
               <span
-                className={`text-center transition-all duration-300 text-white text-base sm:text-lg md:text-xl font-semibold ${hoveredSector === index ? 'drop-shadow-[0_0_16px_rgba(255,255,255,0.85)] scale-110' : 'drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]'}`}
+                className={`block max-w-[90%] break-words text-center leading-tight px-2 transition-all duration-300 text-white text-base sm:text-lg md:text-xl font-semibold ${hoveredSector === index ? 'drop-shadow-[0_0_16px_rgba(255,255,255,0.85)] scale-110' : 'drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]'}`}
                 style={{ color: '#fff' }}
               >
                 {sector.name}

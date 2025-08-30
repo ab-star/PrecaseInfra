@@ -55,9 +55,20 @@ const BoxCulvertPageClean = () => {
       {/* 3D Model Section (responsive height) */}
       <section className="w-full min-h-[70vh] md:min-h-screen pt-12 md:pt-20 pb-12 bg-gray-50 flex flex-col items-center justify-center">
         <div className="w-full h-[60vh] md:h-[70vh] max-w-7xl mx-auto px-4">
-          <Canvas camera={{ position: [4, 2.5, 4], fov: 45 }}>
-            <ambientLight intensity={0.8} />
-            <directionalLight position={[10, 10, 5]} intensity={1.5} />
+          <Canvas
+            camera={{ position: [4, 2.5, 4], fov: 45 }}
+            onCreated={({ gl }) => {
+              gl.toneMapping = THREE.ACESFilmicToneMapping;
+              // Ensure correct color space for brighter, more accurate rendering
+              (gl as unknown as { outputColorSpace?: THREE.ColorSpace }).outputColorSpace = THREE.SRGBColorSpace;
+              // Slightly increase exposure for a brighter look (subtle)
+              gl.toneMappingExposure = 1.15;
+            }}
+          >
+            <ambientLight intensity={1.15} />
+            <hemisphereLight color={0xffffff} groundColor={0x666666} intensity={0.6} />
+            <directionalLight position={[10, 10, 5]} intensity={2.0} />
+            <directionalLight position={[-6, 4, -4]} intensity={0.8} />
             <OrbitControls enablePan={false} enableZoom={false} enableRotate target={[0, 0, 0]} />
             <ErrorBoundary>
               <Suspense fallback={<mesh><boxGeometry args={[2, 1, 3]} /><meshStandardMaterial color="#9ca3af" /></mesh>}>
