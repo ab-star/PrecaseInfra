@@ -4,6 +4,12 @@ import { useEffect } from 'react';
 
 export default function AdminAutoLogoutOnLeave() {
   useEffect(() => {
+    // Do not install logout listeners on the login page to avoid clearing
+    // the session right after a successful login navigation.
+    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin/login')) {
+      return;
+    }
+
     let sent = false;
 
     const send = () => {
@@ -33,7 +39,8 @@ export default function AdminAutoLogoutOnLeave() {
       try {
         const url = new URL(a.href, window.location.href);
         if (url.origin === window.location.origin) {
-          if (!url.pathname.startsWith('/admin')) {
+          // Leaving admin section OR explicitly going to /admin/login should log out
+          if (!url.pathname.startsWith('/admin') || url.pathname.startsWith('/admin/login')) {
             send();
           }
         } else {

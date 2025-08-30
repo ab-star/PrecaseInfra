@@ -32,7 +32,8 @@ const MainHeader = () => {
       "/view-projects",
       "/products/box-culvert",
       "/products/drains",
-      "/products/walls",
+  "/products/walls",
+  "/contacts",
     ];
     routes.forEach((r) => router.prefetch(r));
   }, [router]);
@@ -129,6 +130,9 @@ const MainHeader = () => {
           <Link href="/view-projects" onMouseEnter={() => router.prefetch('/view-projects')} onFocus={() => router.prefetch('/view-projects')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
             PROJECTS
           </Link>
+          <Link href="/contacts" onMouseEnter={() => router.prefetch('/contacts')} onFocus={() => router.prefetch('/contacts')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
+            CONTACT
+          </Link>
           {/* <Link href="/aboutus" onMouseEnter={() => router.prefetch('/aboutus')} onFocus={() => router.prefetch('/aboutus')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
             ABOUT US
           </Link>
@@ -171,6 +175,7 @@ const MainHeader = () => {
             <div className="mt-1 border-t border-emerald-600/60" />
             <Link href="/view-gallery" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Gallery</Link>
             <Link href="/view-projects" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Projects</Link>
+            <Link href="/contacts" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Contact</Link>
           </div>
         </div>
       </div>

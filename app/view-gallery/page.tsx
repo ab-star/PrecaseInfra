@@ -97,7 +97,7 @@ export default function ViewGalleryPage() {
           <h1 style={{marginBottom: "1rem"}} className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
             Our Precast Construction Gallery
           </h1>
-            <p className="text-gray-300 text-lg max-w-3xl leading-relaxed">
+            <p style={{color: "grey"}} className="text-lg max-w-3xl leading-relaxed">
               Explore a curated selection of our precast concrete solutions showcasing precision engineering, durability, and aesthetic integration across infrastructure projects. Each image reflects our commitment to quality and innovation in modern construction.
             </p>
         </div>
