@@ -26,10 +26,7 @@ export default function AdminAutoLogoutOnLeave() {
       }
     };
 
-    const onPageHide = () => send();
-    const onVisibility = () => {
-      if (document.visibilityState === 'hidden') send();
-    };
+  const onPageHide = () => send();
     const onClick = (e: MouseEvent) => {
       // Capture clicks on links that navigate away from /admin
       const target = e.target as HTMLElement | null;
@@ -53,12 +50,10 @@ export default function AdminAutoLogoutOnLeave() {
       }
     };
 
-    window.addEventListener('pagehide', onPageHide);
-    document.addEventListener('visibilitychange', onVisibility);
+  window.addEventListener('pagehide', onPageHide);
     document.addEventListener('click', onClick, { capture: true });
     return () => {
       window.removeEventListener('pagehide', onPageHide);
-      document.removeEventListener('visibilitychange', onVisibility);
       document.removeEventListener('click', onClick, { capture: true } as EventListenerOptions);
     };
   }, []);

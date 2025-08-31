@@ -153,9 +153,9 @@ export default function AdminContactsPage() {
       {selected && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpenId(null)} />
-          <div role="dialog" aria-modal="true" className="relative z-10 w-full max-w-xl bg-white rounded-2xl shadow-lg p-6 md:p-7 mx-4">
+          <div style={{padding: "1.5rem"}} role="dialog" aria-modal="true" className="relative z-10 w-full max-w-xl bg-white rounded-2xl shadow-lg p-6 md:p-7 mx-4">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Contact Details</h2>
+              <h2 style={{marginBottom: "0.5rem"}} className="text-lg font-semibold text-gray-900">Contact Details</h2>
               <button onClick={() => setOpenId(null)} aria-label="Close" className="h-9 w-9 inline-flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M6.225 4.811a1 1 0 0 1 1.414 0L12 9.172l4.361-4.361a1 1 0 1 1 1.415 1.414L13.415 10.586l4.36 4.361a1 1 0 1 1-1.414 1.414L12 12l-4.361 4.361a1 1 0 1 1-1.414-1.414l4.36-4.361-4.36-4.361a1 1 0 0 1 0-1.414Z"/></svg>
               </button>
@@ -165,15 +165,15 @@ export default function AdminContactsPage() {
               <div className="flex"><span className="w-28 text-gray-500">Email</span><a className="text-blue-600" href={`mailto:${selected.email}`}>{selected.email}</a></div>
               <div className="flex"><span className="w-28 text-gray-500">Contact</span><span>{selected.contact}</span></div>
               <div className="flex"><span className="w-28 text-gray-500">Subject</span><span>{selected.subject}</span></div>
-              <div>
+              <div style={{margin: "0.5rem 0px"}}>
                 <div className="text-gray-500 mb-1">Message</div>
                 <div className="p-3 rounded-md bg-gray-50 text-gray-800 whitespace-pre-wrap max-h-60 overflow-auto">{selected.message}</div>
               </div>
               <div className="flex"><span className="w-28 text-gray-500">Date</span><span className="text-gray-600">{selected.createdAt ? selected.createdAt.toLocaleString() : '-'}</span></div>
             </div>
-            <div className="mt-5 flex items-center justify-end gap-2">
+            {/* <div className="mt-5 flex items-center justify-end gap-2">
               <button onClick={() => setOpenId(null)} className="px-4 py-2 rounded-full bg-gray-900 text-white hover:bg-black">Close</button>
-            </div>
+            </div> */}
           </div>
         </div>
       )}

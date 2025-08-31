@@ -40,6 +40,7 @@ export function middleware(req: NextRequest) {
   // Allow /admin/login always; clear session/page lock only on real navigations (avoid prefetch-triggered logout)
   if (path.startsWith('/admin/login')) {
     const res = NextResponse.next();
+    // Only clear cookies when the user explicitly navigates to the login page
     if (isNavDoc && !isPrefetch) {
       if (session) {
         res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/admin', maxAge: 0 });
@@ -54,7 +55,7 @@ export function middleware(req: NextRequest) {
     return res;
   }
 
-  // Only allow the specific admin upload pages when a session exists
+  // Only allow the specific admin pages when a session exists
   if (ALLOWED_ADMIN_PAGES.includes(path)) {
     if (!session) {
       const url = req.nextUrl.clone();
@@ -66,36 +67,14 @@ export function middleware(req: NextRequest) {
       res.headers.set('Vary', 'Cookie');
       return res;
     }
-    const bound = req.cookies.get(PAGE_COOKIE)?.value;
-    // First entry after login: bind the session to this specific page
-    if (!bound) {
-      const res = NextResponse.next();
-      res.cookies.set({ name: PAGE_COOKIE, value: path, path: '/admin', sameSite: 'lax' });
-      res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
-      res.headers.set('Pragma', 'no-cache');
-      res.headers.set('Vary', 'Cookie');
-      return res;
-    }
-    // If trying to access a different admin page than the one bound, force re-login
-    if (bound !== path) {
-      const url = req.nextUrl.clone();
-      url.pathname = '/admin/login';
-      url.searchParams.set('next', path);
-      const res = NextResponse.redirect(url);
-  res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/admin', maxAge: 0 });
-  res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/', maxAge: 0 });
-  res.cookies.set({ name: PAGE_COOKIE, value: '', path: '/admin', maxAge: 0 });
-  res.cookies.set({ name: PAGE_COOKIE, value: '', path: '/', maxAge: 0 });
-      res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
-      res.headers.set('Pragma', 'no-cache');
-      res.headers.set('Vary', 'Cookie');
-      return res;
-    }
-    const res = NextResponse.next();
-    res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
-    res.headers.set('Pragma', 'no-cache');
-    res.headers.set('Vary', 'Cookie');
-    return res;
+  // We previously "bound" a session to a single admin page to harden on Cloudflare.
+  // To allow navigation across allowed admin pages without re-login, we now just memo the last page but don't enforce it.
+  const res = NextResponse.next();
+  res.cookies.set({ name: PAGE_COOKIE, value: path, path: '/admin', sameSite: 'lax' });
+  res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+  res.headers.set('Pragma', 'no-cache');
+  res.headers.set('Vary', 'Cookie');
+  return res;
   }
 
   // Any other route (including other /admin pages): clear the session only on real document navigations
