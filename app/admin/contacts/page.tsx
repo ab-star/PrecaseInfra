@@ -88,61 +88,63 @@ export default function AdminContactsPage() {
   const selected = items.find(i => i.id === openId) || null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl">
-        <div className="bg-white rounded-2xl shadow p-6 md:p-8 max-h-[82vh] overflow-auto">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl md:text-2xl font-semibold text-gray-900">Contacts</h1>
-            <div className="text-sm text-gray-600 flex items-center gap-3">
-              <span>Page {pageIndex + 1}</span>
-              <div className="inline-flex items-center gap-2">
-                <button onClick={goPrev} disabled={!canPrev || loading} className="px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50">Prev</button>
-                <button onClick={goNext} disabled={!canNext || loading} className="px-3 py-1.5 rounded-full bg-gray-900 text-white hover:bg-black disabled:opacity-50">Next</button>
+    <div className="min-h-screen bg-gray-50">
+      <div className="py-12">
+        <div className="flex justify-center items-start px-4">
+          <div className="bg-white rounded-2xl shadow p-6 md:p-8 max-h-[82vh] overflow-y-auto w-full max-w-[1200px]">
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-xl md:text-2xl font-semibold text-gray-900">Contacts</h1>
+              <div className="text-sm text-gray-600 flex items-center gap-3">
+                <span>Page {pageIndex + 1}</span>
+                <div className="inline-flex items-center gap-2">
+                  <button onClick={goPrev} disabled={!canPrev || loading} className="px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50">Prev</button>
+                  <button onClick={goNext} disabled={!canNext || loading} className="px-3 py-1.5 rounded-full bg-gray-900 text-white hover:bg-black disabled:opacity-50">Next</button>
+                </div>
               </div>
             </div>
-          </div>
-          {error && <div className="text-sm text-red-600 mb-3">{error}</div>}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="text-gray-600 border-b">
-                  <th className="py-2 pr-4">Name</th>
-                  <th className="py-2 pr-4">Email</th>
-                  <th className="py-2 pr-4">Contact</th>
-                  <th className="py-2 pr-4">Subject</th>
-                  <th className="py-2 pr-4">Message</th>
-                  <th className="py-2 pr-4">Date</th>
-                  <th className="py-2 pr-0 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((c) => (
-                  <tr key={c.id} className="border-b last:border-0 align-top">
-                    <td className="py-2 pr-4 text-gray-900 font-medium">{c.name}</td>
-                    <td className="py-2 pr-4 text-blue-600"><a href={`mailto:${c.email}`}>{c.email}</a></td>
-                    <td className="py-2 pr-4">{c.contact}</td>
-                    <td className="py-2 pr-4">{c.subject}</td>
-                    <td className="py-2 pr-4 max-w-[320px] whitespace-pre-wrap">{c.message}</td>
-                    <td className="py-2 pr-4 text-gray-500">{c.createdAt ? c.createdAt.toLocaleString() : "-"}</td>
-                    <td className="py-2 pr-0 text-right">
-                      <button aria-label="View details" onClick={() => setOpenId(c.id)} className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M1.5 12s3.75-6.75 10.5-6.75S22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12Zm10.5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
-                      </button>
-                    </td>
+            {error && <div className="text-sm text-red-600 mb-3">{error}</div>}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="text-gray-600 border-b">
+                    <th className="py-2 pr-4">Name</th>
+                    <th className="py-2 pr-4">Email</th>
+                    <th className="py-2 pr-4">Contact</th>
+                    <th className="py-2 pr-4">Subject</th>
+                    <th className="py-2 pr-4">Message</th>
+                    <th className="py-2 pr-4">Date</th>
+                    <th className="py-2 pr-0 text-right">Actions</th>
                   </tr>
-                ))}
-                {items.length === 0 && !loading && (
-                  <tr>
-                    <td colSpan={7} className="py-6 text-center text-gray-500">No contacts yet</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex items-center justify-center mt-5 gap-3">
-            <button onClick={goPrev} disabled={!canPrev || loading} className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50">Prev</button>
-            <span className="text-sm text-gray-600">Page {pageIndex + 1}</span>
-            <button onClick={goNext} disabled={!canNext || loading} className="px-4 py-2 rounded-full bg-gray-900 text-white hover:bg-black disabled:opacity-50">Next</button>
+                </thead>
+                <tbody>
+                  {items.map((c) => (
+                    <tr key={c.id} className="border-b last:border-0 align-top">
+                      <td className="py-2 pr-4 text-gray-900 font-medium">{c.name}</td>
+                      <td className="py-2 pr-4 text-blue-600"><a href={`mailto:${c.email}`}>{c.email}</a></td>
+                      <td className="py-2 pr-4">{c.contact}</td>
+                      <td className="py-2 pr-4">{c.subject}</td>
+                      <td className="py-2 pr-4 max-w-[320px] whitespace-pre-wrap">{c.message}</td>
+                      <td className="py-2 pr-4 text-gray-500">{c.createdAt ? c.createdAt.toLocaleString() : "-"}</td>
+                      <td className="py-2 pr-0 text-right">
+                        <button aria-label="View details" onClick={() => setOpenId(c.id)} className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M1.5 12s3.75-6.75 10.5-6.75S22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12Zm10.5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {items.length === 0 && !loading && (
+                    <tr>
+                      <td colSpan={7} className="py-6 text-center text-gray-500">No contacts yet</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex items-center justify-center mt-5 gap-3">
+              <button onClick={goPrev} disabled={!canPrev || loading} className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50">Prev</button>
+              <span className="text-sm text-gray-600">Page {pageIndex + 1}</span>
+              <button onClick={goNext} disabled={!canNext || loading} className="px-4 py-2 rounded-full bg-gray-900 text-white hover:bg-black disabled:opacity-50">Next</button>
+            </div>
           </div>
         </div>
       </div>
@@ -151,7 +153,7 @@ export default function AdminContactsPage() {
       {selected && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpenId(null)} />
-          <div role="dialog" aria-modal="true" className="relative z-10 w-full max-w-xl bg-white rounded-2xl shadow-lg p-6 md:p-7">
+          <div role="dialog" aria-modal="true" className="relative z-10 w-full max-w-xl bg-white rounded-2xl shadow-lg p-6 md:p-7 mx-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900">Contact Details</h2>
               <button onClick={() => setOpenId(null)} aria-label="Close" className="h-9 w-9 inline-flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">

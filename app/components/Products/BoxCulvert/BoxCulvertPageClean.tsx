@@ -40,10 +40,10 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 const BoxCulvertPageClean = () => {
   return (
     <div className="bg-white">
-      {/* Hero Video Section (full-bleed, non-cropping) */}
-  <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[100svh]">
+      {/* Hero Video Section (full width, maintain aspect, no crop) */}
+      <section className="w-[100dvw] bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)]">
         <video
-          className="absolute inset-0 w-full h-full object-cover"
+          className="w-full h-auto block"
           src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4"
           autoPlay
           muted
@@ -124,10 +124,10 @@ const BoxCulvertPageClean = () => {
         </div>
       </section>
 
-      {/* Extra Video Section (R2 sequence 2) - full-bleed non-cropping */}
-  <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[100svh]">
+      {/* Extra Video Section (R2 sequence 2) - full width, maintain aspect */}
+      <section className="w-[100dvw] bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)]">
         <video
-          className="absolute inset-0 w-full h-full object-cover object-top"
+          className="w-full h-auto block"
           src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxDrainTruckVideo2.mp4"
           autoPlay
           muted

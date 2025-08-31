@@ -55,12 +55,9 @@ function WallCanvas({ path, scale = 1.0 }: { path: string; scale?: number }) {
 export default function WallsPage() {
   return (
     <div className="bg-white">
-      {/* Section 1: Hero Video (full-bleed, non-cropping, larger on mobile/tablet) */}
-  <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[100svh]">
-        <video className="absolute inset-0 w-full h-full object-cover" src={HERO_VIDEO} autoPlay muted loop playsInline />
-        <div className="absolute inset-0 pointer-events-none">
-          {/* <h1 className="text-white text-4xl md:text-6xl font-extrabold">Walls</h1> */}
-        </div>
+      {/* Section 1: Hero Video (full width, maintain aspect, no crop) */}
+      <section className="w-[100dvw] bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)]">
+        <video className="w-full h-auto block" src={HERO_VIDEO} autoPlay muted loop playsInline />
       </section>
 
       {/* Section 2: 3D Model - Increased height and top spacing */}
@@ -70,10 +67,9 @@ export default function WallsPage() {
         </div>
       </section>
 
-      {/* Section 3: Secondary Video - full-bleed, full width, no cropping */}
-     
-  <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] min-h-[100svh]">
-        <video className="absolute inset-0 w-full h-full object-cover" src={EXTRA_VIDEO} autoPlay muted loop playsInline />
+      {/* Section 3: Secondary Video - full width, maintain aspect */}
+      <section className="w-[100dvw] bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)]">
+        <video className="w-full h-auto block" src={EXTRA_VIDEO} autoPlay muted loop playsInline />
       </section>
      
 
@@ -81,10 +77,10 @@ export default function WallsPage() {
       {/* Section 3b: Extra video if present - full-bleed, full width, no cropping */}
 
       {/* Section 4: Alternating Features */}
-  <AlternatingFeaturesWalls />
+      <AlternatingFeaturesWalls />
 
-  <section className="relative w-[100dvw] overflow-hidden bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] pt-0 md:pt-0 pb-0 md:pb-0 min-h-[100svh]">
-        <video className="absolute inset-0 w-full h-full object-cover" src={MID_VIDEO} autoPlay muted loop playsInline />
+      <section className="w-[100dvw] bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] pt-0 md:pt-0 pb-0 md:pb-0">
+        <video className="w-full h-auto block" src={MID_VIDEO} autoPlay muted loop playsInline />
       </section>
     </div>
   );
