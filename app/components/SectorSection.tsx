@@ -1,12 +1,12 @@
 "use client"
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { FaWater, FaBolt, FaTrain, FaIndustry, FaRoad, FaHardHat } from 'react-icons/fa';
 
 const ConstructionSectorNavigation = () => {
   const router = useRouter();
-  const [activeSector, setActiveSector] = useState<number | null>(null);
+  const [activeSector] = useState<number | null>(null);
 
   const sectors = [
     {
@@ -56,14 +56,7 @@ const ConstructionSectorNavigation = () => {
     }
   ];
 
-  const getSizeClasses = (size: string) => {
-    switch(size) {
-      case "sm": return "w-32 h-32";
-      case "md": return "w-48 h-48";
-      case "lg": return "w-64 h-64";
-      default: return "w-48 h-48";
-    }
-  };
+  // size classes not used in current layout; kept for future reference
 
   const handleSectorClick = (route: string) => {
     router.push(route);
@@ -84,7 +77,7 @@ const ConstructionSectorNavigation = () => {
             <FaHardHat className="mr-2" />
             <span className="font-bold">OUR SECTORS</span>
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Building India's Future</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Building India&apos;s Future</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Explore our specialized construction solutions
           </p>

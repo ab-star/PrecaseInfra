@@ -1,5 +1,6 @@
 "use client"
 import React from "react";
+import Link from "next/link";
 
 const CompanyVision = () => {
   return (
@@ -8,8 +9,8 @@ const CompanyVision = () => {
       <nav className="w-full flex justify-between items-center px-8 py-5 bg-white/70 shadow-md sticky top-0 z-30">
         <div className="text-blue-800 font-extrabold text-xl tracking-wider">Fuji Silvertech</div>
         <div className="flex gap-6">
-          <a href="/" className="text-blue-700 hover:text-amber-500 font-semibold transition-colors">Home</a>
-          <a href="/company-vision" className="text-blue-700 hover:text-amber-500 font-semibold transition-colors">Company Vision</a>
+          <Link href="/" className="text-blue-700 hover:text-amber-500 font-semibold transition-colors">Home</Link>
+          <Link href="/company-vision" className="text-blue-700 hover:text-amber-500 font-semibold transition-colors">Company Vision</Link>
         </div>
       </nav>
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-20">

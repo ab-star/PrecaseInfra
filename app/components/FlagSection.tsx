@@ -35,11 +35,11 @@ const FlagSection = () => {
             <div className="col-md-7 col-lg-7">
               <div className="mt-5" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500">
                 <div className="heading-title mb-4">
-                  <h3 style={{ color: '#3e5c76' }}>India's Infrastructure Revolution</h3>
+                  <h3 style={{ color: '#3e5c76' }}>India&apos;s Infrastructure Revolution</h3>
                   <h3 style={{ color: '#22334a' }}>Building the Future, Proudly Indian</h3>
                 </div>
                 <p style={{ fontSize: '1.15em', color: '#22334a' }}>
-                  3gInfraTech is at the forefront of India's infrastructure transformation, delivering innovative precast 
+                  3gInfraTech is at the forefront of India&apos;s infrastructure transformation, delivering innovative precast 
                   solutions that empower smart cities, modern highways, and sustainable communities. Our expertise, 
                   technology, and commitment to quality are shaping a new era of progress—where every project is a step 
                   toward a stronger, greener, and more connected nation.

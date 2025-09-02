@@ -169,30 +169,104 @@ export class ProjectsDataStore {
   static async getAllProjects(): Promise<ProjectData[]> {
     try {
       if (db) {
-        // Get from Firebase
-        const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
-        const querySnapshot = await getDocs(q);
+        // Get from Firebase with graceful fallback ordering
+        // Prefer uploadDate (used by admin UI), then createdAt, then title
+        let querySnapshot;
+        const attempts: Array<[field: string, direction: 'asc' | 'desc']> = [
+          ['uploadDate', 'desc'],
+          ['createdAt', 'desc'],
+          ['title', 'asc'],
+        ];
+        let lastError: unknown = null;
+        for (const [field, dir] of attempts) {
+          try {
+            const qAny = query(
+              collection(db, 'projects'),
+              // Cast through unknown to satisfy generic constraint without 'any'
+              orderBy(field as unknown as string, dir)
+            );
+            querySnapshot = await getDocs(qAny);
+            if (querySnapshot) break;
+          } catch (e) {
+            lastError = e;
+          }
+        }
+        if (!querySnapshot) {
+          throw lastError ?? new Error('Failed to fetch projects');
+        }
         const projects: ProjectData[] = [];
-        
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
+
+        type RawImage = { url?: string; key?: string; caption?: string } | string;
+        type RawProject = Partial<ProjectData> & {
+          images?: RawImage[];
+          imgUrl1?: string;
+          imgUrl2?: string;
+          imgUrl3?: string;
+          createdAt?: { toDate: () => Date } | Date | undefined | null;
+          uploadDate?: { toDate: () => Date } | Date | undefined | null;
+        };
+
+        const isTimestampLike = (val: unknown): val is { toDate: () => Date } => {
+          return !!val && typeof val === 'object' && 'toDate' in val && typeof (val as { toDate: unknown }).toDate === 'function';
+        };
+
+        const publicBase = (process.env.NEXT_PUBLIC_R2_BASE || process.env.R2_PUBLIC_BASE_URL || '').toString();
+        const normalizeUrl = (keyOrUrl?: string) => {
+          const v = (keyOrUrl || '').trim();
+          if (!v) return '';
+          if (v.startsWith('http://') || v.startsWith('https://') || v.startsWith('/')) return v;
+          if (publicBase) {
+            const base = publicBase.replace(/\/$/, '');
+            const cleaned = v.replace(/^\//, '');
+            return `${base}/${cleaned}`;
+          }
+          return `/${v.replace(/^\//, '')}`;
+        };
+
+        querySnapshot.forEach((d) => {
+          const data = d.data() as RawProject;
+
+          // Normalize images from various shapes
+          let images: ProjectData['images'] = [];
+          if (Array.isArray(data.images)) {
+            images = (data.images as RawImage[]).map((it) => {
+              if (typeof it === 'string') {
+                return { url: normalizeUrl(it), key: '', caption: undefined };
+              }
+              return { url: normalizeUrl(it.url ?? ''), key: it.key ?? '', caption: it.caption };
+            });
+          } else {
+            const candidates = [data.imgUrl1, data.imgUrl2, data.imgUrl3].filter(Boolean);
+            if (candidates.length) {
+              images = (candidates as string[]).map((u) => ({ url: normalizeUrl(u), key: '', caption: undefined }));
+            }
+          }
+
           projects.push({
-            id: doc.id,
-            title: data.title,
-            description: data.description,
-            category: data.category,
+            id: d.id,
+            title: data.title ?? 'Project',
+            description: data.description ?? '',
+            category: data.category ?? '',
             location: data.location,
             client: data.client,
             startDate: data.startDate,
             endDate: data.endDate,
-            status: data.status,
-            features: data.features || [],
-            budget: data.budget,
-            images: data.images || [],
-            createdAt: data.createdAt.toDate(),
+            status: (data.status as ProjectData['status']) ?? 'In Progress',
+            features: Array.isArray(data.features) ? data.features : [],
+            budget: typeof data.budget === 'number' ? data.budget : undefined,
+            images,
+            createdAt: isTimestampLike(data.createdAt)
+              ? data.createdAt.toDate()
+              : data.createdAt instanceof Date
+              ? data.createdAt
+              : isTimestampLike(data.uploadDate)
+              ? data.uploadDate.toDate()
+              : data.uploadDate instanceof Date
+              ? data.uploadDate
+              : new Date(0),
           });
         });
-        
+
         return projects;
       } else {
         // Get from localStorage

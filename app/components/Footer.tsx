@@ -6,6 +6,10 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
 import { FaCookie, FaTimes } from "react-icons/fa";
 import Image from "next/image";
 
@@ -108,34 +112,34 @@ const Footer = () => {
         sx={{
           position: "relative",
           zIndex: 90,
-          width: "100dvw",
-          ml: "calc(50% - 50dvw)",
-          mr: "calc(50% - 50dvw)",
+          width: { xs: "100%", md: "100dvw" },
+          ml: { xs: 0, md: "calc(50% - 50dvw)" },
+          mr: { xs: 0, md: "calc(50% - 50dvw)" },
           overflow: "hidden",
           color: "#ffffff",
           backgroundImage:
             "url('/product/Drain/background/uShapedDrainBg.jpg'), linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.1) 60%)",
           backgroundSize: "cover, cover",
-          backgroundPosition: "center, center",
+          backgroundPosition: { xs: "center top, center", md: "center, center" },
           backgroundRepeat: "no-repeat, no-repeat",
-          minHeight: { xs: 380, md: 460 },
+          minHeight: { xs: 300, md: 460 },
           backgroundColor: 'transparent',
           borderTop: "1px solid",
           borderColor: "divider",
         }}
       >
-        <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 3, sm: 4, md: 6 }, py: { xs: 6, md: 8 } }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: { xs: 3, md: 4 } }}>
+        <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, sm: 3, md: 6 }, py: { xs: 4, md: 8 } }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: { xs: 2.5, md: 4 } }}>
             <Image
               src="/brandIcon.jpeg"
               alt="Company Logo"
-              width={56}
-              height={56}
+              width={48}
+              height={48}
               style={{ borderRadius: 12, boxShadow: "0 6px 20px rgba(0,0,0,0.15)" }}
               priority
             />
           </Box>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '2fr 1fr 1fr' }, gap: { xs: 4, md: 6 } }}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '2fr 1fr 1fr 1fr' }, gap: { xs: 3, md: 6 } }}>
             <Box>
               <Typography variant="h6" fontWeight={700} sx={{ mb: 2, color: '#ffffff' }}>
                 Contact Us
@@ -144,7 +148,7 @@ const Footer = () => {
                 <IconButton size="small" sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }} aria-label="location">
                   <LocationOnIcon />
                 </IconButton>
-                <Typography variant="body1" sx={{ lineHeight: 1.6, color: 'rgba(255,255,255,0.92)' }}>
+                <Typography variant="body1" sx={{ lineHeight: 1.6, color: 'rgba(255,255,255,0.92)', fontSize: { xs: 14, md: 16 } }}>
                   1st Floor, 66, Lambe Hanuman Rd, Matavadi, Hans Society,<br />
                   Varachha, Surat, Gujarat 395006
                 </Typography>
@@ -161,7 +165,7 @@ const Footer = () => {
                 <IconButton size="small" sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }} aria-label="email">
                   <EmailIcon />
                 </IconButton>
-                <Link href="mailto:info@companyname.com" underline="hover" sx={{ color: "common.white", "&:hover": { color: "primary.light" } }}>
+                <Link href="mailto:info@companyname.com" underline="hover" sx={{ color: "common.white", "&:hover": { color: "primary.light" }, fontSize: { xs: 14, md: 16 } }}>
                   info@companyname.com
                 </Link>
               </Box>
@@ -172,7 +176,7 @@ const Footer = () => {
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <AccessTimeIcon color="primary" />
-                <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)' }}>Opens soon ⋅ 10 am</Typography>
+                <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)', fontSize: { xs: 14, md: 16 } }}>Opens ⋅ 10 am</Typography>
               </Box>
             </Box>
             <Box>
@@ -180,22 +184,73 @@ const Footer = () => {
                 Policies
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <Link component="button" type="button" onClick={() => setOpenPolicy('privacy')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" } }}>
+                <Link component="button" type="button" onClick={() => setOpenPolicy('privacy')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
                   Privacy Policy
                 </Link>
-                <Link component="button" type="button" onClick={() => setOpenPolicy('terms')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" } }}>
+                <Link component="button" type="button" onClick={() => setOpenPolicy('terms')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
                   Terms of Service
                 </Link>
-                <Link component="button" type="button" onClick={() => setOpenPolicy('cookie')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" } }}>
+                <Link component="button" type="button" onClick={() => setOpenPolicy('cookie')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
                   Cookie Policy
                 </Link>
+              </Box>
+            </Box>
+            <Box>
+              <Typography variant="h6" fontWeight={700} sx={{ mb: 2, color: '#ffffff' }}>
+                Follow Us
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
+                <IconButton
+                  component="a"
+                  href="https://www.linkedin.com/company/3g-infratech/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  size="small"
+                  sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }}
+                >
+                  <LinkedInIcon />
+                </IconButton>
+                <IconButton
+                  component="a"
+                  href="https://youtube.com/@3ginfratech"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                  size="small"
+                  sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }}
+                >
+                  <YouTubeIcon />
+                </IconButton>
+                <IconButton
+                  component="a"
+                  href="https://www.facebook.com/share/17Uvj2fVk3/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  size="small"
+                  sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }}
+                >
+                  <FacebookIcon />
+                </IconButton>
+                <IconButton
+                  component="a"
+                  href="https://www.instagram.com/3ginfratech"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  size="small"
+                  sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }}
+                >
+                  <InstagramIcon />
+                </IconButton>
               </Box>
             </Box>
           </Box>
         </Box>
         <Box sx={{ borderTop: "1px solid", borderColor: "divider", bgcolor: "#f9fafb" }}>
-          <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 3, sm: 4, md: 6 }, py: 2 }}>
-            <Typography variant="body2" color="text.secondary" sx={{ textAlign: { xs: "center", md: "left" } }}>
+          <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, sm: 4, md: 6 }, py: { xs: 1.5, md: 2 } }}>
+            <Typography variant="body2" color="text.secondary" sx={{ textAlign: { xs: "center", md: "left" }, fontSize: { xs: 12, md: 14 } }}>
               © 2025 Your Company Name. All rights reserved.
             </Typography>
           </Box>
@@ -240,15 +295,15 @@ const Footer = () => {
 
       {/* Cookie Consent Banner */}
       {showCookieConsent && (
-        <div  className="fixed bottom-6 left-6 right-6 md:left-10 md:right-10 z-50 bg-gray-900/95 backdrop-blur-md border border-blue-700/30 rounded-xl shadow-2xl p-5 custom-fade-in">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+        <div  className="fixed bottom-4 left-4 right-4 md:left-10 md:right-10 z-50 bg-gray-900/95 backdrop-blur-md border border-blue-700/30 rounded-xl shadow-2xl p-4 md:p-5 custom-fade-in">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4">
             <div className="flex items-start gap-3 flex-1">
-              <div className="bg-blue-900/50 p-2 rounded-full mt-1">
-                <FaCookie className="text-2xl text-blue-300" />
+              <div className="bg-blue-900/50 p-1.5 md:p-2 rounded-full mt-1">
+                <FaCookie className="text-xl md:text-2xl text-blue-300" />
               </div>
               <div className="flex-1">
-                <h3 className="text-white font-semibold mb-1">We Use Cookies</h3>
-                <p className="text-gray-300 text-sm">
+                <h3 className="text-white font-semibold mb-1 text-sm md:text-base">We Use Cookies</h3>
+                <p className="text-gray-300 text-xs md:text-sm">
                   We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. 
                   By clicking &quot;Accept All&quot;, you consent to our use of cookies.{" "}
                   <button type="button" onClick={() => setOpenPolicy('cookie')} className="text-blue-300 hover:text-blue-200 underline">
@@ -258,25 +313,25 @@ const Footer = () => {
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div className="flex flex-col sm:flex-row gap-2 md:gap-3 w-full md:w-auto">
               <button 
                 onClick={rejectCookies}
-                className="px-4 py-2 text-sm rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-800 transition-colors"
+                className="px-3 py-2 text-xs md:text-sm rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-800 transition-colors"
               >
                 Reject All
               </button>
               <button 
                 onClick={acceptCookies}
-                className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-500 transition-colors flex items-center justify-center gap-2"
+                className="px-3 py-2 text-xs md:text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-500 transition-colors flex items-center justify-center gap-2"
               >
-                <FaCookie className="text-sm" />
+                <FaCookie className="text-xs md:text-sm" />
                 Accept All
               </button>
             </div>
             
             <button 
               onClick={rejectCookies}
-              className="absolute top-3 right-3 text-gray-400 hover:text-white transition-colors"
+              className="absolute top-2 right-2 md:top-3 md:right-3 text-gray-400 hover:text-white transition-colors"
               aria-label="Close cookie consent"
             >
               <FaTimes />

@@ -566,7 +566,7 @@ const AdminProjectsR2 = () => {
                         }`}>
                           {project.status}
                         </span>
-                      </div>
+                      </div> 
                     </div>
                     {project.images.length > 0 && (
                       <Image

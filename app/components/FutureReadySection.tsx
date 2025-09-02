@@ -95,7 +95,7 @@ const FutureReadySection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl text-gray-300"
           >
-            Next-generation infrastructure solutions designed for tomorrow's challenges
+            Next-generation infrastructure solutions designed for tomorrow&apos;s challenges
           </motion.p>
         </div>
         
