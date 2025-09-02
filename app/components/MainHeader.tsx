@@ -34,6 +34,7 @@ const MainHeader = () => {
       "/products/drains",
   "/products/walls",
   "/contacts",
+    "/certifications",
     ];
     routes.forEach((r) => router.prefetch(r));
   }, [router]);
@@ -132,6 +133,9 @@ const MainHeader = () => {
           </Link>
           <Link href="/contacts" onMouseEnter={() => router.prefetch('/contacts')} onFocus={() => router.prefetch('/contacts')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
             CONTACT
+          </Link>
+          <Link href="/certifications" onMouseEnter={() => router.prefetch('/certifications')} onFocus={() => router.prefetch('/certifications')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal uppercase" style={{ fontSize: '16px', fontWeight: 500 }}>
+            CERTIFICATIONS
           </Link>
           {/* <Link href="/aboutus" onMouseEnter={() => router.prefetch('/aboutus')} onFocus={() => router.prefetch('/aboutus')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
             ABOUT US

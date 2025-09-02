@@ -24,6 +24,7 @@ const branches = [
 
 const Footer = () => {
   const [showCookieConsent, setShowCookieConsent] = useState(false);
+  const [openPolicy, setOpenPolicy] = useState<null | 'privacy' | 'terms' | 'cookie'>(null);
 
   useEffect(() => {
     // Check if user has already accepted cookies
@@ -41,6 +42,74 @@ const Footer = () => {
   const rejectCookies = () => {
     localStorage.setItem('cookieConsent', 'rejected');
     setShowCookieConsent(false);
+  };
+
+  const closePolicy = () => setOpenPolicy(null);
+
+  const getPolicyContent = (type: 'privacy' | 'terms' | 'cookie') => {
+    if (type === 'privacy') {
+      return {
+        title: 'Privacy Policy',
+        body: (
+          <div className="space-y-4">
+            <p>
+              This Privacy Policy explains how 3ginfratech (&quot;we&quot;, &quot;us&quot;) collects, uses, and protects your information.
+              We collect basic usage data to improve our services. We do not sell your personal information.
+            </p>
+            <ul className="list-disc pl-6 space-y-2 text-white/80">
+              <li>Information you provide (e.g., contact details)</li>
+              <li>Automatic data (e.g., device, pages visited, approximate location)</li>
+              <li>Used for: service improvement, security, and analytics</li>
+            </ul>
+            <p>
+              You can contact us to access, update, or delete your information. We retain data only as long as needed.
+            </p>
+            <p className="text-white/60 text-sm">Effective date: {new Date().toLocaleDateString()}</p>
+          </div>
+        ),
+      };
+    }
+    if (type === 'terms') {
+      return {
+        title: 'Terms of Service',
+        body: (
+          <div className="space-y-4">
+            <p>
+              By accessing or using our website, you agree to these Terms. If you do not agree, please do not use the site.
+            </p>
+            <ul className="list-disc pl-6 space-y-2 text-white/80">
+              <li>Use the site lawfully and respectfully</li>
+              <li>Content is provided “as is” without warranties</li>
+              <li>We may update or discontinue features without notice</li>
+              <li>Limitation of liability to the maximum extent permitted by law</li>
+            </ul>
+            <p>
+              These Terms are governed by applicable local laws. Changes will be posted here with an updated effective date.
+            </p>
+            <p className="text-white/60 text-sm">Effective date: {new Date().toLocaleDateString()}</p>
+          </div>
+        ),
+      };
+    }
+    return {
+      title: 'Cookie Policy',
+      body: (
+        <div className="space-y-4">
+          <p>
+            We use cookies and similar technologies to operate the site, measure performance, and personalize content.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-white/80">
+            <li>Strictly necessary cookies for core functionality</li>
+            <li>Analytics cookies to understand site usage</li>
+            <li>Preference cookies to remember your choices</li>
+          </ul>
+          <p>
+            You can control cookies via your browser settings. Disabling some cookies may affect site functionality.
+          </p>
+          <p className="text-white/60 text-sm">Effective date: {new Date().toLocaleDateString()}</p>
+        </div>
+      ),
+    };
   };
 
   return (
@@ -202,27 +271,59 @@ const Footer = () => {
               </div>
               
               <div className="flex flex-wrap justify-center gap-6 text-white/80">
-                <a href="/privacy-policy" className="hover:text-amber-300 transition-colors text-sm sm:text-base">
+                <button type="button" onClick={() => setOpenPolicy('privacy')} className="hover:text-amber-300 transition-colors text-sm sm:text-base underline-offset-2 hover:underline">
                   Privacy Policy
-                </a>
-                <a href="/terms-of-service" className="hover:text-amber-300 transition-colors text-sm sm:text-base">
+                </button>
+                <button type="button" onClick={() => setOpenPolicy('terms')} className="hover:text-amber-300 transition-colors text-sm sm:text-base underline-offset-2 hover:underline">
                   Terms of Service
-                </a>
-                <a href="/cookie-policy" className="hover:text-amber-300 transition-colors text-sm sm:text-base">
+                </button>
+                <button type="button" onClick={() => setOpenPolicy('cookie')} className="hover:text-amber-300 transition-colors text-sm sm:text-base underline-offset-2 hover:underline">
                   Cookie Policy
-                </a>
+                </button>
                 {/* <a href="/refund-policy" className="hover:text-amber-300 transition-colors text-sm sm:text-base">
                   Refund Policy
                 </a> */}
               </div>
               
               <div className="text-white/60 text-sm">
-                © {new Date().getFullYear()} Flajisil. All rights reserved.
+                © {new Date().getFullYear()} 3ginfratech. All rights reserved.
               </div>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* Policy Modal */}
+      {openPolicy && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="policy-modal-title"
+          onClick={closePolicy}
+        >
+          <div
+            className="relative bg-[#0f172a] text-white w-full max-w-3xl max-h-[80vh] overflow-y-auto rounded-2xl shadow-2xl border border-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closePolicy}
+              className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"
+              aria-label="Close policy modal"
+            >
+              <FaTimes />
+            </button>
+            <div className="px-6 py-5 border-b border-white/10">
+              <h2 id="policy-modal-title" className="text-2xl font-bold">
+                {getPolicyContent(openPolicy).title}
+              </h2>
+            </div>
+            <div className="p-6 text-base leading-relaxed">
+              {getPolicyContent(openPolicy).body}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Cookie Consent Banner */}
       {showCookieConsent && (
@@ -236,10 +337,10 @@ const Footer = () => {
                 <h3 className="text-white font-semibold mb-1">We Use Cookies</h3>
                 <p className="text-gray-300 text-sm">
                   We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. 
-                  By clicking "Accept All", you consent to our use of cookies.{" "}
-                  <a href="/cookie-policy" className="text-blue-300 hover:text-blue-200 underline">
+                  By clicking &quot;Accept All&quot;, you consent to our use of cookies.{" "}
+                  <button type="button" onClick={() => setOpenPolicy('cookie')} className="text-blue-300 hover:text-blue-200 underline">
                     Learn more
-                  </a>
+                  </button>
                 </p>
               </div>
             </div>
