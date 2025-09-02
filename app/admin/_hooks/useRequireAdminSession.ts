@@ -26,10 +26,14 @@ export function useRequireAdminSession() {
     (async () => {
       const ok = await check();
       if (ok || cancelled) return;
-      // brief retry to avoid race with cookie write
-      await new Promise(r => setTimeout(r, 200));
-      const ok2 = await check();
-      if (!ok2 && !cancelled) {
+      // backoff retries to avoid race with cookie write
+      const delays = [150, 300, 600];
+      for (const d of delays) {
+        await new Promise(r => setTimeout(r, d));
+        const again = await check();
+        if (again || cancelled) return;
+      }
+      if (!cancelled) {
         const next = encodeURIComponent(window.location.pathname);
         router.replace(`/admin/login?next=${next}`);
       }

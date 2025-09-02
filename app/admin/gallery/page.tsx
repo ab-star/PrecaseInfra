@@ -17,6 +17,27 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
+// MUI
+import {
+  Box,
+  Paper,
+  Typography,
+  Card,
+  CardActionArea,
+  CardContent,
+  IconButton,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  LinearProgress,
+} from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 interface GalleryItem {
   id: string;
@@ -31,6 +52,8 @@ function hasToDate(x: unknown): x is { toDate?: () => Date } {
 export default function GalleryAdminPage() {
   useRequireAdminSession();
   const [file, setFile] = useState<File | null>(null);
+  const [dragOver, setDragOver] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   // Pagination state
   const [pages, setPages] = useState<GalleryItem[][]>([]);
   const [page, setPage] = useState(0);
@@ -40,6 +63,8 @@ export default function GalleryAdminPage() {
   const items = pages[page] || [];
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const publicBase =
     process.env.NEXT_PUBLIC_R2_BASE || process.env.R2_PUBLIC_BASE_URL || "";
@@ -141,175 +166,232 @@ export default function GalleryAdminPage() {
     if (!file) return;
     try {
       setUploading(true);
+      setUploadProgress(0);
       setMessage(null);
 
       const fd = new FormData();
       fd.append("file", file);
       fd.append("prefix", "gallery");
 
-      const res = await fetch("/api/r2-upload", { method: "POST", body: fd });
-      if (!res.ok) throw new Error("Upload failed");
+      // Use XMLHttpRequest to track progress
+      const xhr = new XMLHttpRequest();
+      const promise = new Promise<{ url: string }>((resolve, reject) => {
+        xhr.open("POST", "/api/r2-upload");
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 100);
+            setUploadProgress(pct);
+          }
+        };
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              resolve(JSON.parse(xhr.responseText));
+            } catch {
+              reject(new Error("Invalid upload response"));
+            }
+          } else {
+            reject(new Error("Upload failed"));
+          }
+        };
+        xhr.onerror = () => reject(new Error("Network error"));
+        xhr.send(fd);
+      });
 
-      const { url } = await res.json();
+      const { url } = await promise;
       let storeValue = url;
-
       if (publicBase && url.startsWith(publicBase)) {
         storeValue = url.substring(publicBase.length).replace(/^\//, "");
       }
 
-  await addDoc(collection(db, "gallery"), {
+      await addDoc(collection(db, "gallery"), {
         imageUrl: storeValue,
         uploadDate: serverTimestamp(),
       });
 
-  setFile(null);
-  setMessage({ type: "success", text: "Image uploaded successfully" });
-  await loadFirstPage();
+      setFile(null);
+      setMessage({ type: "success", text: "Image uploaded successfully" });
+      await loadFirstPage();
     } catch (e) {
       setMessage({ type: "error", text: e instanceof Error ? e.message : "Upload failed" });
     } finally {
       setUploading(false);
+      setUploadProgress(null);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm("Delete this image?")) {
-      await deleteDoc(doc(db, "gallery", id));
-      await loadFirstPage();
-      setMessage({ type: "success", text: "Image deleted successfully" });
-    }
+    await deleteDoc(doc(db, "gallery", id));
+    await loadFirstPage();
+    setMessage({ type: "success", text: "Image deleted successfully" });
   };
 
   return (
-    <div
-    style={{padding: "0px 5rem"}}
-      className="relative w-screen box-border ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 text-center"
+    <Box
+      sx={{
+        minHeight: "100dvh",
+        width: "100dvw",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        py: { xs: 4, md: 8 },
+        px: { xs: 2, md: 6 },
+        position: "relative",
+        backgroundImage:
+          "linear-gradient(120deg, rgba(248,250,252,0.94), rgba(241,245,249,0.94)), url('/concrete2.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
-    <div style={{
-          padding:"1rem 0px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-    }}>
+      <Box sx={{ position: "absolute", inset: 0, bgcolor: "rgba(0,0,0,0.12)", pointerEvents: "none" }} />
+      <Paper elevation={8} sx={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 1280, borderRadius: 4, overflow: "hidden" }}>
+        {/* Header */}
+        <Box sx={{ px: 3, py: 2.5, borderBottom: 1, borderColor: "divider", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Box>
+            <Typography variant="h5" fontWeight={800}>Gallery Portal</Typography>
+            <Typography variant="body2" color="text.secondary">Upload and manage gallery images</Typography>
+          </Box>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <Button variant="outlined" startIcon={<NavigateBeforeIcon />} disabled={page === 0} onClick={loadPrevPage} sx={{ textTransform: "none", borderRadius: 10 }}>
+              Prev
+            </Button>
+            <Typography variant="body2" color="text.secondary" sx={{ alignSelf: "center" }}>{page + 1}</Typography>
+            <Button variant="contained" endIcon={<NavigateNextIcon />} disabled={!hasMore[page]} onClick={loadNextPage} sx={{ textTransform: "none", borderRadius: 10 }}>
+              Next
+            </Button>
+          </Box>
+        </Box>
 
-  <h1 className="text-3xl font-semibold text-gray-900 mb-6">Gallery Portal</h1>
+        {/* Upload area */}
+        <Box sx={{ p: { xs: 2, md: 3 } }}>
+          <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 }, borderRadius: 3, mb: 3 }}>
+            <Box
+              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setDragOver(false);
+                const f = e.dataTransfer.files?.[0];
+                if (f) setFile(f);
+              }}
+              sx={{
+                border: "2px dashed",
+                borderColor: dragOver ? "primary.main" : "divider",
+                borderRadius: 3,
+                p: { xs: 3, md: 5 },
+                textAlign: "center",
+                bgcolor: dragOver ? "action.hover" : "background.paper",
+                transition: "all .2s ease",
+              }}
+            >
+              <CloudUploadIcon color="primary" sx={{ fontSize: 40 }} />
+              <Typography variant="subtitle1" sx={{ mt: 1, fontWeight: 600 }}>
+                {file ? file.name : "Drag & drop an image here, or click to select"}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                PNG, JPG up to ~10MB
+              </Typography>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                style={{ opacity: 0, position: "absolute", inset: 0, cursor: "pointer" }}
+                aria-label="Choose image"
+              />
+              <Box sx={{ mt: 2, display: "flex", gap: 1, justifyContent: "center" }}>
+                <Button onClick={() => setFile(null)} disabled={!file || uploading} variant="text" sx={{ textTransform: "none" }}>
+                  Clear
+                </Button>
+                <Button onClick={handleUpload} disabled={!file || uploading} variant="contained" startIcon={<CloudUploadIcon />} sx={{ textTransform: "none" }}>
+                  {uploading ? "Uploading..." : "Upload"}
+                </Button>
+              </Box>
+              {uploadProgress !== null && (
+                <Box sx={{ mt: 2 }}>
+                  <LinearProgress variant="determinate" value={uploadProgress} />
+                  <Typography variant="caption" color="text.secondary">{uploadProgress}%</Typography>
+                </Box>
+              )}
+              {message && (
+                <Typography variant="body2" sx={{ mt: 1 }} color={message.type === 'success' ? 'success.main' : 'error.main'}>
+                  {message.text}
+                </Typography>
+              )}
+            </Box>
+          </Paper>
 
-      {/* Upload Section */}
-      <div style={{marginBottom:"1rem"}} className="bg-white shadow-md rounded-2xl p-6 md:p-8 mb-10 flex flex-col items-center justify-center gap-6 mx-auto w-full max-w-4xl">
-        <div className="w-full flex flex-col items-center gap-6">
-          <label className="w-full max-w-3xl self-center flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-10 md:p-12 cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition mx-auto">
-            <span className="text-gray-600 text-sm md:text-base">{file ? file.name : "Click or drag an image here"}</span>
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-            />
-          </label>
-          <button
-      style={{ padding: "0px 1rem" , marginBottom: "1rem" }}
-          disabled={!file || uploading}
-          onClick={handleUpload}
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide self-center"
-        >
-          {uploading ? (
-            <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-            </svg>
+          {/* Grid */}
+          {items.length === 0 ? (
+            <Paper variant="outlined" sx={{ p: 6, borderRadius: 3, textAlign: "center", color: "text.secondary" }}>
+              No images yet
+            </Paper>
           ) : (
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M3 16.5A4.5 4.5 0 017.5 12H9a1 1 0 010 2H7.5A2.5 2.5 0 005 16.5V17a1 1 0 01-2 0v-.5zM15 6a1 1 0 011-1 5 5 0 014.995 4.783L21 10v.126A4 4 0 0119 21H9a4 4 0 01-3.995-3.8L5 17h2a1 1 0 010 2H9a2 2 0 001.995-1.85L11 17h2l.001.15A2 2 0 0015 19h4a2 2 0 001.995-1.85L21 17a2 2 0 00-1.85-1.995L19 15H9a4 4 0 01-3.995-3.8L5 11V10a7 7 0 016.293-6.965L12 3a1 1 0 011 1v2z" />
-              <path d="M12 13a1 1 0 01-1-1V7.414l-1.293 1.293a1 1 0 01-1.414-1.414l3-3a1 1 0 011.32-.083l.094.083 3 3a1 1 0 01-1.414 1.414L13 7.414V12a1 1 0 01-1 1z" />
-            </svg>
+            <Box sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+              gap: 2
+            }}>
+              {items.map((it) => (
+                <Box key={it.id}>
+                  <Card sx={{ borderRadius: 3, overflow: "hidden", position: "relative" }}>
+                    <CardActionArea onClick={() => setPreviewUrl(it.imageUrl)}>
+                      <Box sx={{ position: "relative", height: 180 }}>
+                        <Image src={it.imageUrl} alt="Gallery item" fill sizes="(max-width: 600px) 100vw, 25vw" className="object-cover" unoptimized={it.imageUrl.startsWith('/uploads/')} />
+                      </Box>
+                    </CardActionArea>
+                    <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 1 }}>
+                      <Typography variant="caption" color="text.secondary">{it.createdAt ? it.createdAt.toLocaleDateString() : ''}</Typography>
+                      <Box>
+                        <IconButton aria-label="Preview" onClick={() => setPreviewUrl(it.imageUrl)}>
+                          <VisibilityIcon />
+                        </IconButton>
+                        <IconButton aria-label="Delete" color="error" onClick={() => setConfirmDeleteId(it.id)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+              ))}
+            </Box>
           )}
-      <span className="text-sm md:text-base">{uploading ? "Uploading..." : "Upload"}</span>
-          </button>
-        </div>
-        {message && (
-          <p
+        </Box>
 
-            className={`text-sm ${
-              message.type === "success" ? "text-green-600" : "text-red-500"
-            }`}
-          >
-            {message.text}
-          </p>
-        )}
-      </div>
-      </div>
+        {/* Footer pagination */}
+        <Box sx={{ px: 3, py: 2, borderTop: 1, borderColor: 'divider', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+          <Button variant="outlined" startIcon={<NavigateBeforeIcon />} disabled={page === 0} onClick={loadPrevPage} sx={{ textTransform: "none", borderRadius: 10 }}>
+            Prev
+          </Button>
+          <Typography variant="body2" color="text.secondary">Page {page + 1}</Typography>
+          <Button variant="contained" endIcon={<NavigateNextIcon />} disabled={!hasMore[page]} onClick={loadNextPage} sx={{ textTransform: "none", borderRadius: 10 }}>
+            Next
+          </Button>
+        </Box>
+      </Paper>
 
-      {/* Gallery Grid */}
-  <div style={{marginBottom: "5rem"}} className="w-full mt-6">
-        {items.length === 0 ? (
-          <div className="bg-gray-50 border border-dashed rounded-lg p-10 text-gray-500">
-            No images yet
-          </div>
-        ) : (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {items.map((it) => (
-              <div
-                key={it.id}
-        className="bg-white rounded-lg shadow hover:shadow-md overflow-hidden relative group w-full"
-              >
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={it.imageUrl}
-                    alt="Gallery item"
-                    fill
-                    className="object-cover"
-                    sizes="100%"
-                    unoptimized={it.imageUrl.startsWith("/uploads/")}
-                  />
-                  <button
-                    onClick={() => handleDelete(it.id)}
-                    title="Delete image"
-                    aria-label="Delete image"
-                    className="absolute top-2 right-2 h-9 w-9 flex items-center justify-center rounded-full bg-red-500/90 text-white opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-red-600 active:scale-95 shadow-md ring-1 ring-white/40 backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="h-5 w-5"
-                      aria-hidden="true"
-                    >
-                      <path d="M9 3a1 1 0 0 0-1 1v1H5.5a1 1 0 1 0 0 2H6v11a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V7h.5a1 1 0 1 0 0-2H16V4a1 1 0 0 0-1-1H9zm2 2h2V4h-2v1zM8 7h10v11a1 1 0 0 1-1 1H11a1 1 0 0 1-1-1V7zm2 3a1 1 0 1 0-2 0v7a1 1 0 1 0 2 0v-7zm6 0a1 1 0 1 0-2 0v7a1 1 0 1 0 2 0v-7z" />
-                    </svg>
-                    <span className="sr-only">Delete image</span>
-                  </button>
-                </div>
-            <div className="p-2 text-xs text-gray-500 flex items-center justify-between">
-              <span>Gallery item</span>
-              <span>{it.createdAt ? it.createdAt.toLocaleDateString() : ""}</span>
-            </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Preview Dialog */}
+      <Dialog open={!!previewUrl} onClose={() => setPreviewUrl(null)} maxWidth="md" fullWidth>
+        <DialogTitle>Preview</DialogTitle>
+        <DialogContent dividers>
+          {previewUrl && (
+            <Box sx={{ position: 'relative', width: '100%', aspectRatio: '16/9' }}>
+              <Image src={previewUrl} alt="Preview" fill className="object-contain" sizes="100vw" unoptimized={previewUrl.startsWith('/uploads/')} />
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setPreviewUrl(null)}>Close</Button>
+        </DialogActions>
+      </Dialog>
 
-      {/* Pagination Controls */}
-      <div  style={{marginBottom: "3rem"}} className="flex items-center justify-center gap-4 mt-8">
-        <button
-          onClick={loadPrevPage}
-          disabled={page === 0}
-          className="h-10 w-10 rounded-full bg-gray-900 text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
-          aria-label="Previous page"
-        >
-          <span className="text-lg">‹</span>
-        </button>
-        <span className="text-gray-800 font-medium">{page + 1}</span>
-        <button
-          onClick={loadNextPage}
-          disabled={!hasMore[page]}
-          className="h-10 w-10 rounded-full bg-white text-gray-900 ring-1 ring-gray-300 flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
-          aria-label="Next page"
-        >
-          <span className="text-lg">›</span>
-        </button>
-      </div>
-    </div>
+      {/* Delete confirm */}
+      <Dialog open={!!confirmDeleteId} onClose={() => setConfirmDeleteId(null)}>
+        <DialogTitle>Delete image?</DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setConfirmDeleteId(null)}>Cancel</Button>
+          <Button color="error" variant="contained" onClick={async () => { if (confirmDeleteId) { await handleDelete(confirmDeleteId); setConfirmDeleteId(null); } }}>Delete</Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 }

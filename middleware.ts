@@ -35,6 +35,7 @@ export function middleware(req: NextRequest) {
   const purpose = (req.headers.get('purpose') || req.headers.get('sec-purpose') || '').toLowerCase();
   const isNavDoc = mode === 'navigate' && dest === 'document';
   const isPrefetch = purpose === 'prefetch';
+  const referer = req.headers.get('referer') || '';
   // Note: we no longer use referer-based clearing to avoid accidental logout on soft navigations
 
   // Allow /admin/login always; clear session/page lock only on real navigations (avoid prefetch-triggered logout)
@@ -77,10 +78,18 @@ export function middleware(req: NextRequest) {
   return res;
   }
 
-  // Any other route (including other /admin pages): clear the session only on real document navigations
-  // This prevents prefetch or data requests from logging users out unexpectedly.
-  const leavingAdmin = !path.startsWith('/admin') || !ALLOWED_ADMIN_PAGES.includes(path) || path.startsWith('/admin/login');
+  // Any other route (including other /admin pages): only clear when truly leaving admin paths entirely
+  const leavingAdmin = !path.startsWith('/admin');
+  // Grace: if user just came from /admin/login to an allowed admin page, do not clear immediately
+  const cameFromLogin = /\/admin\/login\b/.test(referer) && path.startsWith('/admin');
   if (session && isNavDoc && !isPrefetch && leavingAdmin) {
+    if (cameFromLogin) {
+      const res = NextResponse.next();
+      res.headers.set('Cache-Control', 'private, no-store, no-cache, must-revalidate');
+      res.headers.set('Pragma', 'no-cache');
+      res.headers.set('Vary', 'Cookie');
+      return res;
+    }
     const res = NextResponse.next();
     res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/admin', maxAge: 0 });
     res.cookies.set({ name: SESSION_COOKIE, value: '', path: '/', maxAge: 0 });

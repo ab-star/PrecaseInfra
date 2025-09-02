@@ -1,26 +1,15 @@
 "use client"
 import React, { useState, useEffect } from "react";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Box, IconButton, Link } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { FaCookie, FaTimes } from "react-icons/fa";
 import Image from "next/image";
-import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaLinkedinIn, FaTimes, FaCookie, FaShieldAlt } from "react-icons/fa";
 
-const branches = [
-  {
-    city: "Mumbai",
-    address: "2nd Floor, ABC Tower, Bandra East, Mumbai, MH 400051",
-  },
-  {
-    city: "Delhi",
-    address: "Suite 12, Connaught Place, New Delhi, DL 110001",
-  },
-  {
-    city: "Bangalore",
-    address: "#45, MG Road, Bengaluru, KA 560001",
-  },
-  {
-    city: "Chennai",
-    address: "Plot 8, Anna Salai, Chennai, TN 600002",
-  },
-];
+// Footer rebuilt using MUI components with responsive layout and modern styling
 
 const Footer = () => {
   const [showCookieConsent, setShowCookieConsent] = useState(false);
@@ -114,220 +103,144 @@ const Footer = () => {
 
   return (
     <>
-      <footer
-        className="relative z-[90] w-[100dvw] ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)] overflow-hidden text-white flex flex-col md:flex-row gap-16 md:gap-0 justify-between items-start shadow-2xl border-t-0 px-6 sm:px-8 md:px-10 lg:px-16 py-16"
-        style={{
-          background:
-            "url('/product/Drain/background/uShapedDrainBg.jpg') center/cover no-repeat, linear-gradient(135deg, #1e293b 60%, #181e29 100%)",
-          minHeight: "520px",
-          fontSize: "1.25rem",
-          fontFamily: "Segoe UI, Arial, Helvetica Neue, Helvetica, sans-serif",
-          letterSpacing: "0.02em",
-          fontWeight: 500,
-          padding: "2rem",
-          paddingRight: "3rem",	
+      <Box
+        component="footer"
+        sx={{
+          position: "relative",
+          zIndex: 90,
+          width: "100dvw",
+          ml: "calc(50% - 50dvw)",
+          mr: "calc(50% - 50dvw)",
+          overflow: "hidden",
+          color: "#ffffff",
+          backgroundImage:
+            "url('/product/Drain/background/uShapedDrainBg.jpg'), linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.1) 60%)",
+          backgroundSize: "cover, cover",
+          backgroundPosition: "center, center",
+          backgroundRepeat: "no-repeat, no-repeat",
+          minHeight: { xs: 380, md: 460 },
+          backgroundColor: 'transparent',
+          borderTop: "1px solid",
+          borderColor: "divider",
         }}
       >
-        {/* Geometric/abstract background shapes */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <div className="absolute left-1/4 top-10 w-72 h-72 bg-gradient-to-tr from-blue-900/30 to-indigo-700/10 rounded-full blur-3xl custom-pulse-slow" />
-          <div className="absolute right-0 bottom-0 w-60 h-60 bg-gradient-to-br from-amber-600/20 to-pink-500/10 rounded-full blur-2xl custom-float" />
-        </div>
-        
-        {/* Left: Branding & Contact */}
-        <div className="relative z-10 flex-1 flex flex-col gap-8 items-start">
-          <div className="flex items-center gap-4 mb-4">
-            <span
-              className="text-4xl font-extrabold tracking-wider drop-shadow-lg custom-pulse-slow"
-              style={{
-                textShadow: "0 0 32px #fff6,0 2px 8px #38bdf8",
-              }}
-            >
-              <Image
-                src="/brandIcon.jpeg"
-                alt="Logo"
-                width={56}
-                height={56}
-                className="w-14 h-14 inline-block mr-2 drop-shadow-lg rounded-full"
-                style={{ filter: "drop-shadow(0 0 16px #fff8)" }}
-              />
-            </span>
-          </div>
-          <div
-            className="text-xl font-semibold text-white/90 leading-relaxed mb-2"
-            style={{ fontFamily: "inherit" }}
-          >
-            Head Office:
-            <br />
-            101, Silvertech House, Main Street, Andheri West,
-            <br />
-            Mumbai, Maharashtra 400053, India
-          </div>
-          <div
-            className="flex flex-col gap-8 text-lg text-white/90 w-full"
-            style={{ fontFamily: "inherit" }}
-          >
-            <div
-              className="w-full max-w-3xl mx-auto p-16 rounded-[2.5rem] shadow-2xl border-2 border-white/20 bg-[url('/product/Drain/background/uShapedDrainBg.jpg')] bg-cover bg-center bg-no-repeat flex flex-col items-center"
-              style={{
-                backgroundColor: "rgba(20,24,36,0.98)",
-                boxShadow: "0 16px 64px 0 #000c",
-              }}
-            >
-              <div className="flex items-center gap-6 sm:gap-8 md:gap-12 mb-12">
-                <FaPhoneAlt className="text-6xl text-amber-300 drop-shadow-2xl" />
-                <span
-                  className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-widest select-all break-words break-all md:break-normal"
-                  style={{
-                    color: "#fff",
-                    background: "#181e29",
-                    borderRadius: "0.5rem",
-                    padding: "0.25em 0.7em",
-                    boxShadow: "0 2px 16px 0 #000a",
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  +91 22 1234 5678
-                </span>
-              </div>
-              <div className="flex items-center gap-6 sm:gap-8 md:gap-12">
-                <FaEnvelope className="text-6xl text-blue-300 drop-shadow-2xl" />
-                <span
-                  className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-widest select-all break-words break-all md:break-normal"
-                  style={{
-                    color: "#fff",
-                    background: "#181e29",
-                    borderRadius: "0.5rem",
-                    padding: "0.25em 0.7em",
-                    boxShadow: "0 2px 16px 0 #000a",
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  info@flajisil.com
-                </span>
-              </div>
-            </div>
-            <div className="flex gap-6 mt-8 justify-center w-full">
-              <a
-                href="#"
-                className="group hover:text-blue-400 transition-all"
-              >
-                <FaFacebookF className="text-3xl group-hover:scale-125 custom-pulse-slow" />
-              </a>
-              <a
-                href="#"
-                className="group hover:text-blue-300 transition-all"
-              >
-                <FaTwitter className="text-3xl group-hover:scale-125 custom-pulse-slow" />
-              </a>
-              <a
-                href="#"
-                className="group hover:text-blue-500 transition-all"
-              >
-                <FaLinkedinIn className="text-3xl group-hover:scale-125 custom-pulse-slow" />
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        {/* Right: Branches */}
-        <div className="relative z-10 flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8 w-full max-w-2xl">
-          <div className="col-span-full mb-4">
-            <h4
-              className="text-3xl font-extrabold text-white mb-4 tracking-wide"
-              style={{ fontFamily: "inherit" }}
-            >
-              Branch Offices
-            </h4>
-          </div>
-          {branches.map((branch) => (
-            <div key={branch.city} className="flex items-start gap-4 group">
-              <span className="mt-1 text-2xl text-amber-400 group-hover:scale-110 group-hover:text-blue-400 transition-all custom-float">
-                <FaMapMarkerAlt />
-              </span>
-              <div>
-                <div
-                  className="font-bold text-xl text-white mb-1"
-                  style={{ fontFamily: "inherit" }}
-                >
-                  {branch.city}
-                </div>
-                <div
-                  className="text-white/90 text-lg leading-snug"
-                  style={{ fontFamily: "inherit" }}
-                >
-                  {branch.address}
-                </div>
-              </div>
-            </div>
-          ))}
-          
-          {/* Policy Links Section */}
-          <div className="col-span-full mt-8 pt-8 border-t border-white/20">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <div className="flex items-center gap-2 text-blue-300">
-                <FaShieldAlt className="text-xl" />
-                <span className="font-medium">Privacy & Security</span>
-              </div>
-              
-              <div className="flex flex-wrap justify-center gap-6 text-white/80">
-                <button type="button" onClick={() => setOpenPolicy('privacy')} className="hover:text-amber-300 transition-colors text-sm sm:text-base underline-offset-2 hover:underline">
+        <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 3, sm: 4, md: 6 }, py: { xs: 6, md: 8 } }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: { xs: 3, md: 4 } }}>
+            <Image
+              src="/brandIcon.jpeg"
+              alt="Company Logo"
+              width={56}
+              height={56}
+              style={{ borderRadius: 12, boxShadow: "0 6px 20px rgba(0,0,0,0.15)" }}
+              priority
+            />
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '2fr 1fr 1fr' }, gap: { xs: 4, md: 6 } }}>
+            <Box>
+              <Typography variant="h6" fontWeight={700} sx={{ mb: 2, color: '#ffffff' }}>
+                Contact Us
+              </Typography>
+              <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2, mb: 2 }}>
+                <IconButton size="small" sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }} aria-label="location">
+                  <LocationOnIcon />
+                </IconButton>
+                <Typography variant="body1" sx={{ lineHeight: 1.6, color: 'rgba(255,255,255,0.92)' }}>
+                  1st Floor, 66, Lambe Hanuman Rd, Matavadi, Hans Society,<br />
+                  Varachha, Surat, Gujarat 395006
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+                <IconButton size="small" sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }} aria-label="phone">
+                  <PhoneIcon />
+                </IconButton>
+                <Link href="tel:+919825680891" underline="hover" sx={{ color: "common.white", "&:hover": { color: "primary.light" } }}>
+                  098256 80891
+                </Link>
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <IconButton size="small" sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }} aria-label="email">
+                  <EmailIcon />
+                </IconButton>
+                <Link href="mailto:info@companyname.com" underline="hover" sx={{ color: "common.white", "&:hover": { color: "primary.light" } }}>
+                  info@companyname.com
+                </Link>
+              </Box>
+            </Box>
+            <Box>
+              <Typography variant="h6" fontWeight={700} sx={{ mb: 2, color: '#ffffff' }}>
+                Hours
+              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <AccessTimeIcon color="primary" />
+                <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)' }}>Opens soon ⋅ 10 am</Typography>
+              </Box>
+            </Box>
+            <Box>
+              <Typography variant="h6" fontWeight={700} sx={{ mb: 2, color: '#ffffff' }}>
+                Policies
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                <Link component="button" type="button" onClick={() => setOpenPolicy('privacy')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" } }}>
                   Privacy Policy
-                </button>
-                <button type="button" onClick={() => setOpenPolicy('terms')} className="hover:text-amber-300 transition-colors text-sm sm:text-base underline-offset-2 hover:underline">
+                </Link>
+                <Link component="button" type="button" onClick={() => setOpenPolicy('terms')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" } }}>
                   Terms of Service
-                </button>
-                <button type="button" onClick={() => setOpenPolicy('cookie')} className="hover:text-amber-300 transition-colors text-sm sm:text-base underline-offset-2 hover:underline">
+                </Link>
+                <Link component="button" type="button" onClick={() => setOpenPolicy('cookie')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" } }}>
                   Cookie Policy
-                </button>
-                {/* <a href="/refund-policy" className="hover:text-amber-300 transition-colors text-sm sm:text-base">
-                  Refund Policy
-                </a> */}
-              </div>
-              
-              <div className="text-white/60 text-sm">
-                © {new Date().getFullYear()} 3ginfratech. All rights reserved.
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+                </Link>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={{ borderTop: "1px solid", borderColor: "divider", bgcolor: "#f9fafb" }}>
+          <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 3, sm: 4, md: 6 }, py: 2 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ textAlign: { xs: "center", md: "left" } }}>
+              © 2025 Your Company Name. All rights reserved.
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
 
-      {/* Policy Modal */}
-      {openPolicy && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="policy-modal-title"
-          onClick={closePolicy}
+      {/* Policy Modal (MUI) */}
+      <Dialog
+        open={!!openPolicy}
+        onClose={closePolicy}
+        fullWidth
+        maxWidth="md"
+        aria-labelledby="policy-modal-title"
+      >
+        <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pr: 1 }}>
+          <Typography id="policy-modal-title" variant="h6" fontWeight={700}>
+            {openPolicy ? getPolicyContent(openPolicy).title : ''}
+          </Typography>
+          <IconButton aria-label="Close" onClick={closePolicy} size="small">
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent
+          dividers
+          sx={{
+            bgcolor: 'background.paper',
+            maxHeight: { xs: '70vh', md: '75vh' },
+            px: { xs: 3, md: 5 },
+            py: { xs: 2, md: 3 },
+          }}
         >
-          <div
-            className="relative bg-[#0f172a] text-white w-full max-w-3xl max-h-[80vh] overflow-y-auto rounded-2xl shadow-2xl border border-white/10"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={closePolicy}
-              className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"
-              aria-label="Close policy modal"
-            >
-              <FaTimes />
-            </button>
-            <div className="px-6 py-5 border-b border-white/10">
-              <h2 id="policy-modal-title" className="text-2xl font-bold">
-                {getPolicyContent(openPolicy).title}
-              </h2>
-            </div>
-            <div className="p-6 text-base leading-relaxed">
-              {getPolicyContent(openPolicy).body}
-            </div>
-          </div>
-        </div>
-      )}
+          <Box sx={{ '& p': { color: 'text.primary' } }}>
+            {openPolicy ? getPolicyContent(openPolicy).body : null}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closePolicy} variant="contained" sx={{ textTransform: 'none' }}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Cookie Consent Banner */}
       {showCookieConsent && (
-        <div className="fixed bottom-6 left-6 right-6 md:left-10 md:right-10 z-50 bg-gray-900/95 backdrop-blur-md border border-blue-700/30 rounded-xl shadow-2xl p-5 custom-fade-in">
+        <div  className="fixed bottom-6 left-6 right-6 md:left-10 md:right-10 z-50 bg-gray-900/95 backdrop-blur-md border border-blue-700/30 rounded-xl shadow-2xl p-5 custom-fade-in">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
             <div className="flex items-start gap-3 flex-1">
               <div className="bg-blue-900/50 p-2 rounded-full mt-1">
@@ -372,7 +285,7 @@ const Footer = () => {
         </div>
       )}
 
-      {/* Global styles for animations */}
+  {/* Global styles for animations (kept for cookie banner fade) */}
       <style jsx global>{`
         @keyframes float {
           0%, 100% {

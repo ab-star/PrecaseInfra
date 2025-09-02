@@ -11,6 +11,14 @@ export default function AdminAutoLogoutOnLeave() {
     }
 
     let sent = false;
+    let armed = false;
+
+  // Arm pagehide after a short delay (longer if arriving from login) to avoid firing immediately post-login
+  const fromLogin = typeof document !== 'undefined' && /\/admin\/login\b/.test(document.referrer || '');
+  const delay = fromLogin ? 3000 : 1200;
+  const armTimer = setTimeout(() => {
+      armed = true;
+  }, delay);
 
     const send = () => {
       if (sent) return;
@@ -26,7 +34,6 @@ export default function AdminAutoLogoutOnLeave() {
       }
     };
 
-  const onPageHide = () => send();
     const onClick = (e: MouseEvent) => {
       // Capture clicks on links that navigate away from /admin
       const target = e.target as HTMLElement | null;
@@ -50,11 +57,21 @@ export default function AdminAutoLogoutOnLeave() {
       }
     };
 
-  window.addEventListener('pagehide', onPageHide);
+    const onPopState = () => {
+      // Back/forward navigation that results in leaving admin should log out.
+      if (!armed) return;
+      const p = window.location.pathname;
+      if (!p.startsWith('/admin') || p.startsWith('/admin/login')) {
+        send();
+      }
+    };
+
     document.addEventListener('click', onClick, { capture: true });
+    window.addEventListener('popstate', onPopState);
     return () => {
-      window.removeEventListener('pagehide', onPageHide);
+      clearTimeout(armTimer);
       document.removeEventListener('click', onClick, { capture: true } as EventListenerOptions);
+      window.removeEventListener('popstate', onPopState);
     };
   }, []);
 

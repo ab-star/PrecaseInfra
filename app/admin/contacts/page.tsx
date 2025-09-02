@@ -1,8 +1,42 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
-import { collection, getDocs, limit, orderBy, query, startAfter, type QueryDocumentSnapshot, type DocumentData } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  type QueryDocumentSnapshot,
+  type DocumentData,
+} from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import { useRequireAdminSession } from "../_hooks/useRequireAdminSession";
+
+// MUI
+import {
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  IconButton,
+  Button,
+  Divider,
+  useMediaQuery,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 interface ContactDoc {
   id: string;
@@ -18,6 +52,7 @@ const PAGE_SIZE = 10;
 
 export default function AdminContactsPage() {
   useRequireAdminSession();
+
   // pagination state
   const [pages, setPages] = useState<ContactDoc[][]>([]);
   const [cursors, setCursors] = useState<Array<QueryDocumentSnapshot<DocumentData> | null>>([]);
@@ -26,7 +61,16 @@ export default function AdminContactsPage() {
   const [error, setError] = useState<string | null>(null);
   const [canNext, setCanNext] = useState(false);
 
-  const baseQuery = useMemo(() => query(collection(db, "contacts"), orderBy("createdAt", "desc")), []);
+  // modal state
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const baseQuery = useMemo(
+    () => query(collection(db, "contacts"), orderBy("createdAt", "desc")),
+    []
+  );
 
   const load = async (cursor?: QueryDocumentSnapshot<DocumentData> | null) => {
     try {
@@ -47,12 +91,15 @@ export default function AdminContactsPage() {
           createdAt: data.createdAt?.toDate?.(),
         } as ContactDoc;
       });
-      // when cursor provided, we're moving to the next page; append
       setPages((prev) => (cursor ? [...prev, docs] : [docs]));
-      setCursors((prev) => (cursor ? [...prev, (snap.docs[snap.docs.length - 1] || null)] : [(snap.docs[snap.docs.length - 1] || null)]));
+      setCursors((prev) =>
+        cursor
+          ? [...prev, snap.docs[snap.docs.length - 1] || null]
+          : [snap.docs[snap.docs.length - 1] || null]
+      );
       setCanNext(snap.docs.length === PAGE_SIZE);
       if (!cursor) setPageIndex(0);
-    } catch {
+  } catch {
       setError("Failed to load contacts");
     } finally {
       setLoading(false);
@@ -76,107 +123,213 @@ export default function AdminContactsPage() {
     if (loading) return;
     if (pageIndex === 0) return;
     setPageIndex((i) => i - 1);
-    // canNext depends on whether we already fetched beyond this page
     setCanNext(true);
   };
 
   const items = pages[pageIndex] || [];
   const canPrev = pageIndex > 0;
-
-  // modal
-  const [openId, setOpenId] = useState<string | null>(null);
-  const selected = items.find(i => i.id === openId) || null;
+  const selected = items.find((i) => i.id === openId) || null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="py-12">
-        <div className="flex justify-center items-start px-4">
-          <div className="bg-white rounded-2xl shadow p-6 md:p-8 max-h-[82vh] overflow-y-auto w-full max-w-[1200px]">
-            <div className="flex items-center justify-between mb-4">
-              <h1 className="text-xl md:text-2xl font-semibold text-gray-900">Contacts</h1>
-              <div className="text-sm text-gray-600 flex items-center gap-3">
-                <span>Page {pageIndex + 1}</span>
-                <div className="inline-flex items-center gap-2">
-                  <button onClick={goPrev} disabled={!canPrev || loading} className="px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50">Prev</button>
-                  <button onClick={goNext} disabled={!canNext || loading} className="px-3 py-1.5 rounded-full bg-gray-900 text-white hover:bg-black disabled:opacity-50">Next</button>
-                </div>
-              </div>
-            </div>
-            {error && <div className="text-sm text-red-600 mb-3">{error}</div>}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="text-gray-600 border-b">
-                    <th className="py-2 pr-4">Name</th>
-                    <th className="py-2 pr-4">Email</th>
-                    <th className="py-2 pr-4">Contact</th>
-                    <th className="py-2 pr-4">Subject</th>
-                    <th className="py-2 pr-4">Message</th>
-                    <th className="py-2 pr-4">Date</th>
-                    <th className="py-2 pr-0 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((c) => (
-                    <tr key={c.id} className="border-b last:border-0 align-top">
-                      <td className="py-2 pr-4 text-gray-900 font-medium">{c.name}</td>
-                      <td className="py-2 pr-4 text-blue-600"><a href={`mailto:${c.email}`}>{c.email}</a></td>
-                      <td className="py-2 pr-4">{c.contact}</td>
-                      <td className="py-2 pr-4">{c.subject}</td>
-                      <td className="py-2 pr-4 max-w-[320px] whitespace-pre-wrap">{c.message}</td>
-                      <td className="py-2 pr-4 text-gray-500">{c.createdAt ? c.createdAt.toLocaleString() : "-"}</td>
-                      <td className="py-2 pr-0 text-right">
-                        <button aria-label="View details" onClick={() => setOpenId(c.id)} className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M1.5 12s3.75-6.75 10.5-6.75S22.5 12 22.5 12 18.75 18.75 12 18.75 1.5 12 1.5 12Zm10.5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                  {items.length === 0 && !loading && (
-                    <tr>
-                      <td colSpan={7} className="py-6 text-center text-gray-500">No contacts yet</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-            <div className="flex items-center justify-center mt-5 gap-3">
-              <button onClick={goPrev} disabled={!canPrev || loading} className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50">Prev</button>
-              <span className="text-sm text-gray-600">Page {pageIndex + 1}</span>
-              <button onClick={goNext} disabled={!canNext || loading} className="px-4 py-2 rounded-full bg-gray-900 text-white hover:bg-black disabled:opacity-50">Next</button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <Box
+      sx={{
+        minHeight: "100dvh",
+        width: "100dvw",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        py: { xs: 4, md: 8 },
+        px: { xs: 2, md: 3 },
+        backgroundImage:
+          "linear-gradient(120deg, rgba(248,250,252,0.94), rgba(241,245,249,0.94)), url('/concrete2.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <Paper
+        elevation={10}
+        sx={{
+          width: "100%",
+          maxWidth: 1200,
+          borderRadius: 4,
+          backdropFilter: "blur(6px)",
+          bgcolor: "rgba(255,255,255,0.9)",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          maxHeight: "82vh",
+        }}
+      >
+        {/* Sticky header */}
+        <Box
+          sx={{
+            position: "sticky",
+            top: 0,
+            zIndex: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 2,
+            px: 3,
+            py: 2,
+            bgcolor: "rgba(255,255,255,0.9)",
+            borderBottom: "1px solid",
+            borderColor: "divider",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          <Typography variant={isSm ? "h6" : "h5"} fontWeight={700} color="text.primary">
+            Contacts
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ display: { xs: "none", sm: "inline" } }}>
+              Page {pageIndex + 1}
+            </Typography>
+            <Button
+              onClick={goPrev}
+              disabled={!canPrev || loading}
+              variant="outlined"
+              startIcon={<NavigateBeforeIcon />}
+              sx={{ textTransform: "none", borderRadius: 10 }}
+            >
+              Prev
+            </Button>
+            <Button
+              onClick={goNext}
+              disabled={!canNext || loading}
+              variant="contained"
+              endIcon={<NavigateNextIcon />}
+              sx={{ textTransform: "none", borderRadius: 10 }}
+            >
+              Next
+            </Button>
+          </Box>
+        </Box>
 
-      {/* Modal */}
-      {selected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setOpenId(null)} />
-          <div style={{padding: "1.5rem"}} role="dialog" aria-modal="true" className="relative z-10 w-full max-w-xl bg-white rounded-2xl shadow-lg p-6 md:p-7 mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h2 style={{marginBottom: "0.5rem"}} className="text-lg font-semibold text-gray-900">Contact Details</h2>
-              <button onClick={() => setOpenId(null)} aria-label="Close" className="h-9 w-9 inline-flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M6.225 4.811a1 1 0 0 1 1.414 0L12 9.172l4.361-4.361a1 1 0 1 1 1.415 1.414L13.415 10.586l4.36 4.361a1 1 0 1 1-1.414 1.414L12 12l-4.361 4.361a1 1 0 1 1-1.414-1.414l4.36-4.361-4.36-4.361a1 1 0 0 1 0-1.414Z"/></svg>
-              </button>
-            </div>
-            <div className="space-y-3 text-sm">
-              <div className="flex"><span className="w-28 text-gray-500">Name</span><span className="text-gray-900 font-medium">{selected.name}</span></div>
-              <div className="flex"><span className="w-28 text-gray-500">Email</span><a className="text-blue-600" href={`mailto:${selected.email}`}>{selected.email}</a></div>
-              <div className="flex"><span className="w-28 text-gray-500">Contact</span><span>{selected.contact}</span></div>
-              <div className="flex"><span className="w-28 text-gray-500">Subject</span><span>{selected.subject}</span></div>
-              <div style={{margin: "0.5rem 0px"}}>
-                <div className="text-gray-500 mb-1">Message</div>
-                <div className="p-3 rounded-md bg-gray-50 text-gray-800 whitespace-pre-wrap max-h-60 overflow-auto">{selected.message}</div>
-              </div>
-              <div className="flex"><span className="w-28 text-gray-500">Date</span><span className="text-gray-600">{selected.createdAt ? selected.createdAt.toLocaleString() : '-'}</span></div>
-            </div>
-            {/* <div className="mt-5 flex items-center justify-end gap-2">
-              <button onClick={() => setOpenId(null)} className="px-4 py-2 rounded-full bg-gray-900 text-white hover:bg-black">Close</button>
-            </div> */}
-          </div>
-        </div>
-      )}
-    </div>
+        {/* Error banner */}
+        {error && (
+          <Box sx={{ px: 3, py: 1.5, bgcolor: "#FEF2F2", color: "#B91C1C", borderTop: 1, borderBottom: 1, borderColor: "#FCA5A5" }}>
+            <Typography variant="body2">{error}</Typography>
+          </Box>
+        )}
+
+        {/* Table */}
+        <Box sx={{ p: 2, flex: 1, display: "flex", alignItems: items.length <= 1 ? "center" : "stretch" }}>
+          <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 3, width: "100%" }}>
+            <Table stickyHeader size="small" aria-label="contacts table">
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Email</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Contact</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Subject</TableCell>
+                  <TableCell sx={{ fontWeight: 600, minWidth: 280 }}>Message</TableCell>
+                  <TableCell sx={{ fontWeight: 600, whiteSpace: "nowrap" }}>Date</TableCell>
+                  <TableCell align="right" sx={{ fontWeight: 600 }}>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {items.map((c) => (
+                  <TableRow key={c.id} hover>
+                    <TableCell>
+                      <Typography fontWeight={600} color="text.primary">
+                        {c.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <a href={`mailto:${c.email}`} style={{ color: "#2563EB" }}>{c.email}</a>
+                    </TableCell>
+                    <TableCell>{c.contact}</TableCell>
+                    <TableCell>{c.subject}</TableCell>
+                    <TableCell sx={{ maxWidth: 420, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                      {c.message}
+                    </TableCell>
+                    <TableCell sx={{ color: "text.secondary" }}>
+                      {c.createdAt ? c.createdAt.toLocaleString() : "-"}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton color="default" onClick={() => setOpenId(c.id)} aria-label="View details">
+                        <VisibilityIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {items.length === 0 && !loading && (
+                  <TableRow>
+                    <TableCell colSpan={7} align="center">
+                      <Typography variant="body2" color="text.secondary" sx={{ py: 4 }}>
+                        No contacts yet
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+
+        {/* Sticky footer with pagination */}
+        <Divider />
+        <Box
+          sx={{
+            position: "sticky",
+            bottom: 0,
+            zIndex: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 1.5,
+            px: 3,
+            py: 2,
+            bgcolor: "rgba(255,255,255,0.9)",
+            borderTop: "1px solid",
+            borderColor: "divider",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          <Button onClick={goPrev} disabled={!canPrev || loading} variant="outlined" startIcon={<NavigateBeforeIcon />} sx={{ textTransform: "none", borderRadius: 10 }}>
+            Prev
+          </Button>
+          <Typography variant="body2" color="text.secondary">
+            Page {pageIndex + 1}
+          </Typography>
+          <Button onClick={goNext} disabled={!canNext || loading} variant="contained" endIcon={<NavigateNextIcon />} sx={{ textTransform: "none", borderRadius: 10 }}>
+            Next
+          </Button>
+        </Box>
+      </Paper>
+
+      {/* Details Modal */}
+      <Dialog open={Boolean(openId)} onClose={() => setOpenId(null)} fullWidth maxWidth="sm">
+        <DialogTitle>Contact Details</DialogTitle>
+        <DialogContent dividers>
+          {selected && (
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "160px 1fr" }, rowGap: 1.5, columnGap: 2 }}>
+              <Typography color="text.secondary">Name</Typography>
+              <Typography fontWeight={600}>{selected.name}</Typography>
+              <Typography color="text.secondary">Email</Typography>
+              <Typography component="a" href={`mailto:${selected.email}`} sx={{ color: "primary.main" }}>
+                {selected.email}
+              </Typography>
+              <Typography color="text.secondary">Contact</Typography>
+              <Typography>{selected.contact}</Typography>
+              <Typography color="text.secondary">Subject</Typography>
+              <Typography>{selected.subject}</Typography>
+              <Typography color="text.secondary">Message</Typography>
+              <Box sx={{ p: 1.5, bgcolor: "grey.50", borderRadius: 1, maxHeight: 240, overflow: "auto" }}>
+                <Typography sx={{ whiteSpace: "pre-wrap" }}>{selected.message}</Typography>
+              </Box>
+              <Typography color="text.secondary">Date</Typography>
+              <Typography color="text.secondary">{selected.createdAt ? selected.createdAt.toLocaleString() : "-"}</Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenId(null)} variant="contained" sx={{ textTransform: "none" }}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 }

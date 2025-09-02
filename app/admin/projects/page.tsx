@@ -2,7 +2,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRequireAdminSession } from "../_hooks/useRequireAdminSession";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
 import {
   collection,
   addDoc,
@@ -18,6 +17,28 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
+// MUI
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  LinearProgress,
+} from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 interface Project {
   id: string;
@@ -53,6 +74,8 @@ export default function ProjectsAdminPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState<(File | null)[]>([null, null, null]);
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
+  const [progress, setProgress] = useState<(number | null)[]>([null, null, null]);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<
     { type: "success" | "error"; text: string } | null
@@ -153,6 +176,40 @@ export default function ProjectsAdminPage() {
     loadFirstPage();
   }, [loadFirstPage]);
 
+  async function uploadOne(file: File, prefix: string, idx: number): Promise<string> {
+    return await new Promise<string>((resolve, reject) => {
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("prefix", prefix);
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/api/r2-upload");
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          setProgress((prev) => {
+            const copy = [...prev];
+            copy[idx] = pct;
+            return copy;
+          });
+        }
+      };
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const data = JSON.parse(xhr.responseText) as { url: string };
+            resolve(data.url);
+          } catch {
+            reject(new Error("Invalid upload response"));
+          }
+        } else {
+          reject(new Error("Upload failed"));
+        }
+      };
+      xhr.onerror = () => reject(new Error("Network error"));
+      xhr.send(fd);
+    });
+  }
+
   async function createProject() {
     if (!title.trim()) {
       setMessage({ type: "error", text: "Title is required" });
@@ -162,32 +219,15 @@ export default function ProjectsAdminPage() {
       setSaving(true);
       setMessage(null);
 
+      setProgress([null, null, null]);
       const urls: string[] = [];
-      for (const f of files) {
+      for (let i = 0; i < files.length; i++) {
+        const f = files[i];
         if (f) {
-          const fd = new FormData();
-          fd.append("file", f);
-          fd.append("prefix", "projects");
-          const res = await fetch("/api/r2-upload", { method: "POST", body: fd });
-          if (!res.ok) {
-            try {
-              const err = await res.json();
-              const detail = err?.details
-                ? ` (details: ${JSON.stringify(err.details)})`
-                : "";
-              throw new Error(
-                err?.error ? `${err.error}${detail}` : `Image upload failed${detail}`
-              );
-            } catch {
-              throw new Error("Image upload failed");
-            }
-          }
-          const { url } = await res.json();
-          let storeValue = url as string;
+          const url = await uploadOne(f, "projects", i);
+          let storeValue = url;
           if (publicBase && storeValue.startsWith(publicBase)) {
-            storeValue = storeValue
-              .substring(publicBase.length)
-              .replace(/^\//, "");
+            storeValue = storeValue.substring(publicBase.length).replace(/^\//, "");
           }
           urls.push(storeValue);
         } else {
@@ -216,9 +256,10 @@ export default function ProjectsAdminPage() {
       // After creating, reload the first page to reflect newest item
       await loadFirstPage();
 
-      setTitle("");
-      setDescription("");
-      setFiles([null, null, null]);
+  setTitle("");
+  setDescription("");
+  setFiles([null, null, null]);
+  setProgress([null, null, null]);
       setMessage({ type: "success", text: "Project created" });
     } catch (e) {
       setMessage({
@@ -230,242 +271,194 @@ export default function ProjectsAdminPage() {
     }
   }
 
-  async function deleteProject(id: string) {
-    if (!confirm("Delete this project?")) return;
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  async function doDeleteProject(id: string) {
     await deleteDoc(doc(db, "projects", id));
-    // Reload from the first page to keep ordering consistent
     await loadFirstPage();
     setMessage({ type: "success", text: "Project deleted" });
   }
 
   return (
-    <div style={{padding: "3rem"}} className="relative w-screen box-border ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] px-6 md:px-10 lg:px-16 xl:px-20 2xl:px-24 text-center">
-      <h1 className="text-3xl font-semibold text-gray-900 mb-4">Admin Portal</h1>
+    <Box
+      sx={{
+        minHeight: '100dvh',
+        width: '100dvw',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        py: { xs: 4, md: 8 },
+        px: { xs: 2, md: 6 },
+        position: 'relative',
+        backgroundImage: "linear-gradient(120deg, rgba(248,250,252,0.94), rgba(241,245,249,0.94)), url('/concrete3.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <Box sx={{ position: 'absolute', inset: 0, bgcolor: 'rgba(0,0,0,0.12)', pointerEvents: 'none' }} />
+      <Paper elevation={8} sx={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 1280, borderRadius: 4, overflow: 'hidden' }}>
+        {/* Header */}
+        <Box sx={{ px: 3, py: 2.5, borderBottom: 1, borderColor: 'divider', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Box>
+            <Typography variant="h5" fontWeight={800}>Projects Admin</Typography>
+            <Typography variant="body2" color="text.secondary">Create and manage projects</Typography>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button variant="outlined" startIcon={<NavigateBeforeIcon />} disabled={page === 0} onClick={loadPrevPage} sx={{ textTransform: 'none', borderRadius: 10 }}>Prev</Button>
+            <Typography variant="body2" color="text.secondary" sx={{ alignSelf: 'center' }}>{page + 1}</Typography>
+            <Button variant="contained" endIcon={<NavigateNextIcon />} disabled={!hasMore[page]} onClick={loadNextPage} sx={{ textTransform: 'none', borderRadius: 10 }}>Next</Button>
+          </Box>
+        </Box>
 
-      {/* Create Project Section */}
-      <div style={{marginBottom: "3rem"}} className="bg-white shadow-md rounded-2xl p-6 md:p-8 mb-10 mx-auto w-full max-w-5xl text-left">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Projects Admin</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex flex-col gap-3">
-            <label className="text-sm text-gray-700">Title</label>
-            <input
-              placeholder="Enter project title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            <label className="text-sm text-gray-700 mt-3">Description</label>
-            <textarea
-              placeholder="A short description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={4}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap gap-3">
-              {files.map((f, i) => (
-                <label
-                  key={i}
-                  className="inline-flex h-12 min-w-[8rem] max-w-[16rem] items-center justify-center rounded-xl border border-gray-300 bg-white px-3 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 hover:border-gray-400 transition"
-                  title={`Image ${i + 1}`}
-                >
-                  <span title={f ? f.name : undefined} className="truncate w-full text-center">
-                    {f ? f.name : `Image ${i + 1}`}
-                  </span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      const copy = [...files];
-                      copy[i] = e.target.files?.[0] || null;
-                      setFiles(copy);
-                    }}
-                  />
-                </label>
-              ))}
-            </div>
-      <div className="flex justify-start">
-              <button
-                onClick={createProject}
-                disabled={saving}
-                style={{padding: "0.5rem"}}
-        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-wide"
-              >
-                {saving ? (
-                  <svg
-                    className="h-4 w-4 animate-spin"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                  </svg>
-                ) : null}
-                <span className="text-sm font-medium">
-                  {saving ? "Creating..." : "Create Project"}
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-        {message && (
-          <p
-            className={`text-sm ${
-              message.type === "success" ? "text-green-600" : "text-red-500"
-            }`}
-          >
-            {message.text}
-          </p>
-        )}
-      </div>
-
-      {/* Projects Grid */}
-      <div className="w-full mt-6">
-        {projects.length === 0 ? (
-          <div className="bg-gray-50 border border-dashed rounded-lg p-10 text-gray-500">
-            No projects yet
-          </div>
-        ) : (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {projects.map((p) => {
-              const thumbs = [p.imgUrl1, p.imgUrl2, p.imgUrl3].filter(Boolean) as string[];
-              return (
-                <div
-                  key={p.id}
-      className="bg-white rounded-lg shadow hover:shadow-md overflow-hidden relative group w-full text-left cursor-pointer"
-      onClick={() => setPreviewProject(p)}
-                >
-                  <div className="relative h-48 w-full">
-                    {thumbs.length > 0 ? (
-                      <Image
-                        src={thumbs[0]}
-                        alt={p.title}
-                        fill
-                        className="object-cover"
-                        sizes="100%"
-                        unoptimized={thumbs[0].startsWith("/uploads/")}
-                      />
-                    ) : (
-                      <div className="h-full w-full bg-gray-100 flex items-center justify-center text-gray-400">
-                        No image
-                      </div>
-                    )}
-                    <button
-                      onClick={() => deleteProject(p.id)}
-                      title="Delete project"
-                      aria-label="Delete project"
-                      className="absolute top-2 right-2 h-9 w-9 flex items-center justify-center rounded-full bg-red-500/90 text-white opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-red-600 active:scale-95 shadow-md ring-1 ring-white/40 backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="h-5 w-5"
-                        aria-hidden="true"
+        {/* Create Project */}
+        <Box sx={{ p: { xs: 2, md: 3 } }}>
+          <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 }, borderRadius: 3 }}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 2 }}>
+              <Box>
+                <TextField fullWidth label="Title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter project title" size="small" sx={{ mb: 2 }} />
+                <TextField fullWidth multiline minRows={4} label="Description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="A short description" size="small" />
+              </Box>
+              <Box>
+                <Typography variant="subtitle2" sx={{ mb: 1 }}>Images (up to 3)</Typography>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  {files.map((f, i) => (
+                    <Paper key={i} variant="outlined" sx={{ p: 2, borderRadius: 2, minWidth: 220, flex: '1 1 220px', position: 'relative' }}>
+                      <Box
+                        onDragOver={(e) => { e.preventDefault(); setDragOverIdx(i); }}
+                        onDragLeave={() => setDragOverIdx((cur) => cur === i ? null : cur)}
+                        onDrop={(e) => { e.preventDefault(); setDragOverIdx(null); const file = e.dataTransfer.files?.[0]; if (file) { const copy = [...files]; copy[i] = file; setFiles(copy); } }}
+                        sx={{
+                          border: '2px dashed',
+                          borderColor: dragOverIdx === i ? 'primary.main' : 'divider',
+                          borderRadius: 2,
+                          p: 2,
+                          textAlign: 'center',
+                          bgcolor: dragOverIdx === i ? 'action.hover' : 'background.paper',
+                          transition: 'all .2s ease',
+                          position: 'relative'
+                        }}
                       >
-                        <path d="M9 3a1 1 0 0 0-1 1v1H5.5a1 1 0 1 0 0 2H6v11a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V7h.5a1 1 0 1 0 0-2H16V4a1 1 0 0 0-1-1H9zm2 2h2V4h-2v1zM8 7h10v11a1 1 0 0 1-1 1H11a1 1 0 0 1-1-1V7zm2 3a1 1 0 1 0-2 0v7a1 1 0 1 0 2 0v-7zm6 0a1 1 0 1 0-2 0v7a1 1 0 1 0 2 0v-7z" />
-                      </svg>
-                      <span className="sr-only">Delete project</span>
-                    </button>
-                  </div>
-                  <div className="p-3">
-                    <h4 className="font-semibold text-gray-900 truncate" title={p.title}>
-                      {p.title}
-                    </h4>
-                    {p.description && (
-                      <p className="text-xs text-gray-600 mt-1 line-clamp-2" title={p.description}>
-                        {p.description}
-                      </p>
-                    )}
-                    {thumbs.length > 1 && (
-                      <div className="mt-3 grid grid-cols-3 gap-2">
-                        {thumbs.slice(1, 3).map((t, i) => (
-                          <div key={i} className="relative h-14 w-full">
-                            <Image
-                              src={t}
-                              alt={`${p.title} extra ${i + 1}`}
-                              fill
-                              className="object-cover rounded"
-                              sizes="100%"
-                              unoptimized={t.startsWith("/uploads/")}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+                        <AddPhotoAlternateIcon color="action" />
+                        <Typography variant="body2" sx={{ mt: 1 }}>{f ? f.name : `Image ${i + 1}`}</Typography>
+                        <input type="file" accept="image/*" onChange={(e) => { const copy = [...files]; copy[i] = e.target.files?.[0] || null; setFiles(copy); }} style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }} />
+                      </Box>
+                      {progress[i] !== null && (
+                        <Box sx={{ mt: 1 }}>
+                          <LinearProgress variant="determinate" value={progress[i] ?? 0} />
+                          <Typography variant="caption" color="text.secondary">{progress[i]}%</Typography>
+                        </Box>
+                      )}
+                      {f && (
+                        <Box sx={{ mt: 1, display: 'flex', justifyContent: 'space-between' }}>
+                          <Button size="small" onClick={() => { const copy = [...files]; copy[i] = null; setFiles(copy); }} sx={{ textTransform: 'none' }}>Clear</Button>
+                          <Typography variant="caption" color="text.secondary">{Math.round((f.size/1024/1024)*100)/100} MB</Typography>
+                        </Box>
+                      )}
+                    </Paper>
+                  ))}
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                  <Button onClick={createProject} disabled={saving} variant="contained" startIcon={<CloudUploadIcon />} sx={{ textTransform: 'none' }}>
+                    {saving ? 'Creating...' : 'Create Project'}
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+            {message && (
+              <Typography variant="body2" sx={{ mt: 2 }} color={message.type === 'success' ? 'success.main' : 'error.main'}>
+                {message.text}
+              </Typography>
+            )}
+          </Paper>
 
-      {/* Preview Modal */}
-      <AnimatePresence>
-        {previewProject && (
-          <motion.div
-            key="admin-proj-modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4"
-            onClick={() => setPreviewProject(null)}
-          >
-            <motion.div
-              key="admin-proj-modal"
-              initial={{ opacity: 0, scale: 0.96, y: 8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.98, y: 8 }}
-              transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-              className="relative w-full max-w-5xl"
-              onClick={(e) => e.stopPropagation()}
-              role="dialog"
-              aria-modal="true"
-            >
-              <button onClick={() => setPreviewProject(null)} className="absolute -top-12 right-0 text-white/90 hover:text-white focus:outline-none" aria-label="Close">
-                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-              </button>
-              <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden ring-1 ring-white/10">
-                {previewProject.imgUrl1 && (
-                  <Image src={previewProject.imgUrl1} alt={previewProject.title} fill className="object-contain" sizes="100vw" unoptimized={previewProject.imgUrl1.startsWith('/uploads/')} />
-                )}
-              </div>
-              <div className="mt-3 text-white">
-                <h3 className="text-lg font-semibold">{previewProject.title}</h3>
-                {previewProject.description && <p className="text-slate-200 text-sm">{previewProject.description}</p>}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {/* Projects Grid */}
+          {projects.length === 0 ? (
+            <Paper variant="outlined" sx={{ p: 6, mt: 3, borderRadius: 3, textAlign: 'center', color: 'text.secondary' }}>
+              No projects yet
+            </Paper>
+          ) : (
+            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 2, mt: 3 }}>
+              {projects.map((p) => {
+                const thumbs = [p.imgUrl1, p.imgUrl2, p.imgUrl3].filter(Boolean) as string[];
+                return (
+                  <Card key={p.id} sx={{ borderRadius: 3, overflow: 'hidden', cursor: 'pointer' }} onClick={() => setPreviewProject(p)}>
+                    <CardActionArea>
+                      <Box sx={{ position: 'relative', height: 180 }}>
+                        {thumbs.length > 0 ? (
+                          <Image src={thumbs[0]} alt={p.title} fill className="object-cover" sizes="(max-width: 600px) 100vw, 25vw" unoptimized={thumbs[0].startsWith('/uploads/')} />
+                        ) : (
+                          <Box sx={{ height: '100%', width: '100%', bgcolor: 'grey.100', color: 'text.secondary', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No image</Box>
+                        )}
+                      </Box>
+                    </CardActionArea>
+                    <CardContent sx={{ pt: 1.5 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Typography variant="subtitle2" noWrap title={p.title}>{p.title}</Typography>
+                        <IconButton aria-label="Delete" color="error" onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(p.id); }}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Box>
+                      {p.description && (
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }} noWrap title={p.description}>
+                          {p.description}
+                        </Typography>
+                      )}
+                      {thumbs.length > 1 && (
+                        <Box sx={{ mt: 1, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1 }}>
+                          {thumbs.slice(1, 3).map((t, i) => (
+                            <Box key={i} sx={{ position: 'relative', height: 56, borderRadius: 1, overflow: 'hidden' }}>
+                              <Image src={t} alt={`${p.title} extra ${i + 1}`} fill className="object-cover" sizes="100%" unoptimized={t.startsWith('/uploads/')} />
+                            </Box>
+                          ))}
+                        </Box>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </Box>
+          )}
+        </Box>
 
-      {/* Pagination Controls */}
-    <div className="flex items-center justify-center gap-4 mt-8">
-        <button
-          onClick={loadPrevPage}
-          disabled={page === 0}
-          className="h-10 w-10 rounded-full bg-gray-900 text-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
-          aria-label="Previous page"
-        >
-          <span className="text-lg">‹</span>
-        </button>
-        <span className="text-gray-800 font-medium">{page + 1}</span>
-        <button
-          onClick={loadNextPage}
-      disabled={!hasMore[page]}
-          className="h-10 w-10 rounded-full bg-white text-gray-900 ring-1 ring-gray-300 flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
-          aria-label="Next page"
-        >
-          <span className="text-lg">›</span>
-        </button>
-      </div>
-    </div>
+        {/* Footer pagination */}
+        <Box sx={{ px: 3, py: 2, borderTop: 1, borderColor: 'divider', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+          <Button variant="outlined" startIcon={<NavigateBeforeIcon />} disabled={page === 0} onClick={loadPrevPage} sx={{ textTransform: 'none', borderRadius: 10 }}>Prev</Button>
+          <Typography variant="body2" color="text.secondary">Page {page + 1}</Typography>
+          <Button variant="contained" endIcon={<NavigateNextIcon />} disabled={!hasMore[page]} onClick={loadNextPage} sx={{ textTransform: 'none', borderRadius: 10 }}>Next</Button>
+        </Box>
+      </Paper>
+
+      {/* Preview Dialog */}
+      <Dialog open={!!previewProject} onClose={() => setPreviewProject(null)} maxWidth="md" fullWidth>
+        <DialogTitle>Preview</DialogTitle>
+        <DialogContent dividers>
+          {previewProject?.imgUrl1 && (
+            <Box sx={{ position: 'relative', width: '100%', aspectRatio: '16/9' }}>
+              <Image src={previewProject.imgUrl1} alt={previewProject.title} fill className="object-contain" sizes="100vw" unoptimized={previewProject.imgUrl1.startsWith('/uploads/')} />
+            </Box>
+          )}
+          {previewProject && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="h6">{previewProject.title}</Typography>
+              {previewProject.description && (
+                <Typography variant="body2" color="text.secondary">{previewProject.description}</Typography>
+              )}
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setPreviewProject(null)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete confirm */}
+      <Dialog open={!!confirmDeleteId} onClose={() => setConfirmDeleteId(null)}>
+        <DialogTitle>Delete project?</DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setConfirmDeleteId(null)}>Cancel</Button>
+          <Button color="error" variant="contained" onClick={async () => { if (confirmDeleteId) { await doDeleteProject(confirmDeleteId); setConfirmDeleteId(null); } }}>Delete</Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 }
 
