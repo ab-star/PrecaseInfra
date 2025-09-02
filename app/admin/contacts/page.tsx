@@ -141,9 +141,10 @@ export default function AdminContactsPage() {
         py: { xs: 4, md: 8 },
         px: { xs: 2, md: 3 },
         backgroundImage:
-          "linear-gradient(120deg, rgba(248,250,252,0.94), rgba(241,245,249,0.94)), url('/concrete2.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+          "url('/concrete2.jpg'), linear-gradient(120deg, rgba(248,250,252,0.55), rgba(241,245,249,0.5))",
+        backgroundSize: "cover, cover",
+        backgroundPosition: "center, center",
+        backgroundRepeat: "no-repeat, no-repeat",
       }}
     >
       <Paper
