@@ -146,7 +146,7 @@ const FujiSilvertechLanding = () => {
       />
 
       {/* Center Tagline - Stone textured, 3D, two-line (1+2 words) */}
-      <div className="absolute inset-0 z-25 pointer-events-none flex items-center justify-center px-4">
+      {/* <div className="absolute inset-0 z-25 pointer-events-none flex items-center justify-center px-4">
         <div className="text-center leading-none rounded-md bg-black/20 md:bg-transparent backdrop-blur-[2px] md:backdrop-blur-0 px-3 py-2 md:px-0 md:py-0">
           <div
             className={`${anton.className} uppercase tracking-[0.06em] text-transparent bg-clip-text select-none
@@ -180,7 +180,7 @@ const FujiSilvertechLanding = () => {
             To Last
           </div>
         </div>
-      </div>
+      </div> */}
       <div
         className={`absolute inset-0 z-10 transition-opacity duration-700 ease-[cubic-bezier(.4,0,.2,1)] ${overlayVisible && overlayBg ? 'opacity-100' : 'opacity-0 pointer-events-none'} bg-center bg-no-repeat bg-contain md:bg-cover`}
         style={{
