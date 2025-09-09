@@ -1,76 +1,122 @@
+
 "use client";
 import React from "react";
+import { Box, Typography, Grid, Card, CardContent, Chip, Fade } from "@mui/material";
 import { motion } from "framer-motion";
 
 const features = [
-  "HIGH DURABILITY AND EXTREMELY LONG SERVICE LIFE",
-  "HIGHLY EXPERIENCED TEAM WITH 50+ YEARS OF EXPERIENCE",
-  "5X FASTER CONSTRUCTION TIMELINES",
-  "FACTORY MADE, QUALITY ASSURED PRODUCTS",
-  "HIGH PERFORMANCE CONCRETE FOR THE BEST QUALITY",
-  "JAPANESE TECHNOLOGY MIXED WITH INDIAN CREATIVITY",
-  "LESS CONSTRUCTION SPACE AND MANPOWER REQUIRED"
-];
-
-const tilePositions = [
-  { x: 0, y: 0, z: 0, rotate: -2 },
-  { x: 320, y: 0, z: 0, rotate: 3 },
-  { x: 160, y: 80, z: 0, rotate: 1 },
-  { x: 480, y: 80, z: 0, rotate: -2 },
-  { x: 0, y: 180, z: 0, rotate: 2 },
-  { x: 320, y: 180, z: 0, rotate: -3 },
-  { x: 160, y: 260, z: 0, rotate: 1 }
+  {
+    title: "Engineered for Tomorrow",
+    description: "Our precast solutions are designed for the next generation of infrastructure, combining innovation, speed, and sustainability.",
+    icon: "🚀"
+  },
+  {
+    title: "Quality You Can Trust",
+    description: "Every product is factory-made and quality assured, meeting the highest standards for durability and performance.",
+    icon: "✅"
+  },
+  {
+    title: "Expert Team",
+    description: "Our team brings decades of experience and a passion for excellence to every project.",
+    icon: "👷"
+  },
+  {
+    title: "Faster Construction",
+    description: "Accelerate your project timelines with our rapid deployment and minimal site disruption.",
+    icon: "⏱️"
+  },
+  {
+    title: "Sustainable Solutions",
+    description: "We use eco-friendly materials and processes to build a greener future.",
+    icon: "🌱"
+  },
+  {
+    title: "Smart Technology",
+    description: "Digital tools and data-driven insights ensure precision and reliability in every build.",
+    icon: "💡"
+  }
 ];
 
 const FutureReadyAnimated = () => (
-  <motion.section className="w-full min-h-[700px] py-32 px-6 md:px-20 flex items-center justify-center" style={{ background: "url('/concrete3.webp'), url('/concrete3.jpg') center/cover, #222" }}
-    initial={{ opacity: 0, y: 80 }}
+  <Box
+    component={motion.section}
+    initial={{ opacity: 0, y: 60 }}
     whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8, type: "spring", stiffness: 60 }}
+    transition={{ duration: 0.7, type: "spring", stiffness: 60 }}
     viewport={{ once: true, amount: 0.2 }}
+    sx={{
+      width: "100%",
+      minHeight: { xs: 480, md: 700 },
+      py: { xs: 8, md: 14 },
+      px: { xs: 2, md: 8 },
+  bgcolor: "#f5f7fa",
+  background: "url('/concrete4.jpg') center/cover, #f5f7fa"
+    }}
   >
-    <div className="max-w-7xl w-full mx-auto flex flex-col md:flex-row gap-16 items-start bg-white/10 p-12 md:p-20">
-      <div className="flex-1 text-green-900 pr-8">
-        <h2 className="text-5xl font-extrabold mb-6 drop-shadow-lg" style={{marginBottom: "1rem"}}>We are Future Ready</h2>
-        <p className="text-xl font-semibold leading-relaxed opacity-95 mt-16" style={{ color: '#111' }}>
-          Our 100-year legacy and partnership with Fuji Japan give us access to advanced precast concrete technology, allowing us to complete projects faster, cost-effectively, and with less manpower and machinery needed on site. Our durable products are engineered with precision and manufactured by experts. We strive to exceed client expectations with high-quality precast concrete solutions continuously.
-        </p>
-      </div>
-      <div className="flex-1 relative min-h-[520px] flex items-center justify-center" style={{ minWidth: 600 }}>
-        {features.map((text, i) => (
-          <motion.div
-            key={text}
-            initial={{ opacity: 0, scale: 1.5, z: 200, y: 100, rotate: 0 }}
-            whileInView={{ opacity: 1, scale: 1, z: tilePositions[i].z, x: tilePositions[i].x, y: tilePositions[i].y, rotate: tilePositions[i].rotate }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.9, delay: i * 0.18, type: "spring", stiffness: 60 }}
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              width: 400,
-              minHeight: 100,
-              background: "url('/concrete_texture.webp'), url('/concrete_texture.jpg') center/cover, #e0e0e0",
-              boxShadow: "0 12px 36px 0 #0008",
-              borderRadius: 16,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "2rem 2.5rem",
-              fontWeight: 800,
-              fontSize: "1.35rem",
-              color: "#1a1a1a",
-              textAlign: "center",
-              zIndex: 10 - i,
-              textShadow: "0 2px 8px #fff8"
-            }}
-          >
-            {text}
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  </motion.section>
+    <Box sx={{ maxWidth: 1200, mx: "auto", mb: 8 }}>
+      <Typography
+        variant="h3"
+        fontWeight={800}
+        color="primary"
+        gutterBottom
+        sx={{ textAlign: "center", mb: 2, letterSpacing: 1 }}
+        component={motion.h2}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Future Ready Infrastructure
+      </Typography>
+      <Typography
+        variant="h6"
+        sx={{ textAlign: "center", mb: 4, maxWidth: 700, mx: "auto", color: '#fff', textShadow: '0 2px 8px #0008' }}
+        component={motion.p}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.2 }}
+      >
+        At <b>3Ginfratech</b>, we build for the future—delivering smart, sustainable, and high-performance precast solutions that empower India’s growth. Our commitment to quality, speed, and innovation sets new benchmarks in infrastructure excellence.
+      </Typography>
+    </Box>
+    <Grid container spacing={4} justifyContent="center" alignItems="stretch">
+      {features.map((feature, i) => (
+        <Grid item xs={12} sm={6} md={4} key={feature.title}>
+          <Fade in timeout={700 + i * 120}>
+            <Card
+              component={motion.div}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: i * 0.15 }}
+              elevation={5}
+              sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                px: 3,
+                py: 4,
+                borderRadius: 4,
+                bgcolor: "#f7f7f7",
+                background: "url('/concrete_texture.jpg') center/cover, linear-gradient(135deg, #e3e3e3 0%, #f7f7f7 100%)",
+                boxShadow: "0 8px 32px 0 #0002"
+              }}
+            >
+              <Chip label={feature.icon} sx={{ fontSize: 32, mb: 2, bgcolor: "transparent", color: "#1976d2", boxShadow: 'none' }} />
+              <Typography variant="h6" fontWeight={700} color="primary" sx={{ mb: 1, textAlign: "center" }}>
+                {feature.title}
+              </Typography>
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography variant="body1" color="text.secondary" sx={{ textAlign: "center" }}>
+                  {feature.description}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Fade>
+        </Grid>
+      ))}
+    </Grid>
+  </Box>
 );
 
 export default FutureReadyAnimated;

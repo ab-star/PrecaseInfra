@@ -20,7 +20,7 @@ export default function Home() {
       <IndiaMapSection />
       {/* <SectorsShowcase /> */}
       <FutureReadyAnimated />
-      <ClientsAcquiredSection />
+      {/* <ClientsAcquiredSection /> */}
       <SustainabilitySectionAnimated />
       {/* <ConstructionSectorNavigation /> */}
       {/* <FutureReadySection /> */}

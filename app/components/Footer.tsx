@@ -135,7 +135,7 @@ const Footer = () => {
               alt="Company Logo"
               width={48}
               height={48}
-              style={{ borderRadius: 12, boxShadow: "0 6px 20px rgba(0,0,0,0.15)" }}
+              style={{ borderRadius: '50%', boxShadow: "0 6px 20px rgba(0,0,0,0.15)" }}
               priority
             />
           </Box>
@@ -144,29 +144,22 @@ const Footer = () => {
               <Typography variant="h6" fontWeight={700} sx={{ mb: 2, color: '#ffffff' }}>
                 Contact Us
               </Typography>
-              <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2, mb: 2 }}>
-                <IconButton size="small" sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }} aria-label="location">
-                  <LocationOnIcon />
-                </IconButton>
-                <Typography variant="body1" sx={{ lineHeight: 1.6, color: 'rgba(255,255,255,0.92)', fontSize: { xs: 14, md: 16 } }}>
-                  1st Floor, 66, Lambe Hanuman Rd, Matavadi, Hans Society,<br />
-                  Varachha, Surat, Gujarat 395006
-                </Typography>
-              </Box>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
-                <IconButton size="small" sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }} aria-label="phone">
-                  <PhoneIcon />
-                </IconButton>
-                <Link href="tel:+919825680891" underline="hover" sx={{ color: "common.white", "&:hover": { color: "primary.light" } }}>
-                  098256 80891
+                <EmailIcon sx={{ color: '#fff' }} />
+                <Link href="mailto:info@3Ginfratech.com" underline="hover" sx={{ color: "common.white", "&:hover": { color: "primary.light" }, fontSize: { xs: 14, md: 16 } }}>
+                  info@3Ginfratech.com
                 </Link>
               </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+                <LocationOnIcon sx={{ color: '#fff' }} />
+                <Typography variant="body1" sx={{ lineHeight: 1.6, color: 'rgba(255,255,255,0.92)', fontSize: { xs: 14, md: 16 } }}>
+                  Block No-407, Plot No -2/1, Serial No – 3, Pipodra, Mangrol, Surat, Gujrat -394110
+                </Typography>
+              </Box>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <IconButton size="small" sx={{ bgcolor: "rgba(255,255,255,0.15)", color: "#fff", "&:hover": { bgcolor: "rgba(255,255,255,0.3)", transform: "scale(1.05)" }, transition: "all .2s" }} aria-label="email">
-                  <EmailIcon />
-                </IconButton>
-                <Link href="mailto:info@companyname.com" underline="hover" sx={{ color: "common.white", "&:hover": { color: "primary.light" }, fontSize: { xs: 14, md: 16 } }}>
-                  info@companyname.com
+                <PhoneIcon sx={{ color: '#fff' }} />
+                <Link href="tel:+919825680891" underline="hover" sx={{ color: "common.white", "&:hover": { color: "primary.light" } }}>
+                  +91- 9825680891
                 </Link>
               </Box>
             </Box>
@@ -176,7 +169,7 @@ const Footer = () => {
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <AccessTimeIcon color="primary" />
-                <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)', fontSize: { xs: 14, md: 16 } }}>Opens ⋅ 10 am</Typography>
+                <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.92)', fontSize: { xs: 14, md: 16 } }}>10 am - 6pm</Typography>
               </Box>
             </Box>
             <Box>
@@ -184,13 +177,13 @@ const Footer = () => {
                 Policies
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <Link component="button" type="button" onClick={() => setOpenPolicy('privacy')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
+                <Link href="/privacy-policy" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
                   Privacy Policy
                 </Link>
-                <Link component="button" type="button" onClick={() => setOpenPolicy('terms')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
-                  Terms of Service
+                <Link href="/terms-and-conditions" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
+                  Terms & Conditions
                 </Link>
-                <Link component="button" type="button" onClick={() => setOpenPolicy('cookie')} underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
+                <Link href="/condition-policy" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
                   Cookie Policy
                 </Link>
               </Box>
