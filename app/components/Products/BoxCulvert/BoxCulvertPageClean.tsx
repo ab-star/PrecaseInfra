@@ -1,18 +1,51 @@
 "use client";
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Center } from '@react-three/drei';
 import Image from 'next/image';
 import * as THREE from 'three';
 import AlternatingFeatures from './AlternatingFeatures';
+import Head from 'next/head';
 
 // 3D Model Component
 const GLB_PATH = '/product/BoxCulvertProduct/glb/SqareBlock.glb';
 useGLTF.preload(GLB_PATH);
-function BoxCulvertModel() {
+function BoxCulvertModel({ scaleMultiplier = 1 }) {
   const { scene } = useGLTF(GLB_PATH) as { scene: THREE.Object3D };
-  return <primitive object={scene} scale={1.8} position={[0, 0, 0]} />;
+  return <primitive object={scene} scale={1.5 * scaleMultiplier} position={[0, 0, 0]} />;
 }
+
+// Custom OrbitControls that completely disables zoom
+const CustomOrbitControls = (props) => {
+  const controlsRef = useRef();
+  
+  useEffect(() => {
+    if (controlsRef.current) {
+      const controls = controlsRef.current;
+      
+      // Completely disable zoom
+      controls.enableZoom = false;
+      
+      // Remove all zoom event listeners
+      controls.mouseButtons = {
+        LEFT: THREE.MOUSE.ROTATE,
+        MIDDLE: null, // Disable middle mouse zoom
+        RIGHT: null   // Disable right mouse pan
+      };
+      
+      // Disable touch zoom
+      controls.touches = {
+        ONE: THREE.TOUCH.ROTATE,
+        TWO: null // Disable two-finger zoom/pan
+      };
+      
+      // Disable wheel zoom
+      controls.listenToKeyEvents = false;
+    }
+  }, []);
+
+  return <OrbitControls ref={controlsRef} {...props} />;
+};
 
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode }) {
@@ -38,120 +71,221 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 }
 
 const BoxCulvertPageClean = () => {
-  return (
-    <div className="bg-white">
-      {/* Hero Video Section (full width, maintain aspect, no crop) */}
-      <section className="w-[100dvw] bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)]">
-        <video
-          className="w-full h-auto block"
-          src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
-      </section>
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+  const canvasContainerRef = useRef(null);
+  
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+      setIsTablet(width >= 768 && width < 1024);
+    };
+    
+    // Initial check
+    checkScreenSize();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkScreenSize);
+    
+    // Prevent wheel events on the canvas container
+    const preventWheel = (e) => {
+      if (e.ctrlKey) {
+        e.preventDefault();
+        return false;
+      }
+    };
+    
+    const container = canvasContainerRef.current;
+    if (container) {
+      container.addEventListener('wheel', preventWheel, { passive: false });
+    }
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+      if (container) {
+        container.removeEventListener('wheel', preventWheel);
+      }
+    };
+  }, []);
 
-      {/* 3D Model Section (responsive height) */}
-      <section className="w-full min-h-[70vh] md:min-h-screen pt-12 md:pt-20 pb-12 bg-gray-50 flex flex-col items-center justify-center">
-        <div className="w-full h-[60vh] md:h-[70vh] max-w-7xl mx-auto px-4">
-          <Canvas
-            camera={{ position: [4, 2.5, 4], fov: 45 }}
-            onCreated={({ gl }) => {
-              gl.toneMapping = THREE.ACESFilmicToneMapping;
-              // Ensure correct color space for brighter, more accurate rendering
-              (gl as unknown as { outputColorSpace?: THREE.ColorSpace }).outputColorSpace = THREE.SRGBColorSpace;
-              // Slightly increase exposure for a brighter look (subtle)
-              gl.toneMappingExposure = 1.15;
+  // Calculate scale multiplier based on device
+  const getScaleMultiplier = () => {
+    if (isMobile) return 0.5;  // Much smaller on mobile
+    if (isTablet) return 0.65; // Medium on tablet
+    return 0.8;                // Moderately sized on desktop
+  };
+
+  // Calculate camera position based on device
+  const getCameraPosition = () => {
+    if (isMobile) return [2.5, 1.8, 2.5];   // Closer on mobile
+    if (isTablet) return [3, 2.2, 3];       // Medium distance on tablet
+    return [3.5, 2.5, 3.5];                 // Default on desktop
+  };
+
+  // Calculate field of view based on device
+  const getFov = () => {
+    if (isMobile) return 50;  // Standard FOV on mobile
+    if (isTablet) return 45;  // Standard FOV on tablet
+    return 40;                // Slightly narrower on desktop
+  };
+
+  return (
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      </Head>
+      <div className="bg-white overflow-x-hidden">
+        {/* Hero Video Section */}
+        <section className="w-full bg-black">
+          <div className="w-full h-auto">
+            <video
+              className="w-full h-auto"
+              src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxVideo1.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          </div>
+        </section>
+
+        {/* 3D Model Section - Properly scaled and centered */}
+        <section className="w-full py-8 md:py-12 lg:py-16 bg-gray-50 flex flex-col items-center justify-center">
+          {/* <div className="w-full max-w-4xl mx-auto px-4 text-center mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800">
+              Interactive 3D Model
+            </h2>
+            <p className="mt-2 text-gray-600 max-w-2xl mx-auto">
+              Rotate to explore our precision-engineered box culvert design from all angles
+            </p>
+          </div> */}
+          
+          <div 
+            ref={canvasContainerRef}
+            className="w-full max-w-3xl mx-auto rounded-lg overflow-hidden shadow-lg bg-white border border-gray-200"
+            style={{ 
+              height: isMobile ? '40vh' : isTablet ? '45vh' : '50vh',
+              maxHeight: '500px',
+              touchAction: 'none'
             }}
           >
-            <ambientLight intensity={1.15} />
-            <hemisphereLight color={0xffffff} groundColor={0x666666} intensity={0.6} />
-            <directionalLight position={[10, 10, 5]} intensity={2.0} />
-            <directionalLight position={[-6, 4, -4]} intensity={0.8} />
-            <OrbitControls enablePan={false} enableZoom={false} enableRotate target={[0, 0, 0]} />
-            <ErrorBoundary>
-              <Suspense fallback={<mesh><boxGeometry args={[2, 1, 3]} /><meshStandardMaterial color="#9ca3af" /></mesh>}>
-                <Center>
-                  <BoxCulvertModel />
-                </Center>
-              </Suspense>
-            </ErrorBoundary>
-          </Canvas>
-        </div>
-      </section>
+            <Canvas
+              camera={{ 
+                position: getCameraPosition(), 
+                fov: getFov(),
+                zoom: 1
+              }}
+              onCreated={({ gl }) => {
+                gl.toneMapping = THREE.ACESFilmicToneMapping;
+                (gl as unknown as { outputColorSpace?: THREE.ColorSpace }).outputColorSpace = THREE.SRGBColorSpace;
+                gl.toneMappingExposure = 1.1;
+              }}
+            >
+              <ambientLight intensity={1.1} />
+              <hemisphereLight color={0xffffff} groundColor={0x666666} intensity={0.5} />
+              <directionalLight position={[8, 8, 4]} intensity={1.5} />
+              <directionalLight position={[-5, 3, -3]} intensity={0.7} />
+              <CustomOrbitControls 
+                enablePan={false}
+                enableRotate={true}
+                target={[0, 0, 0]}
+                minDistance={2.5}
+                maxDistance={2.5}
+                enableDamping={true}
+                dampingFactor={0.1}
+              />
+              <ErrorBoundary>
+                <Suspense fallback={
+                  <mesh>
+                    <boxGeometry args={[1.5, 0.8, 2.5]} />
+                    <meshStandardMaterial color="#d1d5db" />
+                  </mesh>
+                }>
+                  <Center>
+                    <BoxCulvertModel scaleMultiplier={getScaleMultiplier()} />
+                  </Center>
+                </Suspense>
+              </ErrorBoundary>
+            </Canvas>
+          </div>
+          
+          {/* Instructions for users */}
+          {/* <div className="mt-6 text-center text-gray-600 text-sm max-w-2xl mx-auto px-4">
+            <p className="mb-2">Drag to rotate the model</p>
+            <p className="text-xs text-gray-500">
+              Engineered for durability and optimal performance in infrastructure projects
+            </p>
+          </div> */}
+        </section>
 
-      {/* Strength Section (flexible, not fixed to screen height) */}
-      <section className="relative w-full min-h-[70vh] md:min-h-screen overflow-hidden flex items-center justify-center py-16 md:py-24" style={{padding: "4rem"}}>
-        <Image
-          src="/concrete4.jpg"
-          alt="Concrete background"
-          fill
-          sizes="100vw"
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-10 py-8 text-white [&_p]:text-white [&_h1]:text-white [&_h2]:text-white">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16 lg:gap-20">
-            {/* Left: Text */}
-            <div className="w-full md:w-[46%] text-left">
-              <h2 style={{paddingBottom: "1.5rem"}} className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white uppercase tracking-wide">LOOKS STRONG.</h2>
-              <p className="mt-6 text-base md:text-lg !text-white leading-relaxed" style={{ color: '#fff' }}>
-                To build strong and sustainable precast bridges, we designed them to comply with Indian loading conditions for
-                Highways and Railways. We made it with high-performance self-compacting concrete as per Japanese
-                Industrial manufacturing standards.
-              </p>
-              <p className="mt-4 text-base md:text-lg !text-white leading-relaxed" style={{ color: '#fff' }}>
-                Our reinforced concrete culverts deliver exceptional strength and durability even in the most challenging environments,
-                with precision engineering that ensures perfect alignment during installation.
-              </p>
-            </div>
-            {/* Right: Image */}
-            <div className="w-full md:w-[54%] flex justify-center md:justify-end">
-              <div className="relative md:scale-110 lg:scale-125">
-                <Image
-                  src="/product/BoxCulvertProduct/strong/strong.png"
-                  alt="Box culvert frame"
-                  width={1200}
-                  height={1200}
-                  className="object-contain drop-shadow-2xl"
-                  priority
-                />
+        {/* Strength Section */}
+        <section className="relative w-full overflow-hidden flex items-center justify-center py-12 md:py-16 lg:py-24">
+          <Image
+            src="/concrete4.jpg"
+            alt="Concrete background"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-10 py-8 text-white">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 lg:gap-12">
+              {/* Left: Text */}
+              <div className="w-full lg:w-[50%] text-center lg:text-left">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold uppercase tracking-wide mb-4 md:mb-6">
+                  LOOKS STRONG.
+                </h2>
+                <div className="space-y-3 md:space-y-4 text-sm sm:text-base md:text-lg leading-relaxed">
+                  <p>
+                    To build strong and sustainable precast bridges, we designed them to comply with Indian loading conditions for
+                    Highways and Railways. We made it with high-performance self-compacting concrete as per Japanese
+                    Industrial manufacturing standards.
+                  </p>
+                  <p>
+                    Our reinforced concrete culverts deliver exceptional strength and durability even in the most challenging environments,
+                    with precision engineering that ensures perfect alignment during installation.
+                  </p>
+                </div>
+              </div>
+              
+              {/* Right: Image */}
+              <div className="w-full lg:w-[45%] flex justify-center mt-8 lg:mt-0">
+                <div className="relative w-full max-w-md lg:max-w-none">
+                  <Image
+                    src="/product/BoxCulvertProduct/strong/strong.png"
+                    alt="Box culvert frame"
+                    width={600}
+                    height={600}
+                    className="object-contain w-full h-auto drop-shadow-2xl"
+                    priority
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Extra Video Section (R2 sequence 2) - full width, maintain aspect */}
-      <section className="w-[100dvw] bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)]">
-        <video
-          className="w-full h-auto block"
-          src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxDrainTruckVideo2.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
-      </section>
+        {/* Extra Video Section */}
+        <section className="w-full bg-black">
+          <div className="w-full h-auto">
+            <video
+              className="w-full h-auto"
+              src="https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/BoxVideo/BoxDrainTruckVideo2.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          </div>
+        </section>
 
-      {/* Full-Viewport Image Section */}
-      {/* <section className="relative w-full h-screen overflow-hidden">
-        <Image
-          src="/Home/5p.png"
-          alt="Box Culvert showcase"
-          fill
-          sizes="100vw"
-          className="object-cover"
-          priority
-        />
-      </section> */}
-
-      {/* Feature Details Section (alternating image/text) */}
-      <AlternatingFeatures />
-
-    </div>
+        {/* Feature Details Section */}
+        <AlternatingFeatures />
+      </div>
+    </>
   );
 };
 
