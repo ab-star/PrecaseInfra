@@ -4,12 +4,84 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Breadcrumbs from "./Breadcrumbs";
+import {
+  ThemeProvider,
+  createTheme,
+  Typography,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
+  useMediaQuery,
+} from "@mui/material";
+import {
+  Menu as MenuIcon,
+  Close as CloseIcon,
+  ExpandMore as ExpandMoreIcon,
+  ExpandLess as ExpandLessIcon,
+} from "@mui/icons-material";
+
+// Create a custom theme
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#065f46", // emerald-800
+      light: "#047857", // emerald-700
+    },
+    secondary: {
+      main: "#f59e0b", // amber-500
+    },
+    background: {
+      default: "#1f2937", // gray-800
+      paper: "#065f46", // emerald-800
+    },
+    text: {
+      primary: "#ffffff",
+      secondary: "rgba(255, 255, 255, 0.7)",
+    },
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    h6: {
+      fontWeight: 600,
+      fontSize: "1.125rem",
+    },
+    body1: {
+      fontSize: "1rem",
+      fontWeight: 500,
+    },
+    body2: {
+      fontSize: "0.875rem",
+      fontWeight: 400,
+    },
+    button: {
+      textTransform: "uppercase",
+      fontWeight: 500,
+    },
+  },
+  components: {
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: "#065f46",
+          color: "#ffffff",
+          zIndex: 2200,
+        },
+      },
+    },
+  },
+});
 
 const MainHeader = () => {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileDropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -18,7 +90,7 @@ const MainHeader = () => {
       }
     };
 
-  document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
@@ -32,9 +104,9 @@ const MainHeader = () => {
       "/view-projects",
       "/products/box-culvert",
       "/products/drains",
-  "/products/walls",
-  "/contacts",
-    "/certifications",
+      "/products/walls",
+      "/contacts",
+      "/certifications",
     ];
     routes.forEach((r) => router.prefetch(r));
   }, [router]);
@@ -50,140 +122,237 @@ const MainHeader = () => {
     }
   }, [isProductsOpen, router]);
 
+  const handleProductsClick = () => {
+    setIsProductsOpen(!isProductsOpen);
+  };
+
+  const handleMobileProductsClick = () => {
+    setMobileProductsOpen(!mobileProductsOpen);
+  };
+
+  const handleClose = () => {
+    setIsProductsOpen(false);
+  };
+
   return (
-  <header style={{ padding: '0px 3rem' }} className="relative w-full h-28 bg-gray-900 overflow-visible z-[2000]"> {/* keep dropdown above page content */}
-      {/* Background image */}
-      <div  className="absolute inset-0 w-full h-full overflow-hidden">
-        <Image
-          src="/navBgUt.webp"
-          alt="Concrete background"
-          layout="fill"
-          objectFit="cover"
-          quality={100}       
-          priority
-          className="opacity-90"
-        />
-      </div>
-      
-      <div className="absolute inset-0 bg-black/20"></div>
-      
-      {/* Main container */}
-  <div className="relative z-20 h-full mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 flex items-center justify-between">
-        
-        {/* Logo */}
-        <div className="flex items-center pl-4 sm:pl-6 gap-4 md:gap-6">
-          <div className="rounded-full p-1 bg-white/10 backdrop-blur-sm border border-white/20">
-            <Image 
-              src="/brandIcon.jpeg" 
-              alt="Company Logo" 
-              width={80}
-              height={80}
-              className="rounded-full border-2 border-white/80 shadow-lg"
-              quality={100}
-            />
-          </div>
-          {/* Header breadcrumbs */}
-          <div className="hidden md:block max-w-[40vw] truncate">
-            <Breadcrumbs variant="header" />
-          </div>
+    <ThemeProvider theme={theme}>
+      <header style={{ padding: '0px 3rem', zIndex: 2000 }} className="relative w-full h-28 bg-gray-900 overflow-visible">
+        {/* Background image */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <Image
+            src="/navBgUt.webp"
+            alt="Concrete background"
+            layout="fill"
+            objectFit="cover"
+            quality={100}       
+            priority
+            className="opacity-90"
+          />
         </div>
         
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center gap-x-6 lg:gap-x-8 pr-4 sm:pr-6 relative">
-          <Link href="/" onMouseEnter={() => router.prefetch('/')} onFocus={() => router.prefetch('/')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
-            HOME
-          </Link>
-    
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setIsProductsOpen(!isProductsOpen)}
-              className="flex items-center text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal"
-              style={{ fontSize: '16px', fontWeight: 500 }}
-            >
-              PRODUCTS
-              <svg className={`ml-2 h-4 w-4 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`}>
-                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-            </button>
-            
-            {/* Dropdown positioned absolutely below header */}
-            <div className={`absolute right-0 top-full mt-0 w-64 max-w-[calc(100vw-1rem)] bg-emerald-600 text-white rounded-b-lg shadow-xl border border-emerald-700 transition-all duration-300 z-[1300] ${
-              isProductsOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
-            }`}>
-              <div className="py-3 px-3">
-                <Link href="/products/box-culvert" prefetch onClick={() => setIsProductsOpen(false)} className="flex w-full items-center rounded-md px-6 py-3 hover:bg-emerald-500 text-xs sm:text-sm">
-                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '16px' , padding: "0.7rem 1rem" }}>Box Culvert</span>
-                </Link>
-                <Link href="/products/drains" prefetch onClick={() => setIsProductsOpen(false)} className="flex w-full items-center rounded-md px-6 py-3 hover:bg-emerald-500 text-xs sm:text-sm">
-                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '16px' , padding: "0.7rem 1rem" }}>Drains</span>
-                </Link>
-                <Link href="/products/walls" prefetch onClick={() => setIsProductsOpen(false)} className="flex w-full items-center rounded-md px-6 py-3 hover:bg-emerald-500 text-xs sm:text-sm">
-                  <span className="flex-1 font-medium leading-tight" style={{ color: '#fff', fontSize: '16px' , padding: "0.7rem 1rem" }}>Walls</span>
-                </Link>
-                {/* Other product links... */}
+        <div className="absolute inset-0 bg-black/20"></div>
+        
+        {/* Main container */}
+        <div className="relative z-10 h-full mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 flex items-center justify-between">
+          
+          {/* Logo */}
+          <div className="flex items-center pl-4 sm:pl-6 gap-4 md:gap-6">
+            <div className="rounded-full p-1 bg-white/10 backdrop-blur-sm border border-white/20">
+              <Image 
+                src="/brandIcon.jpeg" 
+                alt="Company Logo" 
+                width={80}
+                height={80}
+                className="rounded-full border-2 border-white/80 shadow-lg"
+                quality={100}
+              />
+            </div>
+            {/* Header breadcrumbs */}
+            {/* <div className="hidden md:block max-w-[40vw] truncate">
+              <Breadcrumbs variant="header" />
+            </div> */}
+          </div>
+          
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center gap-x-6 lg:gap-x-8 pr-4 sm:pr-6 relative">
+            <Link href="/">
+              <Typography variant="body1" className="text-white hover:text-amber-300 transition-colors duration-300">
+                HOME
+              </Typography>
+            </Link>
+      
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={handleProductsClick}
+                className="flex items-center text-white hover:text-amber-300 transition-colors duration-300"
+              >
+                <Typography variant="body1">PRODUCTS</Typography>
+                <ExpandMoreIcon className={`ml-1 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {/* Custom dropdown menu with proper padding */}
+              <div 
+                className={`absolute right-0 top-full mt-2 w-56 bg-emerald-700 text-white rounded-md shadow-lg overflow-hidden transition-all duration-200 z-50 ${
+                  isProductsOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
+                }`}
+                style={{ border: '1px solid #047857' }}
+              >
+                <div className="py-2">
+                  <Link 
+                    href="/products/box-culvert" 
+                    onClick={handleClose}
+                    className="flex w-full items-center px-6 py-3 hover:bg-emerald-600 transition-colors"
+                  >
+                    <Typography style={{padding: "1rem"}} variant="body2" className="font-medium leading-tight">
+                      Box Culvert
+                    </Typography>
+                  </Link>
+                  <Link 
+                    href="/products/drains" 
+                    onClick={handleClose}
+                    className="flex w-full items-center px-6 py-3 hover:bg-emerald-600 transition-colors"
+                  >
+                    <Typography style={{padding: "1rem"}} variant="body2" className="font-medium leading-tight">
+                      Drains
+                    </Typography>
+                  </Link>
+                  <Link 
+                    href="/products/walls" 
+                    onClick={handleClose}
+                    className="flex w-full items-center px-6 py-3 hover:bg-emerald-600 transition-colors"
+                  >
+                    <Typography style={{padding: "1rem"}} variant="body2" className="font-medium leading-tight">
+                      Walls
+                    </Typography>
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
 
-          <Link href="/view-gallery" onMouseEnter={() => router.prefetch('/view-gallery')} onFocus={() => router.prefetch('/view-gallery')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
-            GALLERY
-          </Link>
-          <Link href="/view-projects" onMouseEnter={() => router.prefetch('/view-projects')} onFocus={() => router.prefetch('/view-projects')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
-            PROJECTS
-          </Link>
-          <Link href="/contacts" onMouseEnter={() => router.prefetch('/contacts')} onFocus={() => router.prefetch('/contacts')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '16px', fontWeight: 500 }}>
-            CONTACT
-          </Link>
-          <Link href="/certifications" onMouseEnter={() => router.prefetch('/certifications')} onFocus={() => router.prefetch('/certifications')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal uppercase" style={{ fontSize: '16px', fontWeight: 500 }}>
-            CERTIFICATIONS
-          </Link>
-          {/* <Link href="/aboutus" onMouseEnter={() => router.prefetch('/aboutus')} onFocus={() => router.prefetch('/aboutus')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
-            ABOUT US
-          </Link>
+            <Link href="/view-gallery">
+              <Typography variant="body1" className="text-white hover:text-amber-300 transition-colors duration-300">
+                GALLERY
+              </Typography>
+            </Link>
+            <Link href="/view-projects">
+              <Typography variant="body1" className="text-white hover:text-amber-300 transition-colors duration-300">
+                PROJECTS
+              </Typography>
+            </Link>
+            <Link href="/contacts">
+              <Typography variant="body1" className="text-white hover:text-amber-300 transition-colors duration-300">
+                CONTACT
+              </Typography>
+            </Link>
+            <Link href="/certifications">
+              <Typography variant="body1" className="text-white hover:text-amber-300 transition-colors duration-300">
+                CERTIFICATIONS
+              </Typography>
+            </Link>
+          </nav>
           
-          <Link href="/gallery" onMouseEnter={() => router.prefetch('/gallery')} onFocus={() => router.prefetch('/gallery')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
-            GALLERY
-          </Link>
-          <Link href="/view-gallery" onMouseEnter={() => router.prefetch('/view-gallery')} onFocus={() => router.prefetch('/view-gallery')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
-            VIEW GALLERY
-          </Link>
-          <Link href="/view-projects" onMouseEnter={() => router.prefetch('/view-projects')} onFocus={() => router.prefetch('/view-projects')} className="text-white hover:text-amber-300 transition-colors duration-300 text-sm font-medium tracking-normal" style={{ fontSize: '14px', fontWeight: 500 }}>
-            VIEW PROJECTS
-          </Link> */}
-        </nav>
-        
-        {/* Mobile menu button */}
-        <button onClick={() => setMobileOpen((v) => !v)} aria-expanded={mobileOpen} aria-controls="mobile-menu" className="md:hidden text-white p-2 mr-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-      {/* Mobile overlay and drawer */}
-      <div className={`md:hidden fixed inset-0 ${mobileOpen ? 'pointer-events-auto' : 'pointer-events-none'} z-[2100]`}> 
-        <div onClick={() => setMobileOpen(false)} className={`absolute inset-0 bg-black/40 transition-opacity ${mobileOpen ? 'opacity-100' : 'opacity-0'}`} />
-        <div id="mobile-menu" className={`absolute right-0 top-0 h-full w-72 max-w-[85vw] bg-emerald-700 text-white shadow-2xl border-l border-emerald-600 transform transition-transform duration-300 ${mobileOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-          <div className="p-4 flex items-center justify-between border-b border-emerald-600">
-            <span className="font-semibold tracking-wide">Menu</span>
-            <button onClick={() => setMobileOpen(false)} className="p-2 rounded hover:bg-emerald-600/60" aria-label="Close menu">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M6.225 4.811a1 1 0 0 1 1.414 0L12 9.172l4.361-4.361a1 1 0 1 1 1.415 1.414L13.415 10.586l4.36 4.361a1 1 0 1 1-1.414 1.414L12 12l-4.361 4.361a1 1 0 1 1-1.414-1.414l4.36-4.361-4.36-4.361a1 1 0 0 1 0-1.414Z"/></svg>
-            </button>
-          </div>
-          <div className="py-2">
-            <Link href="/" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Home</Link>
-            <div className="mt-1 border-t border-emerald-600/60" />
-            <div className="px-5 pt-3 pb-1 text-xs uppercase tracking-wider text-emerald-200/80">Products</div>
-            <Link href="/products/box-culvert" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Box Culvert</Link>
-            <Link href="/products/drains" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Drains</Link>
-            <Link href="/products/walls" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Walls</Link>
-            <div className="mt-1 border-t border-emerald-600/60" />
-            <Link href="/view-gallery" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Gallery</Link>
-            <Link href="/view-projects" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Projects</Link>
-            <Link href="/contacts" onClick={() => setMobileOpen(false)} className="block px-5 py-3 hover:bg-emerald-600">Contact</Link>
-          </div>
+          {/* Mobile menu button */}
+          <IconButton 
+            onClick={() => setMobileOpen(true)} 
+            className="md:hidden text-white p-2 mr-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20"
+            sx={{ display: { xs: 'flex', md: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
         </div>
-      </div>
-    </header>
+        
+        {/* Mobile Drawer with higher z-index */}
+        <Drawer
+          anchor="right"
+          open={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            zIndex: 2200,
+            '& .MuiDrawer-paper': {
+              backgroundColor: '#065f46',
+              color: '#ffffff',
+            }
+          }}
+        >
+          <div className="w-72 h-full flex flex-col">
+            <div className="p-2 flex items-center justify-between border-b border-emerald-600">
+              <Typography variant="h6" className="p-2">
+                Navigation Menu
+              </Typography>
+              <IconButton onClick={() => setMobileOpen(false)} color="inherit">
+                <CloseIcon />
+              </IconButton>
+            </div>
+            
+            <List className="flex-grow">
+              <ListItem button component={Link} href="/" onClick={() => setMobileOpen(false)}>
+                <ListItemText primary="HOME" />
+              </ListItem>
+              
+              <ListItem button onClick={handleMobileProductsClick}>
+                <ListItemText primary="PRODUCTS" />
+                {mobileProductsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </ListItem>
+              
+              <Collapse in={mobileProductsOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem 
+                    button 
+                    sx={{ pl: 4 }}
+                    component={Link} 
+                    href="/products/box-culvert" 
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <ListItemText primary="Box Culvert" />
+                  </ListItem>
+                  <ListItem 
+                    button 
+                    sx={{ pl: 4 }}
+                    component={Link} 
+                    href="/products/drains" 
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <ListItemText primary="Drains" />
+                  </ListItem>
+                  <ListItem 
+                    button 
+                    sx={{ pl: 4 }}
+                    component={Link} 
+                    href="/products/walls" 
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <ListItemText primary="Walls" />
+                  </ListItem>
+                </List>
+              </Collapse>
+              
+              <ListItem button component={Link} href="/view-gallery" onClick={() => setMobileOpen(false)}>
+                <ListItemText primary="GALLERY" />
+              </ListItem>
+              <ListItem button component={Link} href="/view-projects" onClick={() => setMobileOpen(false)}>
+                <ListItemText primary="PROJECTS" />
+              </ListItem>
+              <ListItem button component={Link} href="/contacts" onClick={() => setMobileOpen(false)}>
+                <ListItemText primary="CONTACT" />
+              </ListItem>
+              <ListItem button component={Link} href="/certifications" onClick={() => setMobileOpen(false)}>
+                <ListItemText primary="CERTIFICATIONS" />
+              </ListItem>
+            </List>
+            
+            {/* Footer with company info */}
+            <div className="p-3 bg-emerald-800/50 border-t border-emerald-600/50">
+              <Typography variant="body2" align="center" color="textSecondary">
+                © {new Date().getFullYear()} Your Company Name
+              </Typography>
+            </div>
+          </div>
+        </Drawer>
+      </header>
+    </ThemeProvider>
   );
 };
 

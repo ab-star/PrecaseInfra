@@ -2,17 +2,27 @@ import React from "react";
 
 export default function TermsAndConditionsPage() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-6">Terms & Conditions</h1>
-      <p className="mb-4">These Terms & Conditions govern your use of our website and services. By accessing or using our site, you agree to comply with these terms.</p>
-      <h2 className="text-xl font-semibold mt-8 mb-2">Use of Site</h2>
-      <p>You agree to use our site for lawful purposes only and not to engage in any activity that may harm the site or its users.</p>
-      <h2 className="text-xl font-semibold mt-8 mb-2">Intellectual Property</h2>
-      <p>All content on this site is the property of the company and may not be reproduced without permission.</p>
-      <h2 className="text-xl font-semibold mt-8 mb-2">Limitation of Liability</h2>
-      <p>We are not liable for any damages arising from your use of the site.</p>
-      <h2 className="text-xl font-semibold mt-8 mb-2">Contact</h2>
-      <p>If you have any questions about these Terms & Conditions, please contact us at info@yourdomain.com.</p>
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto w-full">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h1 style={{marginBottom: "3rem" , marginRight: "5rem"}} className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
+            Terms & Conditions
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          This Terms & Conditions explains how we collect, use, disclose, and protect your personal information when you use our website, services, and applications. We are committed to maintaining the highest standards of privacy and data protection in compliance with global regulations including GDPR, CCPA, and other applicable data protection laws.
+
+We only collect personal data that is necessary to deliver our services, improve user experience, and ensure the security of our platform. This may include information such as your name, email address, contact details, usage data, and technical identifiers.
+
+Your information is used strictly for legitimate business purposes, such as providing access to our services, personalizing your experience, communicating updates, ensuring compliance with legal requirements, and safeguarding against fraudulent or unauthorized activities.
+
+
+
+          </p>
+        </div>
+
+
+      </div>
     </main>
   );
 }

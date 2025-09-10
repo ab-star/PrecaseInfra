@@ -28,8 +28,8 @@ function ModelCanvas({ path, scale = 1.5 }: { path: string; scale?: number }) {
   return (
     <Canvas
       camera={{ position: [5, 3, 5], fov: 45, far: 1000 }}
-      style={{ width: "100%", height: "100%" }}
-      gl={{ alpha: true, antialias: true }}
+      style={{ width: "100%", height: "100%", background: "#fff" }}
+      gl={{ alpha: false, antialias: true }}
       frameloop="always"
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
@@ -37,6 +37,8 @@ function ModelCanvas({ path, scale = 1.5 }: { path: string; scale?: number }) {
         gl.toneMappingExposure = 1.15;
       }}
     >
+      {/* Remove all background colors/textures, set plain white */}
+      <color attach="background" args={["#fff"]} />
       <ambientLight intensity={1.15} />
       <hemisphereLight color={0xffffff} groundColor={0x666666} intensity={0.6} />
       <directionalLight position={[10, 10, 5]} intensity={2.0} />
@@ -47,7 +49,7 @@ function ModelCanvas({ path, scale = 1.5 }: { path: string; scale?: number }) {
           <meshStandardMaterial color="#9ca3af" />
         </mesh>
       }>
-  <Bounds fit observe margin={1.5}>
+        <Bounds fit observe margin={1.5}>
           <DrainModel path={path} scale={scale} />
         </Bounds>
       </Suspense>

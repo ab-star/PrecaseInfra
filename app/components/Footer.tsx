@@ -13,8 +13,6 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import { FaCookie, FaTimes } from "react-icons/fa";
 import Image from "next/image";
 
-// Footer rebuilt using MUI components with responsive layout and modern styling
-
 const Footer = () => {
   const [showCookieConsent, setShowCookieConsent] = useState(false);
   const [openPolicy, setOpenPolicy] = useState<null | 'privacy' | 'terms' | 'cookie'>(null);
@@ -72,7 +70,7 @@ const Footer = () => {
             </p>
             <ul className="list-disc pl-6 space-y-2 text-white/80">
               <li>Use the site lawfully and respectfully</li>
-              <li>Content is provided “as is” without warranties</li>
+              <li>Content is provided "as is" without warranties</li>
               <li>We may update or discontinue features without notice</li>
               <li>Limitation of liability to the maximum extent permitted by law</li>
             </ul>
@@ -112,23 +110,29 @@ const Footer = () => {
         sx={{
           position: "relative",
           zIndex: 90,
-          width: { xs: "100%", md: "100dvw" },
-          ml: { xs: 0, md: "calc(50% - 50dvw)" },
-          mr: { xs: 0, md: "calc(50% - 50dvw)" },
+          width: "100%",
           overflow: "hidden",
           color: "#ffffff",
           backgroundImage:
             "url('/product/Drain/background/uShapedDrainBg.jpg'), linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.1) 60%)",
           backgroundSize: "cover, cover",
-          backgroundPosition: { xs: "center top, center", md: "center, center" },
-          backgroundRepeat: "no-repeat, no-repeat",
-          minHeight: { xs: 300, md: 460 },
+          backgroundPosition: { xs: "center top", md: "center" },
+          backgroundRepeat: "no-repeat",
+          minHeight: { xs: "auto", md: 460 },
           backgroundColor: 'transparent',
           borderTop: "1px solid",
           borderColor: "divider",
+          mt: "auto", // This ensures footer sticks to bottom
         }}
       >
-        <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, sm: 3, md: 6 }, py: { xs: 4, md: 8 } }}>
+        <Box sx={{ 
+          maxWidth: 1200, 
+          mx: "auto", 
+          px: { xs: 2, sm: 3, md: 6 }, 
+          py: { xs: 4, md: 8 },
+          position: "relative",
+          zIndex: 2
+        }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: { xs: 2.5, md: 4 } }}>
             <Image
               src="/brandIcon.jpeg"
@@ -139,7 +143,11 @@ const Footer = () => {
               priority
             />
           </Box>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '2fr 1fr 1fr 1fr' }, gap: { xs: 3, md: 6 } }}>
+          <Box sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: { xs: '1fr', md: '2fr 1fr 1fr 1fr' }, 
+            gap: { xs: 3, md: 6 } 
+          }}>
             <Box>
               <Typography variant="h6" fontWeight={700} sx={{ mb: 2, color: '#ffffff' }}>
                 Contact Us
@@ -241,10 +249,26 @@ const Footer = () => {
             </Box>
           </Box>
         </Box>
-        <Box sx={{ borderTop: "1px solid", borderColor: "divider", bgcolor: "#f9fafb" }}>
-          <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, sm: 4, md: 6 }, py: { xs: 1.5, md: 2 } }}>
-            <Typography variant="body2" color="text.secondary" sx={{ textAlign: { xs: "center", md: "left" }, fontSize: { xs: 12, md: 14 } }}>
-              © 2025 Your Company Name. All rights reserved.
+        
+        {/* Copyright section - now with proper background to prevent gaps */}
+        <Box sx={{ 
+          borderTop: "1px solid rgba(255,255,255,0.15)", 
+          bgcolor: "rgba(0,0,0,0.4)", 
+          backdropFilter: "blur(10px)",
+          mt: 2
+        }}>
+          <Box sx={{ 
+            maxWidth: 1200, 
+            mx: "auto", 
+            px: { xs: 2, sm: 4, md: 6 }, 
+            py: { xs: 1.5, md: 2 } 
+          }}>
+            <Typography variant="body2" sx={{ 
+              textAlign: { xs: "center", md: "left" }, 
+              fontSize: { xs: 12, md: 14 },
+              color: "rgba(255,255,255,0.8)"
+            }}>
+              © 2025 3G Infratech. All rights reserved.
             </Typography>
           </Box>
         </Box>
@@ -288,7 +312,7 @@ const Footer = () => {
 
       {/* Cookie Consent Banner */}
       {showCookieConsent && (
-        <div  className="fixed bottom-4 left-4 right-4 md:left-10 md:right-10 z-50 bg-gray-900/95 backdrop-blur-md border border-blue-700/30 rounded-xl shadow-2xl p-4 md:p-5 custom-fade-in">
+        <div className="fixed bottom-4 left-4 right-4 md:left-10 md:right-10 z-50 bg-gray-900/95 backdrop-blur-md border border-blue-700/30 rounded-xl shadow-2xl p-4 md:p-5 custom-fade-in">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4">
             <div className="flex items-start gap-3 flex-1">
               <div className="bg-blue-900/50 p-1.5 md:p-2 rounded-full mt-1">
@@ -298,7 +322,7 @@ const Footer = () => {
                 <h3 className="text-white font-semibold mb-1 text-sm md:text-base">We Use Cookies</h3>
                 <p className="text-gray-300 text-xs md:text-sm">
                   We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. 
-                  By clicking &quot;Accept All&quot;, you consent to our use of cookies.{" "}
+                  By clicking "Accept All", you consent to our use of cookies.{" "}
                   <button type="button" onClick={() => setOpenPolicy('cookie')} className="text-blue-300 hover:text-blue-200 underline">
                     Learn more
                   </button>
@@ -333,7 +357,7 @@ const Footer = () => {
         </div>
       )}
 
-  {/* Global styles for animations (kept for cookie banner fade) */}
+      {/* Global styles for animations */}
       <style jsx global>{`
         @keyframes float {
           0%, 100% {
