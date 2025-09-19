@@ -63,6 +63,7 @@ export default function WallsPage() {
       {/* Section 2: 3D Model - Increased height and top spacing */}
       <section className="w-full min-h-[70vh] md:min-h-screen pt-16 md:pt-32 pb-16 md:pb-24 flex items-center justify-center bg-transparent">
         <div className="w-full max-w-5xl h-[60vh] md:h-[70vh] mx-auto px-4">
+      <h1 className="text-center">360° View of Precast Retaining Wall - Rotate 360° to inspect from all angles</h1>
           <WallCanvas path={WALL_GLB} scale={1.0} />
         </div>
       </section>

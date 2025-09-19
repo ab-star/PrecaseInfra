@@ -147,7 +147,7 @@ const IndiaMapSection = () => {
           lineHeight: 1.2,
           textShadow: '2px 2px 6px rgba(0,0,0,0.7)'
         }}>
-          Our Presence Spans the Heart of India
+          Powering India’s Growth from Its Core
         </h2>
         <p style={{ 
           color: '#fff', 

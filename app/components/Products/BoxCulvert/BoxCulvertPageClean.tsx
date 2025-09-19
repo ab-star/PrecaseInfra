@@ -243,14 +243,11 @@ const BoxCulvertPageClean = () => {
               {/* Left: Text */}
               <div className="w-full lg:w-[50%] text-center lg:text-left">
                 <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold uppercase tracking-wide mb-6 md:mb-8"> {/* Larger text */}
-                  LOOKS STRONG.
+                  Strength with Precision, Built to Last
                 </h2>
                 <div className="space-y-4 md:space-y-5 text-base sm:text-lg md:text-xl leading-relaxed"> {/* Larger text and spacing */}
                   <p>
-                    To build strong and sustainable precast bridges, we designed them to comply with Indian loading conditions for
-                    Highways and Railways. We made it with high-performance self-compacting concrete as per Japanese
-                    Industrial manufacturing standards.
-                  </p>
+                    Manufactured with high-performance self-compacting concrete (SCC) and FE500 reinforcement steel, our culverts deliver exceptional density, finishing, and long service life. The self-explanatory handling system enables safe lifting, transportation, and placement, while precision-engineered leak-proof jointery guarantees watertight connections and long-term reliability.                  </p>
                   <p>
                     Our reinforced concrete culverts deliver exceptional strength and durability even in the most challenging environments,
                     with precision engineering that ensures perfect alignment during installation.

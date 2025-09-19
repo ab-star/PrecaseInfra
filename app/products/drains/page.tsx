@@ -68,9 +68,9 @@ function ModelCanvas({ path, scale = 1.5 }: { path: string; scale?: number }) {
 
 export default function DrainsPage() {
   const models = [
-    {title:'U Shape Drain T6', path:GLB_2, scale:1.5, textPosition: 'right'}, 
-    {title:'U Shape Drain T25', path:GLB_3, scale:1.5, textPosition: 'left'}, 
-    {title:'FT Flume', path:GLB_1, scale:1.5, textPosition: 'right'}
+    {title:'360° View of U Shape Drain T6 - Rotate 360° to inspect from all angles', path:GLB_2, scale:1.5, textPosition: 'right'}, 
+    {title:'360° View of U Shape Drain T25 - Rotate 360° to inspect from all angles', path:GLB_3, scale:1.5, textPosition: 'left'}, 
+    {title:'360° View of FT Flume - Rotate 360° to inspect from all angles', path:GLB_1, scale:1.5, textPosition: 'right'}
   ];
 
   return (
@@ -100,6 +100,7 @@ export default function DrainsPage() {
                           className="relative w-full md:w-[68%] h-[300px] sm:h-[360px] md:h-[480px] rounded-lg overflow-hidden bg-center bg-cover"
                           style={{ backgroundImage: `url(/product/Drain/background/${(index % 3) + 1}.webp)` }}
                         >
+
                           <ModelCanvas path={m.path} scale={m.scale} />
                         </div>
                           <div className="w-full md:w-[32%] flex flex-col items-center text-center px-2 !text-white" style={{ color: '#fff' }}>

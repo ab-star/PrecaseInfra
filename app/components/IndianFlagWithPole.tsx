@@ -201,8 +201,10 @@ const IndianFlagWithPole = () => {
           width: '100%',
           lineHeight: 1.6
         }}>
-          At <b>3gInfraTech</b>, we are not just constructing structures—we are shaping the dreams of a billion people. Our cutting-edge precast solutions, visionary engineering, and relentless pursuit of excellence are powering India&apos;s leap into a new era of smart cities, sustainable highways, and world-class infrastructure.<br /><br />
-          With every project, we strive to set new benchmarks in quality, safety, and sustainability. Our team is dedicated to delivering innovative solutions that not only meet today&apos;s needs but also anticipate tomorrow&apos;s challenges. From iconic bridges to vital water systems, we are committed to building a stronger, more resilient nation—one that stands tall for generations to come.
+Since 2007, 3G Infratech has been at the forefront of India’s precast revolution—transforming how the nation builds, connects, and grows. Headquartered in Surat, Gujarat, and certified under ISO 9001:2015, we have evolved from manufacturing essential products like Hume pipes, paver blocks, and boundary walls to becoming a trusted partner for comprehensive precast infrastructure solutions.
+Our portfolio today includes stormwater drains, box culverts, retaining walls, and compound walls—each engineered with precision to meet international quality standards of strength, durability, and performance. With three advanced manufacturing facilities and a combined capacity of 700 metric tons per day, we deliver with unmatched scale, efficiency, and reliability.
+<br />
+<br />
         </p>
       </div>
     </div>

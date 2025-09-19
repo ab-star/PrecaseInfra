@@ -9,42 +9,43 @@ type Feature = {
 
 const features: Feature[] = [
   {
-    title: 'Smooth Interior Surface',
+    title: 'Designed for Heavy Loads',
     description:
-      'The interior surface is finished to facilitate smooth water flow, reduce friction, and minimize sediment deposition over time.',
+      'Engineered in compliance with IRC codes and railway standards to withstand demanding traffic conditions.',
     image: '/product/BoxCulvertProduct/transition/1.png',
   },
   {
-    title: 'Integrated Base Slab',
+    title: 'Built for Durability',
     description:
-      'A monolithic base slab integrates with the sidewalls to create a solid foundation that resists differential settlement and uplift.',
+      'High-strength self-compacting concrete and FE500 reinforcement deliver long-lasting performance.',
     image: '/product/BoxCulvertProduct/transition/2.png',
   },
   {
-    title: 'Thick Sidewalls',
+    title: 'Hydraulic Efficiency',
     description:
-      'Optimized wall thickness provides excellent load-bearing capacity under highway and railway loading conditions, ensuring long-term stability.',
+      'Smooth interior surfaces and integrated base slab ensure efficient water flow and soil stability.',
     image: '/product/BoxCulvertProduct/transition/3.png',
   },
   {
-    title: 'Precision Casting',
+    title: 'Fast & Easy Installation',
     description:
-      'High-performance self-compacting concrete and controlled curing deliver tight dimensional tolerances and a premium finish.',
+      'Self-explanatory handling system and precise joint design enable safe, speedy installation.',
     image: '/product/BoxCulvertProduct/transition/4.png',
   },
   {
-    title: 'Reinforced Corners',
+    title: 'Leak-Proof Assurance',
     description:
-      'Critical junctions are reinforced to manage stress concentrations and improve durability against impact and cyclic loads.',
+      'Precision-engineered joints guarantee watertight connections, preventing leakage and maintenance issues.',
     image: '/product/BoxCulvertProduct/transition/5.png',
   },
   {
-    title: 'Precise Joint Detail',
+    title: 'Factory Precision Quality',
     description:
-      'Joint geometry is engineered for snug fitment and reliable sealing, helping prevent leakage and simplifying on‑site installation.',
+      'Controlled manufacturing and advanced casting techniques ensure uniformity, accuracy, and reduced on-site effort.',
     image: '/product/BoxCulvertProduct/transition/6.png',
   },
 ];
+
 
 export default function AlternatingFeatures() {
   return (

@@ -65,7 +65,7 @@ const FutureReadyAnimated = () => (
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        Future Ready Infrastructure
+        Ahead of Time, Aligned with Tomorrow
       </Typography>
       <Typography
         variant="h6"
@@ -75,8 +75,7 @@ const FutureReadyAnimated = () => (
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.2 }}
       >
-        At <b>3Ginfratech</b>, we build for the future—delivering smart, sustainable, and high-performance precast solutions that empower India’s growth. Our commitment to quality, speed, and innovation sets new benchmarks in infrastructure excellence.
-      </Typography>
+At 3G Infratech, we believe infrastructure must not only serve the needs of today but also anticipate the demands of tomorrow. That’s why we invest in advanced precast engineering, modern manufacturing systems, and continuous innovation—ensuring that our solutions remain relevant, resilient, and future-ready.      </Typography>
     </Box>
     <Grid container spacing={4} justifyContent="center" alignItems="stretch">
       {features.map((feature, i) => (

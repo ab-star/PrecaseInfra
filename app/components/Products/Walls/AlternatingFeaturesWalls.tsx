@@ -9,12 +9,38 @@ type Feature = {
 
 // Use available images (01-05.png). If 06 exists later, it can be added.
 const features: Feature[] = [
-  { title: 'Precision Modular Panels', description: 'Factory-cast panels ensure consistent dimensions and rapid on-site assembly.', image: '/product/walls/images/01.png' },
-  { title: 'Robust Reinforcement', description: 'Optimized reinforcement layouts provide excellent bending and shear performance.', image: '/product/walls/images/02.png' },
-  { title: 'Smooth Architectural Finish', description: 'Clean surfaces ready for paint or cladding with minimal prep.', image: '/product/walls/images/03.png' },
-  { title: 'Fast Erection Details', description: 'Integrated lifting and connection details reduce crane time and labor.', image: '/product/walls/images/04.png' },
-  { title: 'Service-Friendly Routing', description: 'Concealed provisions allow easy MEP routing without rework.', image: '/product/walls/images/05.png' },
+  {
+    title: 'Integrated Wall Assembly',
+    description:
+      'Footing, column, and wall are cast as a single precast unit, ensuring strength and stability in one structure.',
+    image: '/product/walls/images/01.png',
+  },
+  {
+    title: 'Fast & Safe Installation',
+    description:
+      'Precast system enables rapid on-site erection, allowing higher installation quantities per day compared to conventional methods.',
+    image: '/product/walls/images/02.png',
+  },
+  {
+    title: 'Seamless Single-Piece Design',
+    description:
+      'Walls are cast in a single piece without joints, delivering superior strength and flawless continuity.',
+    image: '/product/walls/images/03.png',
+  },
+  {
+    title: 'Superior Surface Finish',
+    description:
+      'Factory-controlled casting ensures smooth, uniform surfaces that require minimal to no plastering.',
+    image: '/product/walls/images/04.png',
+  },
+  {
+    title: 'Dual-Application Advantage',
+    description:
+      'Compound walls can be combined over retaining walls—offering earth retention and secure boundary solutions in one system.',
+    image: '/product/walls/images/05.png',
+  },
 ];
+
 
 export default function AlternatingFeaturesWalls() {
   return (
@@ -26,7 +52,7 @@ export default function AlternatingFeaturesWalls() {
 
         <div className="space-y-6 md:space-y-8">
           {features.map((f, idx) => (
-            <article key={f.title} className="rounded-xl bg-gray-100/70 shadow-sm ring-1 ring-black/5 overflow-hidden">
+            <article key={f.title} className="bg-gray-100/70 shadow-sm ring-1 ring-black/5 overflow-hidden">
               <div className={`grid items-stretch gap-0 md:grid-cols-2 ${idx % 2 === 0 ? '' : 'md:[&>div:first-child]:order-2'}`}>
                 <div className="relative min-h-[240px] sm:min-h-[280px] md:min-h-[360px] lg:min-h-[460px] bg-gray-100">
                   <Image src={f.image} alt={f.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-contain" priority={idx < 2} />

@@ -239,14 +239,24 @@ const MainHeader = () => {
                 PROJECTS
               </Typography>
             </Link>
-            <Link href="/contacts">
+               <Link href="/case-study">
               <Typography variant="body1" className="text-white hover:text-amber-300 transition-colors duration-300">
-                CONTACT
+                CASE STUDY
+              </Typography>
+            </Link>
+            <Link href="/why-3ginfra">
+              <Typography variant="body1" className="text-white hover:text-amber-300 transition-colors duration-300">
+                WHY 3GINFRATECH
               </Typography>
             </Link>
             <Link href="/certifications">
               <Typography variant="body1" className="text-white hover:text-amber-300 transition-colors duration-300">
                 CERTIFICATIONS
+              </Typography>
+            </Link>
+            <Link href="/contacts">
+              <Typography variant="body1" className="text-white hover:text-amber-300 transition-colors duration-300">
+                CONTACT
               </Typography>
             </Link>
           </nav>
@@ -288,11 +298,11 @@ const MainHeader = () => {
             </div>
             
             <List className="flex-grow">
-              <ListItem button component={Link} href="/" onClick={() => setMobileOpen(false)}>
+              <ListItem component={Link} href="/" onClick={() => setMobileOpen(false)}>
                 <ListItemText primary="HOME" />
               </ListItem>
               
-              <ListItem button onClick={handleMobileProductsClick}>
+              <ListItem onClick={handleMobileProductsClick}>
                 <ListItemText primary="PRODUCTS" />
                 {mobileProductsOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItem>
@@ -300,7 +310,6 @@ const MainHeader = () => {
               <Collapse in={mobileProductsOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   <ListItem 
-                    button 
                     sx={{ pl: 4 }}
                     component={Link} 
                     href="/products/box-culvert" 
@@ -309,7 +318,6 @@ const MainHeader = () => {
                     <ListItemText primary="Box Culvert" />
                   </ListItem>
                   <ListItem 
-                    button 
                     sx={{ pl: 4 }}
                     component={Link} 
                     href="/products/drains" 
@@ -318,7 +326,6 @@ const MainHeader = () => {
                     <ListItemText primary="Drains" />
                   </ListItem>
                   <ListItem 
-                    button 
                     sx={{ pl: 4 }}
                     component={Link} 
                     href="/products/walls" 
@@ -329,24 +336,30 @@ const MainHeader = () => {
                 </List>
               </Collapse>
               
-              <ListItem button component={Link} href="/view-gallery" onClick={() => setMobileOpen(false)}>
+              <ListItem component={Link} href="/view-gallery" onClick={() => setMobileOpen(false)}>
                 <ListItemText primary="GALLERY" />
               </ListItem>
-              <ListItem button component={Link} href="/view-projects" onClick={() => setMobileOpen(false)}>
+              <ListItem component={Link} href="/view-projects" onClick={() => setMobileOpen(false)}>
                 <ListItemText primary="PROJECTS" />
               </ListItem>
-              <ListItem button component={Link} href="/contacts" onClick={() => setMobileOpen(false)}>
-                <ListItemText primary="CONTACT" />
+                  <ListItem component={Link} href="/case-study" onClick={() => setMobileOpen(false)}>
+                <ListItemText primary="CASE STUDY" />
               </ListItem>
-              <ListItem button component={Link} href="/certifications" onClick={() => setMobileOpen(false)}>
+               <ListItem component={Link} href="/why-3ginfra" onClick={() => setMobileOpen(false)}>
+                <ListItemText primary="WHY 3GINFRATECH" />
+              </ListItem>
+              <ListItem component={Link} href="/certifications" onClick={() => setMobileOpen(false)}>
                 <ListItemText primary="CERTIFICATIONS" />
+              </ListItem>
+              <ListItem component={Link} href="/contacts" onClick={() => setMobileOpen(false)}>
+                <ListItemText primary="CONTACT" />
               </ListItem>
             </List>
             
             {/* Footer with company info */}
             <div className="p-3 bg-emerald-800/50 border-t border-emerald-600/50">
               <Typography variant="body2" align="center" color="textSecondary">
-                © {new Date().getFullYear()} Your Company Name
+                © {new Date().getFullYear()} 3G Infratech
               </Typography>
             </div>
           </div>
