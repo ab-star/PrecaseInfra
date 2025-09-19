@@ -176,11 +176,11 @@ const ProductFooter = () => {
             © 2025 InfraStire. All rights reserved.
           </p>
           <div className="flex space-x-6 text-sm">
-            <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
-              Privacy Policy
+            <Link href="/safety-policy" className="text-gray-400 hover:text-white transition-colors">
+              Safety Policy
             </Link>
-            <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
-              Terms of Service
+            <Link href="/quality-policy" className="text-gray-400 hover:text-white transition-colors">
+              Quality Policy
             </Link>
             <Link href="/sitemap" className="text-gray-400 hover:text-white transition-colors">
               Sitemap

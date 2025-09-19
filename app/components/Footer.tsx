@@ -185,15 +185,15 @@ const Footer = () => {
                 Policies
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <Link href="/privacy-policy" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
-                  Privacy Policy
+                <Link href="/safety-policy" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
+                  Safety Policy
                 </Link>
-                <Link href="/terms-and-conditions" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
-                  Terms & Conditions
+                <Link href="/quality-policy" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
+                  Quality Policy
                 </Link>
-                <Link href="/condition-policy" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
+                {/* <Link href="/condition-policy" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
                   Cookie Policy
-                </Link>
+                </Link> */}
               </Box>
             </Box>
             <Box>
