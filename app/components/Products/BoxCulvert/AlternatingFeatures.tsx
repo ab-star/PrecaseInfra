@@ -46,20 +46,16 @@ const features: Feature[] = [
   },
 ];
 
-
 export default function AlternatingFeatures() {
   return (
     <section className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50 py-12 md:py-16">
       {/* Full-width container with gentle side padding */}
       <div className="w-full px-4 sm:px-6 md:px-10">
-  <h2 className="text-2xl my-2 md:text-3xl font-bold tracking-tight text-gray-900 mb-8 md:mb-12 text-center">
-        </h2>
-
         <div className="space-y-6 md:space-y-8">
           {features.map((f, idx) => (
             <article
               key={f.title}
-              className="rounded-xl bg-gray-100/70 shadow-sm ring-1 ring-black/5 overflow-hidden"
+              className="rounded-xl bg-white shadow-sm overflow-hidden border border-gray-200"
             >
               <div
                 className={`grid items-stretch gap-0 md:grid-cols-2 ${
@@ -73,19 +69,19 @@ export default function AlternatingFeatures() {
                     alt={f.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-contain"
+                    className="object-contain"
                     priority={idx < 2}
                   />
-                  <div className="absolute inset-0 ring-1 ring-black/10" />
+                  <div className="absolute inset-0 border border-gray-200" />
                 </div>
 
                 {/* Text */}
-                <div className="p-5 md:p-8 flex items-center justify-center">
+                <div className="p-5 md:p-8 flex items-center justify-center bg-white">
                   <div className="max-w-prose mx-auto text-center">
-                    <h3 className="text-lg md:text-xl font-semibold text-gray-900">
+                    <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3">
                       {f.title}
                     </h3>
-                    <p className="mt-2 text-sm md:text-base leading-relaxed text-gray-700">
+                    <p className="text-sm md:text-base leading-relaxed text-gray-700">
                       {f.description}
                     </p>
                   </div>

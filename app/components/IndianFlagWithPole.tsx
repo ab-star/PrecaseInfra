@@ -48,7 +48,7 @@ const IndianFlagWithPole = () => {
         width: "100%",
         minHeight: "auto",
         isolation: 'isolate',
-        padding: isMobile ? '1.5rem' : isTablet ? '2rem' : '0 3.5rem 2.5rem 3.5rem',
+        padding: isMobile ? '1.5rem' : isTablet ? '2rem' : '3.5rem',
         marginRight: 'auto',
         boxShadow: "0 8px 32px 0 #8886, 0 0 0 4px #fff8 inset",
         borderRadius: 0,
@@ -166,9 +166,10 @@ const IndianFlagWithPole = () => {
           />
         </div>
       </div>
-      {/* Text section - Adjusted for tablet */}
+      {/* Text section - Fixed alignment */}
       <div
         ref={textRef}
+        className="flex flex-col justify-center"
         style={{
           opacity: 0,
           transform: 'translateX(120px) scale(1.04)',
@@ -178,11 +179,11 @@ const IndianFlagWithPole = () => {
           maxWidth: '100%',
           minWidth: isMobile ? '280px' : isTablet ? '300px' : '320px',
           alignSelf: 'center',
-          paddingTop: 0,
+          paddingTop: isMobile ? '0' : isTablet ? '1rem' : '2rem',
+          paddingBottom: isMobile ? '0' : isTablet ? '1rem' : '2rem',
           marginBottom: 0,
-          marginTop: isMobile ? '-1rem' : isTablet ? '-1.5rem' : '0',
+          marginTop: isMobile ? '-1rem' : isTablet ? '0' : '0',
           position: 'relative',
-          top: isMobile ? '0' : isTablet ? '-1.5rem' : '-2rem'
         }}
       >
         <h2 style={{ 
@@ -199,7 +200,8 @@ const IndianFlagWithPole = () => {
           fontSize: isMobile ? '1rem' : isTablet ? '1.1rem' : '1.18em', 
           color: "#fff", 
           width: '100%',
-          lineHeight: 1.6
+          lineHeight: 1.6,
+          marginTop: 0
         }}>
 Since 2007, 3G Infratech has been at the forefront of India’s precast revolution—transforming how the nation builds, connects, and grows. Headquartered in Surat, Gujarat, and certified under ISO 9001:2015, we have evolved from manufacturing essential products like Hume pipes, paver blocks, and boundary walls to becoming a trusted partner for comprehensive precast infrastructure solutions.
 Our portfolio today includes stormwater drains, box culverts, retaining walls, and compound walls—each engineered with precision to meet international quality standards of strength, durability, and performance. With three advanced manufacturing facilities and a combined capacity of 700 metric tons per day, we deliver with unmatched scale, efficiency, and reliability.

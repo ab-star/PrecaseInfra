@@ -10,6 +10,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import CodeIcon from "@mui/icons-material/Code"; // New icon for development credit
 import { FaCookie, FaTimes } from "react-icons/fa";
 import Image from "next/image";
 
@@ -191,9 +192,6 @@ const Footer = () => {
                 <Link href="/quality-policy" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
                   Quality Policy
                 </Link>
-                {/* <Link href="/condition-policy" underline="hover" sx={{ textAlign: 'left', color: "rgba(255,255,255,0.85)", "&:hover": { color: "#fff" }, fontSize: { xs: 14, md: 16 } }}>
-                  Cookie Policy
-                </Link> */}
               </Box>
             </Box>
             <Box>
@@ -261,15 +259,58 @@ const Footer = () => {
             maxWidth: 1200, 
             mx: "auto", 
             px: { xs: 2, sm: 4, md: 6 }, 
-            py: { xs: 1.5, md: 2 } 
+            py: { xs: 1.5, md: 2 },
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 1
           }}>
             <Typography variant="body2" sx={{ 
-              textAlign: { xs: "center", md: "left" }, 
+              textAlign: { xs: "center", sm: "left" }, 
               fontSize: { xs: 12, md: 14 },
               color: "rgba(255,255,255,0.8)"
             }}>
               © 2025 3G Infratech. All rights reserved.
             </Typography>
+            
+            {/* Development credit - added here */}
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 0.5,
+              mt: { xs: 1, sm: 0 }
+            }}>
+              <Typography variant="body2" sx={{ 
+                fontSize: { xs: 11, md: 12 },
+                color: "rgba(255,255,255,0.6)"
+              }}>
+                Developed by AI Equivalents
+              </Typography>
+              <Link 
+                href="https://aiequivalents.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 0.5,
+                  color: "rgba(255,255,255,0.8)",
+                  textDecoration: 'none',
+                  '&:hover': {
+                    color: 'primary.light',
+                  }
+                }}
+              >
+                <CodeIcon sx={{ fontSize: { xs: 14, md: 16 } }} />
+                <Typography variant="body2" sx={{ 
+                  fontSize: { xs: 11, md: 12 },
+                  fontWeight: 500
+                }}>
+                  AI Equivalents
+                </Typography>
+              </Link>
+            </Box>
           </Box>
         </Box>
       </Box>
