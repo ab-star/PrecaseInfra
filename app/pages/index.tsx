@@ -13,7 +13,8 @@ const FujiSilvertechLanding = () => {
   const [overlayVisible, setOverlayVisible] = useState(false);
   const fadeTimeoutRef = useRef<number | null>(null);
   const [containerHeight, setContainerHeight] = useState<number | null>(null);
-  const [activeAspect, setActiveAspect] = useState<number | null>(null); // natural width/height ratio for active background
+  const [activeAspect, setActiveAspect] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const isTopAligned = (src?: string | null) => !!src && (src.includes('/Home/3P.png') || src.includes('/Home/4P.png'));
 
   type Sector = {
@@ -21,41 +22,57 @@ const FujiSilvertechLanding = () => {
     bgImage: string;
     icon: React.ReactNode;
     hoverText?: string;
+    shortName: string;
+    customAspect?: number; // Custom aspect ratio for specific images
   };
 
   const sectors: Sector[] = useMemo(() => ([
     {
       name: "U Shape Drain - T6(Light)",
+      shortName: "U-Drain T6",
       bgImage: "/Home/4P.png",
       icon: <FaBolt className="text-4xl md:text-5xl mb-2 text-yellow-400 drop-shadow" />
     },
-        {
+    {
       name: "U Shape Drain - T25(Heavy)",
+      shortName: "U-Drain T25",
       bgImage: "/Home/1P.png",
       icon: <FaIndustry className="text-4xl md:text-5xl mb-2 text-gray-400 drop-shadow" />
     },
-        {
+    {
       name: "FT (Big size Drain)",
+      shortName: "FT Drain",
       bgImage: "/Home/5p.png",
-      icon: <FaRoad className="text-4xl md:text-5xl mb-2 text-amber-200 drop-shadow" />
+      icon: <FaRoad className="text-4xl md:text-5xl mb-2 text-amber-200 drop-shadow" />,
+      customAspect: 4/3 // Custom aspect ratio for this specific image
     },
-        {
+    {
       name: "Box Culvert",
+      shortName: "Box Culvert",
       bgImage: "/Home/3P.png",
       icon: <FaTrain className="text-4xl md:text-5xl mb-2 text-gray-200 drop-shadow" />
     },
     {
       name: "L Shape Retaining Wall",
+      shortName: "L-Wall",
       bgImage: "/Home/2P.png",
       icon: <FaTint className="text-4xl md:text-5xl mb-2 text-blue-300 drop-shadow" />
     },
-
     {
       name: "Compound Wall",
+      shortName: "Compound Wall",
       bgImage: "/Home/6P.png",
       icon: <FaIndustry className="text-4xl md:text-5xl mb-2 text-slate-200 drop-shadow" />
     }
   ]), []);
+
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   // Preload all background images for smooth transitions
   useEffect(() => {
@@ -63,8 +80,7 @@ const FujiSilvertechLanding = () => {
     urls.forEach(src => { const img = new Image(); img.src = src; });
   }, [sectors]);
 
-
-  // Load natural aspect ratio for the currently active background (once per image change)
+  // Load natural aspect ratio for the currently active background
   useEffect(() => {
     if (!activeBg) return;
     const img = new Image();
@@ -76,17 +92,28 @@ const FujiSilvertechLanding = () => {
     img.src = activeBg;
   }, [activeBg]);
 
-  // Responsive height: on mobile use width / aspect (fallback 16/9) with clamps; on larger screens fill viewport
+  // Get custom aspect ratio for specific images
+  const getAspectRatio = (bgImage: string) => {
+    const sector = sectors.find(s => s.bgImage === bgImage);
+    return sector?.customAspect || null;
+  };
+
+  // Responsive height calculation
   useEffect(() => {
     const compute = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const isMobile = vw < 768;
-      if (isMobile) {
-        const ratio = activeAspect || (16 / 9);
-        let h = Math.round(vw / ratio); // maintain image aspect ratio
+      const mobile = vw < 768;
+      
+      if (mobile) {
+        // Use custom aspect ratio if available, otherwise use calculated or default
+        const customAspect = getAspectRatio(activeBg);
+        const ratio = customAspect || activeAspect || (16 / 9);
+        let h = Math.round(vw / ratio);
+        
         // Clamp to avoid too tall / too short
         h = Math.max(340, Math.min(h, 620));
+        
         // Ensure we never exceed ~88% of viewport height to prevent "stretched" feel
         h = Math.min(h, Math.round(vh * 0.88));
         setContainerHeight(h);
@@ -94,6 +121,7 @@ const FujiSilvertechLanding = () => {
         setContainerHeight(Math.round(vh));
       }
     };
+    
     compute();
     window.addEventListener('resize', compute);
     window.addEventListener('orientationchange', compute);
@@ -101,7 +129,7 @@ const FujiSilvertechLanding = () => {
       window.removeEventListener('resize', compute);
       window.removeEventListener('orientationchange', compute);
     };
-  }, [activeAspect]);
+  }, [activeAspect, activeBg]);
 
   // Crossfade to target background when hoveredSector changes
   useEffect(() => {
@@ -116,79 +144,56 @@ const FujiSilvertechLanding = () => {
     fadeTimeoutRef.current = window.setTimeout(() => {
       setActiveBg(target);
       setOverlayVisible(false);
-    }, 700); // match CSS duration
+    }, 700);
     return () => {
       if (fadeTimeoutRef.current) window.clearTimeout(fadeTimeoutRef.current);
     };
   }, [hoveredSector, sectors, activeBg]);
 
   return (
-  <div
-    className="relative overflow-hidden font-sans w-full flex items-center justify-center"
-    style={{
-      height: containerHeight ? `${containerHeight}px` : '100dvh',
-      minHeight: '480px',
-      transition: 'height 300ms ease',
-      paddingTop: 'env(safe-area-inset-top)',
-      paddingBottom: 0,
-      touchAction: 'pan-y',
-      overflow: 'hidden',
-    }}
-  >
+    <div
+      className="relative overflow-hidden font-sans w-full flex items-center justify-center"
+      style={{
+        height: containerHeight ? `${containerHeight}px` : '100dvh',
+        minHeight: '480px',
+        transition: 'height 300ms ease',
+        paddingTop: 'env(safe-area-inset-top)',
+        paddingBottom: 0,
+        touchAction: 'pan-y',
+        overflow: 'hidden',
+      }}
+    >
       {/* Background layers: base + overlay crossfade */}
       <div
         className="absolute inset-0 z-0 bg-center bg-no-repeat"
         style={{
           backgroundImage: `url(${activeBg})`,
           backgroundPosition: isTopAligned(activeBg) ? 'top center' : 'center center',
-          backgroundSize: 'cover'
+          backgroundSize: 'cover',
+          // Force contain for problematic images on mobile
+          ...(isMobile && activeBg.includes('5p.png') && {
+            backgroundSize: 'contain',
+            backgroundColor: '#f0f0f0' // Add a background color for any empty space
+          })
         }}
       />
 
-      {/* Center Tagline - visible and vertically centered */}
-      {/* <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center px-4">
-        <div className="text-center leading-none rounded-md bg-black/25 md:bg-transparent backdrop-blur-[2px] md:backdrop-blur-0 px-3 py-2 md:px-0 md:py-0">
-          <div
-            className={`${anton.className} uppercase tracking-[0.06em] text-transparent bg-clip-text select-none text-[clamp(26px,10vw,72px)]`}
-            style={{
-              backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.9)), url('/concrete_texture.jpg')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              WebkitTextStroke: '0.75px rgba(255,255,255,0.35)',
-              textShadow: '0 1px 0 rgba(0,0,0,0.35), 0 2px 0 rgba(0,0,0,0.25), 0 3px 0 rgba(0,0,0,0.2), 0 8px 14px rgba(0,0,0,0.45)'
-            }}
-          >
-            Built
-          </div>
-          <div
-            className={`${anton.className} uppercase tracking-[0.08em] mt-1 text-transparent bg-clip-text select-none text-[clamp(26px,10vw,72px)]`}
-            style={{
-              backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.9)), url('/concrete_texture.jpg')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              WebkitTextStroke: '0.75px rgba(255,255,255,0.35)',
-              textShadow: '0 1px 0 rgba(0,0,0,0.35), 0 2px 0 rgba(0,0,0,0.25), 0 3px 0 rgba(0,0,0,0.2), 0 10px 18px rgba(0,0,0,0.55)'
-            }}
-            aria-label="Built To Last"
-          >
-            To Last
-          </div>
-        </div>
-      </div> */}
+      {/* Overlay background for transitions */}
       <div
         className={`absolute inset-0 z-10 transition-opacity duration-700 ease-[cubic-bezier(.4,0,.2,1)] ${overlayVisible && overlayBg ? 'opacity-100' : 'opacity-0 pointer-events-none'} bg-center bg-no-repeat`}
         style={{
-            backgroundImage: overlayBg ? `url(${overlayBg})` : undefined,
-            backgroundPosition: isTopAligned(overlayBg) ? 'top center' : 'center center',
-            backgroundSize: 'cover'
+          backgroundImage: overlayBg ? `url(${overlayBg})` : undefined,
+          backgroundPosition: isTopAligned(overlayBg) ? 'top center' : 'center center',
+          backgroundSize: 'cover',
+          // Force contain for problematic images on mobile
+          ...(isMobile && overlayBg?.includes('5p.png') && {
+            backgroundSize: 'contain',
+            backgroundColor: '#f0f0f0' // Add a background color for any empty space
+          })
         }}
       />
       
-      {/* Dynamic Text Overlay - Centered with white text (guarded) */}
+      {/* Dynamic Text Overlay */}
       {hoveredSector !== null && sectors[hoveredSector]?.hoverText && (
         <div className="absolute z-30 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full px-4">
           <p className="text-white text-3xl md:text-5xl font-bold tracking-wide drop-shadow-[0_0_10px_rgba(0,0,0,0.55)]">
@@ -197,38 +202,46 @@ const FujiSilvertechLanding = () => {
         </div>
       )}
 
-  {/* Hover zones with vertical labels */}
-  <div className="absolute inset-0 z-40 pointer-events-none flex flex-row w-full h-full">
+      {/* Hover zones with optimized mobile text */}
+      <div className="absolute inset-0 z-40 pointer-events-none flex flex-row w-full h-full">
         {sectors.map((sector, index) => (
           <div
             key={index}
-            className="flex-1 h-full cursor-pointer relative"
+            className="flex-1 h-full cursor-pointer relative group"
             style={{ pointerEvents: 'auto' }}
             onMouseEnter={() => setHoveredSector(index)}
             onMouseLeave={() => setHoveredSector(null)}
             onClick={() => setHoveredSector(index)}
             onTouchStart={() => setHoveredSector(index)}
           >
-            {/* Vertical label container */}
-            <div className="absolute top-1 sm:top-2 md:top-6 left-1/2 -translate-x-1/2 w-full flex flex-col items-center px-1">
+            {/* Optimized vertical label for mobile */}
+            <div className={`absolute ${isMobile ? 'top-1' : 'top-2 md:top-6'} left-1/2 -translate-x-1/2 w-full flex flex-col items-center px-0.5`}>
               <span
-                className={`block max-w-[92%] break-words text-center leading-tight px-1.5 py-0.5 md:py-1 transition-all duration-300 text-white font-semibold bg-black/30 rounded-md backdrop-blur-[2px]
-                  text-[clamp(10px,3vw,15px)] sm:text-[clamp(12px,2vw,18px)] md:text-xl
-                  ${hoveredSector === index ? 'drop-shadow-[0_0_16px_rgba(255,255,255,0.85)] md:scale-105' : 'drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]'}`}
-                style={{ color: '#fff' }}
+                className="block max-w-[95%] break-words text-center leading-tight px-0.5 py-0.5 transition-all duration-300 bg-black/30 rounded backdrop-blur-[1px] font-medium md:font-semibold md:text-[clamp(12px,2vw,18px)] md:drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] text-[10px]"
+                style={{
+                  fontSize: isMobile ? '10px' : '',
+                  color: 'white',
+                  transform: hoveredSector === index ? (isMobile ? '' : 'scale(1.05)') : '',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.5)'
+                }}
               >
-                {sector.name}
+                {isMobile ? sector.shortName : sector.name}
               </span>
             </div>
             
+            {/* Expanded tooltip for mobile on active selection */}
+            {/* {isMobile && hoveredSector === index && (
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded z-50 max-w-[90vw] text-center">
+                {sector.name}
+              </div>
+            )}
+             */}
             {index < sectors.length - 1 && (
-              <span className="absolute top-0 right-0 w-px h-full bg-white opacity-60 z-50" aria-hidden="true"></span>
+              <span className="absolute top-0 right-0 w-px h-full bg-white opacity-40 z-50" aria-hidden="true"></span>
             )}
           </div>
         ))}
       </div>
-
-  {/* Bottom chip labels removed as requested */}
     </div>
   );
 };
