@@ -10,6 +10,10 @@ const MID_VIDEO = "https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/WallVideo
 const EXTRA_VIDEO = "https://pub-ff6f7349f0ca4f698e9006f92b5c1c8a.r2.dev/WallVideo/TruckVideo3.mp4";
 const WALL_GLB = "/product/walls/3d/wall.glb";
 
+// Import Anton font
+import { Anton } from 'next/font/google';
+const anton = Anton({ subsets: ['latin'], weight: '400', display: 'swap' });
+
 function WallModel({ path, scale = 1.2 }: { path: string; scale?: number }) {
   const { scene } = useGLTF(path) as { scene: THREE.Object3D };
   return (
@@ -61,9 +65,30 @@ export default function WallsPage() {
       </section>
 
       {/* Section 2: 3D Model - Increased height and top spacing */}
-      <section className="w-full min-h-[70vh] md:min-h-screen pt-16 md:pt-32 pb-16 md:pb-24 flex items-center justify-center bg-transparent">
+      <section className="w-full min-h-[70vh] md:min-h-screen pt-16 md:pt-32 pb-16 md:pb-24 flex flex-col items-center justify-center bg-transparent">
+        
+        {/* Concrete-themed heading - positioned just above the 3D model */}
+        <div className="w-full max-w-5xl mx-auto px-4 mb-6 md:mb-8 text-center">
+          <h2 className={`${anton.className} text-3xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-2 md:mb-4`}
+              style={{
+                marginTop: '1rem',
+                color: '#2c2c2c',
+                textShadow: `
+                  1px 1px 0px #fff, 
+                  -1px -1px 0px #666,
+                  2px 2px 4px rgba(0,0,0,0.2),
+                  0px 0px 8px rgba(0,0,0,0.1)
+                `,
+                letterSpacing: '0.05em',
+                lineHeight: '1.2'
+              }}
+          >
+            360° View of Precast Retaining Wall
+          </h2>
+        </div>
+
+        {/* 3D Model Container */}
         <div className="w-full max-w-5xl h-[60vh] md:h-[70vh] mx-auto px-4">
-      <h1 className="text-center">360° View of Precast Retaining Wall - Rotate 360° to inspect from all angles</h1>
           <WallCanvas path={WALL_GLB} scale={1.0} />
         </div>
       </section>
@@ -72,10 +97,6 @@ export default function WallsPage() {
       <section className="w-[100dvw] bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)]">
         <video className="w-full h-auto block" src={EXTRA_VIDEO} autoPlay muted loop playsInline />
       </section>
-     
-
-
-      {/* Section 3b: Extra video if present - full-bleed, full width, no cropping */}
 
       {/* Section 4: Alternating Features */}
       <AlternatingFeaturesWalls />

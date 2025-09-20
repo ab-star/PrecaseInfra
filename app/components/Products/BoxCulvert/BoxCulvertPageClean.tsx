@@ -7,6 +7,10 @@ import * as THREE from 'three';
 import AlternatingFeatures from './AlternatingFeatures';
 import Head from 'next/head';
 
+// Import Anton font
+import { Anton } from 'next/font/google';
+const anton = Anton({ subsets: ['latin'], weight: '400', display: 'swap' });
+
 // 3D Model Component
 const GLB_PATH = '/product/BoxCulvertProduct/glb/SqareBlock.glb';
 useGLTF.preload(GLB_PATH);
@@ -155,6 +159,26 @@ const BoxCulvertPageClean = () => {
 
         {/* 3D Model Section - Increased height for desktop */}
         <section className="w-full py-16 md:py-20 lg:py-24 bg-gray-50 flex flex-col items-center justify-center">
+          {/* Concrete-themed heading for 3D model */}
+          <div className="w-full max-w-5xl mx-auto px-4 mb-6 md:mb-8 text-center">
+            <h2 className={`${anton.className} text-3xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-2 md:mb-4`}
+                style={{
+                  marginTop: '1rem',
+                  color: '#2c2c2c',
+                  textShadow: `
+                    1px 1px 0px #fff, 
+                    -1px -1px 0px #666,
+                    2px 2px 4px rgba(0,0,0,0.2),
+                    0px 0px 8px rgba(0,0,0,0.1)
+                  `,
+                  letterSpacing: '0.05em',
+                  lineHeight: '1.2'
+                }}
+            >
+              360° View of Box Culvert
+            </h2>
+          </div>
+
           <div 
             ref={canvasContainerRef}
             className="w-full max-w-5xl mx-auto rounded-lg overflow-hidden shadow-lg bg-white border border-gray-200"
