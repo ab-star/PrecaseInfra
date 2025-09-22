@@ -14,7 +14,13 @@ import {
   Button,
   Skeleton,
   Stack,
+  Card,
+  Container,
 } from "@mui/material";
+import { ConstructionOutlined } from "@mui/icons-material";
+
+// Flag to control whether to show the projects or under progress message
+const SHOW_PROJECTS = false; // Set to true to enable the projects functionality
 
 export default function ViewProjectsPage() {
   const [items, setItems] = useState<ProjectData[]>([]);
@@ -22,6 +28,8 @@ export default function ViewProjectsPage() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!SHOW_PROJECTS) return; // Only load data if projects are enabled
+    
     const load = async () => {
       try {
         setLoading(true);
@@ -36,6 +44,83 @@ export default function ViewProjectsPage() {
 
   const selected = items.find((p) => p.id === openId);
 
+  // Show under progress message if flag is false
+  if (!SHOW_PROJECTS) {
+    return (
+      <Box
+        sx={{
+          minHeight: "100dvh",
+          width: "100dvw",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundImage:
+            "url('/concrete2.jpg'), linear-gradient(120deg, rgba(248,250,252,0.55), rgba(241,245,249,0.5))",
+          backgroundSize: "cover, cover",
+          backgroundPosition: "center, center",
+          backgroundRepeat: "no-repeat, no-repeat",
+        }}
+      >
+        <Container maxWidth="md">
+          <Card 
+            elevation={8} 
+            sx={{ 
+              p: 4, 
+              borderRadius: 3, 
+              textAlign: "center",
+              backgroundColor: "rgba(255, 255, 255, 0.95)",
+              backdropFilter: "blur(10px)"
+            }}
+          >
+            <ConstructionOutlined 
+              sx={{ 
+                fontSize: 64, 
+                color: "primary.main", 
+                mb: 2 
+              }} 
+            />
+            <Typography variant="h4" fontWeight={800} color="text.primary" gutterBottom>
+              Page Under Construction
+            </Typography>
+            <Typography variant="h6" color="text.secondary" sx={{ mb: 3 }}>
+              We're working on something amazing!
+            </Typography>
+            <Typography color="text.secondary" sx={{ mb: 4 }}>
+              Our projects portfolio is currently being updated with new content. 
+              Please check back soon to explore our latest infrastructure projects 
+              and innovative solutions.
+            </Typography>
+            <Box
+              component="img"
+              src="/under-construction.svg"
+              alt="Under construction"
+              sx={{ 
+                width: "100%", 
+                maxWidth: 300, 
+                height: "auto",
+                mx: "auto",
+                mb: 3
+              }}
+            />
+            <Button 
+              variant="contained" 
+              size="large" 
+              href="/"
+              sx={{ 
+                borderRadius: 2,
+                px: 4,
+                py: 1
+              }}
+            >
+              Return to Home
+            </Button>
+          </Card>
+        </Container>
+      </Box>
+    );
+  }
+
+  // Original projects functionality
   return (
     <Box
       sx={{

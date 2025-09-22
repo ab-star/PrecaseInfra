@@ -158,6 +158,7 @@ const MainHeader = () => {
           {/* Logo */}
           <div className="flex items-center pl-4 sm:pl-6 gap-4 md:gap-6">
             <div className="rounded-full p-1 bg-white/10 backdrop-blur-sm border border-white/20">
+            <Link href="/">
               <Image 
                 src="/brandIcon.jpeg" 
                 alt="Company Logo" 
@@ -166,6 +167,8 @@ const MainHeader = () => {
                 className="rounded-full border-2 border-white/80 shadow-lg"
                 quality={100}
               />
+                          </Link>
+
             </div>
             {/* Header breadcrumbs */}
             {/* <div className="hidden md:block max-w-[40vw] truncate">

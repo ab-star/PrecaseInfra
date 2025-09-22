@@ -8,7 +8,9 @@ import SustainabilitySectionAnimated from "./SustainabilitySectionAnimated";
 import FutureReadyAnimated from "./FutureReadyAnimated";
 import SectorsShowcase from "./SectorsShowcase";
 import ClientsAcquiredSection from "./ClientsAcquiredSection";
-import BottomVideo from "./BottomVideo";
+import BottomVideo from "./VisionSection";
+import VisionSection from "./VisionSection";
+import TestimonialCarousel from "./TestimonialCarousel";
 // import Footer from "./Footer";
 
 export default function Home() {
@@ -24,7 +26,8 @@ export default function Home() {
       <SustainabilitySectionAnimated />
       {/* <ConstructionSectorNavigation /> */}
       {/* <FutureReadySection /> */}
-      <BottomVideo />
+      <TestimonialCarousel />
+      <VisionSection />
       {/* <Footer /> */}
     </>
   );

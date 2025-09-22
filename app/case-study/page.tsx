@@ -46,11 +46,15 @@ import {
   AssignmentTurnedIn,
   FormatQuote
 } from '@mui/icons-material';
+import { ConstructionOutlined } from "@mui/icons-material";
+
 
 const CaseStudiesPage = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState(null);
+  const SHOW_GALLERY = false; // Set to true to enable the gallery functionality
+
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -208,6 +212,80 @@ const CaseStudiesPage = () => {
       company: "Tata Group"
     }
   ];
+
+    if (!SHOW_GALLERY) {
+      return (
+        <Box
+          sx={{
+            minHeight: "100dvh",
+            width: "100dvw",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundImage:
+              "url('/concrete2.jpg'), linear-gradient(120deg, rgba(248,250,252,0.55), rgba(241,245,249,0.5))",
+            backgroundSize: "cover, cover",
+            backgroundPosition: "center, center",
+            backgroundRepeat: "no-repeat, no-repeat",
+          }}
+        >
+          <Container maxWidth="md">
+            <Card 
+              elevation={8} 
+              sx={{ 
+                p: 4, 
+                borderRadius: 3, 
+                textAlign: "center",
+                backgroundColor: "rgba(255, 255, 255, 0.95)",
+                backdropFilter: "blur(10px)"
+              }}
+            >
+              <ConstructionOutlined 
+                sx={{ 
+                  fontSize: 64, 
+                  color: "primary.main", 
+                  mb: 2 
+                }} 
+              />
+              <Typography variant="h4" fontWeight={800} color="text.primary" gutterBottom>
+                Page Under Construction
+              </Typography>
+              <Typography variant="h6" color="text.secondary" sx={{ mb: 3 }}>
+                We're working on something amazing!
+              </Typography>
+              <Typography color="text.secondary" sx={{ mb: 4 }}>
+                Our Case Study is currently being updated with new content. 
+                Please check back soon for updates and exciting new visuals 
+              </Typography>
+              <Box
+                component="img"
+                src="/under-construction.svg"
+                alt="Under construction"
+                sx={{ 
+                  width: "100%", 
+                  maxWidth: 300, 
+                  height: "auto",
+                  mx: "auto",
+                  mb: 3
+                }}
+              />
+              <Button 
+                variant="contained" 
+                size="large" 
+                href="/"
+                sx={{ 
+                  borderRadius: 2,
+                  px: 4,
+                  py: 1
+                }}
+              >
+                Return to Home
+              </Button>
+            </Card>
+          </Container>
+        </Box>
+      );
+    }
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>

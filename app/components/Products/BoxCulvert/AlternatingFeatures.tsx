@@ -81,7 +81,7 @@ export default function AlternatingFeatures() {
                     <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3">
                       {f.title}
                     </h3>
-                    <p className="text-sm md:text-base leading-relaxed text-gray-700">
+                    <p className="text-sm md:text-base leading-relaxed text-gray-800">
                       {f.description}
                     </p>
                   </div>
