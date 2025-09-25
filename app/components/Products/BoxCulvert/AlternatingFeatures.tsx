@@ -1,5 +1,31 @@
 import Image from 'next/image';
 import React from 'react';
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Card,
+  CardContent,
+  useTheme,
+  useMediaQuery,
+  Fade,
+  Slide,
+  Zoom,
+  Grow,
+  alpha,
+  styled,
+  Stack
+} from '@mui/material';
+import {
+  Engineering,
+  Security,
+  Build,
+  WaterDrop,
+  RocketLaunch,
+  Factory,
+  CheckCircle
+} from '@mui/icons-material';
 
 type Feature = {
   title: string;
@@ -46,51 +72,234 @@ const features: Feature[] = [
   },
 ];
 
-export default function AlternatingFeatures() {
-  return (
-    <section className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50 py-12 md:py-16">
-      {/* Full-width container with gentle side padding */}
-      <div className="w-full px-4 sm:px-6 md:px-10">
-        <div className="space-y-6 md:space-y-8">
-          {features.map((f, idx) => (
-            <article
-              key={f.title}
-              className="rounded-xl bg-white shadow-sm overflow-hidden border border-gray-200"
-            >
-              <div
-                className={`grid items-stretch gap-0 md:grid-cols-2 ${
-                  idx % 2 === 0 ? '' : 'md:[&>div:first-child]:order-2'
-                }`}
-              >
-                {/* Image */}
-                <div className="relative min-h-[240px] sm:min-h-[280px] md:min-h-[360px] lg:min-h-[460px] bg-gray-100">
-                  <Image
-                    src={f.image}
-                    alt={f.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-contain"
-                    priority={idx < 2}
-                  />
-                  <div className="absolute inset-0 border border-gray-200" />
-                </div>
+// Styled Components
+const FeatureRowCard = styled(Card)(({ theme }) => ({
+  background: `linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.98)} 0%, ${alpha(theme.palette.primary.light, 0.03)} 100%)`,
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
+  borderRadius: theme.spacing(2),
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  '&:hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: theme.shadows[6],
+    border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+  },
+}));
 
-                {/* Text */}
-                <div className="p-5 md:p-8 flex items-center justify-center bg-white">
-                  <div className="max-w-prose mx-auto text-center">
-                    <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3">
-                      {f.title}
-                    </h3>
-                    <p className="text-sm md:text-base leading-relaxed text-gray-800">
-                      {f.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
+const MainImageContainer = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.spacing(1),
+  overflow: 'hidden',
+  transition: 'all 0.3s ease',
+  margin: '0 auto',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  '&:hover': {
+    transform: 'scale(1.01)',
+  },
+}));
+
+const IconContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 48,
+  height: 48,
+  borderRadius: '10px',
+  background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+  color: 'white',
+  transition: 'all 0.3s ease',
+  flexShrink: 0,
+}));
+
+// Icon mapping for each feature
+const featureIcons = [
+  <Engineering key="engineering" sx={{ fontSize: 24 }} />,
+  <Build key="build" sx={{ fontSize: 24 }} />,
+  <WaterDrop key="water" sx={{ fontSize: 24 }} />,
+  <RocketLaunch key="rocket" sx={{ fontSize: 24 }} />,
+  <Security key="security" sx={{ fontSize: 24 }} />,
+  <Factory key="factory" sx={{ fontSize: 24 }} />,
+];
+
+export default function AlternatingFeatures() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [inView, setInView] = React.useState(false);
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  // Use only the last image
+  const mainImage = features[features.length - 1];
+
+  // Group features into pairs for 2 per row
+  const featurePairs = [];
+  for (let i = 0; i < features.length; i += 2) {
+    featurePairs.push(features.slice(i, i + 2));
+  }
+
+  return (
+    <Box 
+      ref={sectionRef}
+      sx={{ 
+        background: `linear-gradient(135deg, ${theme.palette.grey[50]} 0%, ${theme.palette.background.default} 100%)`,
+        py: { xs: 6, md: 8 },
+        minHeight: '80vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {/* Main Centered Image - Fixed centering */}
+             <Typography 
+              variant="h4" 
+              component="h2"
+              sx={{
+                fontWeight: 700,
+                color: 'primary.main',
+                mb: 3,
+                fontSize: { xs: '1.75rem', md: '2.5rem' },
+              }}
+            >
+              Precision Engineered Box Culverts
+            </Typography>
+        <Fade in={inView} timeout={600}>
+         
+            
+          <Box sx={{ 
+            textAlign: 'center', 
+            mb: { xs: 4, md: 6 }, 
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: isMobile ? '3rem' : '20rem'
+          }}>
+        
+            {/* Simplified image container for better centering */}
+            <Box sx={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center',
+              width: '100%',
+              mb: 4
+            }}>
+              <Box sx={{ 
+                position: 'relative',
+                width: '100%',
+                maxWidth: { xs: '100%', md: 900 },
+                height: { xs: 300, md: 550 },
+                borderRadius: 1,
+                overflow: 'hidden',
+                transition: 'all 0.3s ease',
+                marginRight: "5rem",
+                '&:hover': {
+                  transform: 'scale(1.01)',
+                }
+              }}>
+                <Image
+                  src={mainImage.image}
+                  alt={mainImage.title}
+                  fill
+                  style={{ 
+                    objectFit: 'contain',
+                    objectPosition: 'center'
+                  }}
+                  priority
+                />
+              </Box>
+            </Box>
+          </Box>
+        </Fade>
+
+        {/* Feature Points - 2 points per line in single cards */}
+        <Slide direction="up" in={inView} timeout={800}>
+          <Box sx={{ width: '100%' }}>
+            <Typography 
+              variant="h5" 
+              component="h3"
+              sx={{
+                textAlign: 'center',
+                fontWeight: 600,
+                color: 'text.primary',
+                mb: 4,
+                fontSize: { xs: '1.5rem', md: '1.75rem' }
+              }}
+            >
+              Key Features & Benefits
+            </Typography>
+            
+            <Stack spacing={3} sx={{ width: '100%' }}>
+              {featurePairs.map((pair, pairIndex) => (
+                <Grow in={inView} timeout={pairIndex * 200 + 800} key={pairIndex}>
+                  <FeatureRowCard>
+                    <CardContent sx={{ p: 4 }}>
+                      <Grid container spacing={4}>
+                        {pair.map((feature, featureIndex) => (
+                          <Grid item xs={12} md={6} key={feature.title}>
+                            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 3 }}>
+                              <IconContainer>
+                                {featureIcons[pairIndex * 2 + featureIndex]}
+                              </IconContainer>
+                              <Box sx={{ flex: 1 }}>
+                                <Typography 
+                                  variant="h6" 
+                                  component="h4"
+                                  sx={{ 
+                                    fontWeight: 600,
+                                    color: 'text.primary',
+                                    mb: 1,
+                                    fontSize: '1.1rem'
+                                  }}
+                                >
+                                  {feature.title}
+                                </Typography>
+                                <Typography 
+                                  variant="body2" 
+                                  sx={{ 
+                                    color: 'text.secondary',
+                                    lineHeight: 1.5,
+                                    fontSize: '0.9rem'
+                                  }}
+                                >
+                                  {feature.description}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </CardContent>
+                  </FeatureRowCard>
+                </Grow>
+              ))}
+            </Stack>
+          </Box>
+        </Slide>
+
+      </Container>
+    </Box>
   );
 }

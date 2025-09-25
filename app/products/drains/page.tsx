@@ -24,7 +24,7 @@ function DrainModel({ path, scale = 1.5 }: { path: string; scale?: number }) {
   );
 }
 
-function ModelCanvas({ path, scale = 1.5 }: { path: string; scale?: number }) {
+function ModelCanvas({ path, scale = 1.5, boundsMargin = 1.2 }: { path: string; scale?: number; boundsMargin?: number }) {
   return (
     <Canvas
       camera={{ position: [5, 3, 5], fov: 45, far: 1000 }}
@@ -37,7 +37,6 @@ function ModelCanvas({ path, scale = 1.5 }: { path: string; scale?: number }) {
         gl.toneMappingExposure = 1.15;
       }}
     >
-      {/* Remove all background colors/textures, set plain white */}
       <color attach="background" args={["#fff"]} />
       <ambientLight intensity={1.15} />
       <hemisphereLight color={0xffffff} groundColor={0x666666} intensity={0.6} />
@@ -49,7 +48,8 @@ function ModelCanvas({ path, scale = 1.5 }: { path: string; scale?: number }) {
           <meshStandardMaterial color="#9ca3af" />
         </mesh>
       }>
-        <Bounds fit observe margin={1.5}>
+        {/* REDUCE BOUNDS MARGIN TO MAKE MODEL LARGER */}
+        <Bounds fit observe margin={boundsMargin}>
           <DrainModel path={path} scale={scale} />
         </Bounds>
       </Suspense>
@@ -68,9 +68,27 @@ function ModelCanvas({ path, scale = 1.5 }: { path: string; scale?: number }) {
 
 export default function DrainsPage() {
   const models = [
-    {title:'360° View of U Shape Drain T6 - Rotate 360° to inspect from all angles', path:GLB_2, scale:1.5, textPosition: 'right'}, 
-    {title:'360° View of U Shape Drain T25 - Rotate 360° to inspect from all angles', path:GLB_3, scale:1.5, textPosition: 'left'}, 
-    {title:'360° View of FT Flume - Rotate 360° to inspect from all angles', path:GLB_1, scale:1.5, textPosition: 'right'}
+    {
+      title:'360° View of U Shape Drain T6 - Rotate 360° to inspect from all angles', 
+      path:GLB_2, 
+      scale: 7.0, // SIGNIFICANTLY INCREASED from 9.5 to 12.0
+      boundsMargin: 0.8, // REDUCED MARGIN to make model larger in container
+      textPosition: 'right'
+    },
+    {
+      title:'360° View of U Shape Drain T25 - Rotate 360° to inspect from all angles', 
+      path:GLB_3, 
+      scale: 7.5, // SIGNIFICANTLY INCREASED from 9.0 to 11.5
+      boundsMargin: 0.8, // REDUCED MARGIN
+      textPosition: 'left'
+    },
+    {
+      title:'360° View of FT Flume - Rotate 360° to inspect from all angles', 
+      path:GLB_1, 
+      scale: 1.5, 
+      boundsMargin: 1.2, // Keep original margin for FT Flume
+      textPosition: 'right'
+    }
   ];
 
   return (
@@ -88,41 +106,33 @@ export default function DrainsPage() {
       </section>
 
       {/* Section 2: Interactive 3D Models with Alternating Text */}
-  <section style={{background: "url(/product/Drain/background/uShapedDrainBg.webp)" , padding: "5rem 0"}} className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50" >
+      <section style={{background: "url(/product/Drain/background/uShapedDrainBg.webp)" , padding: "5rem 0"}} className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50" >
         <div className="w-full py-5">
           <div className="flex flex-col items-center gap-8 md:gap-10">
-              {models.map((m, index) => (
-                      <article
-                        key={m.title}
-                className={`w-full max-w-6xl mx-auto rounded-xl ring-1 ring-black/5  shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 ${m.textPosition === 'left' ? 'md:flex-row-reverse' : ''} ${(index === 0 || index === models.length - 1) ? 'md:ml-auto md:mr-0' : ''}`}
-                      >
-                        <div
-                          className="relative w-full md:w-[68%] h-[300px] sm:h-[360px] md:h-[480px] rounded-lg overflow-hidden bg-center bg-cover"
-                          style={{ backgroundImage: `url(/product/Drain/background/${(index % 3) + 1}.webp)` }}
-                        >
-
-                          <ModelCanvas path={m.path} scale={m.scale} />
-                        </div>
-                          <div className="w-full md:w-[32%] flex flex-col items-center text-center px-2 !text-white" style={{ color: '#fff' }}>
-                            <h3 className="text-xl md:text-2xl font-extrabold uppercase !text-white" style={{ color: '#fff' }}>{m.title}</h3>
-                        </div>
-                      </article>
-                    ))}
+            {models.map((m, index) => (
+              <article
+                key={m.title}
+                className={`w-full max-w-6xl mx-auto rounded-xl ring-1 ring-black/5 shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 ${m.textPosition === 'left' ? 'md:flex-row-reverse' : ''} ${(index === 0 || index === models.length - 1) ? 'md:ml-auto md:mr-0' : ''}`}
+              >
+                {/* INCREASED CONTAINER SIZE FOR FIRST TWO MODELS */}
+                <div
+                  className={`relative rounded-lg overflow-hidden bg-center bg-cover ${
+                    index < 2 
+                      ? 'w-full md:w-[72%] h-[320px] sm:h-[380px] md:h-[520px]' // LARGER CONTAINER for first two
+                      : 'w-full md:w-[68%] h-[300px] sm:h-[360px] md:h-[480px]' // Original size for third
+                  }`}
+                  style={{ backgroundImage: `url(/product/Drain/background/${(index % 3) + 1}.webp)` }}
+                >
+                  <ModelCanvas path={m.path} scale={m.scale} boundsMargin={m.boundsMargin} />
+                </div>
+                <div className="w-full md:w-[28%] flex flex-col items-center text-center px-2 !text-white" style={{ color: '#fff' }}>
+                  <h3 className="text-xl md:text-2xl font-extrabold uppercase !text-white" style={{ color: '#fff' }}>{m.title}</h3>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
-
-      {/* Full-viewport image between 3D models and specs */}
-      {/* <section className="relative w-full h-screen overflow-hidden">
-        <Image
-          src="/Home/2P.webp"
-          alt="Drain systems showcase"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      </section> */}
 
       {/* Additional Videos (R2) in sequence - responsive */}
       <section className="w-[100dvw] bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)]">
@@ -135,7 +145,6 @@ export default function DrainsPage() {
           playsInline
         />
       </section>
-
 
       {/* Section 3: Product Specifications */}
       <section className="w-full bg-white py-8 md:py-12">

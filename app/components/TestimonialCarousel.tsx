@@ -23,7 +23,6 @@ const testimonials = [
     id: 1,
     name: 'Robert Johnson',
     position: 'Construction Manager',
-    company: 'SkyBuild Constructions',
     content: '3G Infratech\'s precast solutions have dramatically improved our project timelines. The quality is exceptional and their technical support is always available when we need it.',
     rating: 5,
     avatar: '/static/images/avatar/1.jpg'
@@ -32,7 +31,6 @@ const testimonials = [
     id: 2,
     name: 'Sarah Williams',
     position: 'Project Director',
-    company: 'Urban Infrastructure Ltd.',
     content: 'We\'ve been using 3G Infratech products for over three years now. Their innovative approach and consistent quality have made them our preferred supplier for all major projects.',
     rating: 4,
     avatar: '/static/images/avatar/2.jpg'
@@ -41,7 +39,6 @@ const testimonials = [
     id: 3,
     name: 'Michael Chen',
     position: 'CEO',
-    company: 'GreenTech Builders',
     content: 'The sustainable aspect of 3G Infratech\'s products aligns perfectly with our company values. Their eco-friendly solutions don\'t compromise on durability or performance.',
     rating: 5,
     avatar: '/static/images/avatar/3.jpg'
@@ -50,7 +47,6 @@ const testimonials = [
     id: 4,
     name: 'Emma Rodriguez',
     position: 'Architect',
-    company: 'DesignPlus Studios',
     content: 'I appreciate how 3G Infratech combines aesthetics with functionality. Their products offer design flexibility while maintaining structural integrity.',
     rating: 4,
     avatar: '/static/images/avatar/4.jpg'
@@ -59,7 +55,6 @@ const testimonials = [
     id: 5,
     name: 'James Wilson',
     position: 'Civil Engineer',
-    company: 'InfraWorks Engineering',
     content: 'The technical support team at 3G Infratech is knowledgeable and responsive. They helped us customize solutions for our complex infrastructure project.',
     rating: 5,
     avatar: '/static/images/avatar/5.jpg'
