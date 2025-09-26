@@ -36,7 +36,7 @@ export default function CertificationsPage() {
       title: '3G Infratech - ISO 14001',
       description:
         'Quality Management System certification demonstrating our commitment to consistent quality and continuous improvement.',
-      filePath: '/certif/3G Infratech - ISO 14001.pdf',
+      filePath: '/certif/3GISO14001.pdf',
       issueDate: 'March 15, 2023',
       issuingAuthority: 'International Organization for Standardization',
     },
@@ -45,7 +45,7 @@ export default function CertificationsPage() {
       title: '3G Infratech - ISO 45001',
       description:
         'Information Security Management System certification ensuring the highest standards of data protection and security.',
-      filePath: '/certif/3G Infratech - ISO 45001.pdf',
+      filePath: '/certif/3GISO45001.pdf',
       issueDate: 'April 22, 2023',
       issuingAuthority: 'International Organization for Standardization',
     },
@@ -54,7 +54,7 @@ export default function CertificationsPage() {
       title: 'ISO 9001 2015',
       description:
         'Service Organization Control compliance report verifying our security, availability, and confidentiality processes.',
-      filePath: '/certif/ISO 9001 2015.pdf',
+      filePath: '/certif/ISO90012015.pdf',
       issueDate: 'May 30, 2023',
       issuingAuthority: 'American Institute of CPAs',
     },
