@@ -15,6 +15,7 @@ const FujiSilvertechLanding = () => {
   const [containerHeight, setContainerHeight] = useState<number | null>(null);
   const [activeAspect, setActiveAspect] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [imageDimensions, setImageDimensions] = useState<{[key: string]: {width: number, height: number}}>({});
   const isTopAligned = (src?: string | null) => !!src && (src.includes('/Home/3P.png') || src.includes('/Home/4P.png'));
 
   type Sector = {
@@ -23,7 +24,7 @@ const FujiSilvertechLanding = () => {
     icon: React.ReactNode;
     hoverText?: string;
     shortName: string;
-    customAspect?: number; // Custom aspect ratio for specific images
+    customAspect?: number;
   };
 
   const sectors: Sector[] = useMemo(() => ([
@@ -44,7 +45,7 @@ const FujiSilvertechLanding = () => {
       shortName: "FT Drain",
       bgImage: "/Home/5p.png",
       icon: <FaRoad className="text-4xl md:text-5xl mb-2 text-amber-200 drop-shadow" />,
-      customAspect: 4/3 // Custom aspect ratio for this specific image
+      customAspect: 4/3
     },
     {
       name: "Box Culvert",
@@ -74,62 +75,66 @@ const FujiSilvertechLanding = () => {
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  // Preload all background images for smooth transitions
+  // Preload and get dimensions of all images
   useEffect(() => {
     const urls = [MAIN_BG, ...sectors.map(s => s.bgImage)];
-    urls.forEach(src => { const img = new Image(); img.src = src; });
-  }, [sectors]);
+    const dimensions: {[key: string]: {width: number, height: number}} = {};
+    
+    urls.forEach(src => {
+      const img = new Image();
+      img.onload = () => {
+        dimensions[src] = {
+          width: img.naturalWidth,
+          height: img.naturalHeight
+        };
+        setImageDimensions(prev => ({...prev, ...dimensions}));
+        
+        // Set aspect ratio for active background
+        if (src === activeBg) {
+          setActiveAspect(img.naturalWidth / img.naturalHeight);
+        }
+      };
+      img.src = src;
+    });
+  }, [sectors, activeBg]);
 
-  // Load natural aspect ratio for the currently active background
+  // Improved responsive height calculation with aspect ratio consideration
   useEffect(() => {
-    if (!activeBg) return;
-    const img = new Image();
-    img.onload = () => {
-      if (img.naturalWidth && img.naturalHeight) {
-        setActiveAspect(img.naturalWidth / img.naturalHeight);
-      }
-    };
-    img.src = activeBg;
-  }, [activeBg]);
-
-  // Get custom aspect ratio for specific images
-  const getAspectRatio = (bgImage: string) => {
-    const sector = sectors.find(s => s.bgImage === bgImage);
-    return sector?.customAspect || null;
-  };
-
-  // Responsive height calculation
-  useEffect(() => {
-    const compute = () => {
+    const computeHeight = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const mobile = vw < 768;
       
       if (mobile) {
-        // Use custom aspect ratio if available, otherwise use calculated or default
-        const customAspect = getAspectRatio(activeBg);
-        const ratio = customAspect || activeAspect || (16 / 9);
-        let h = Math.round(vw / ratio);
+        // For mobile, calculate height based on viewport width and image aspect ratio
+        let calculatedHeight;
         
-        // Clamp to avoid too tall / too short
-        h = Math.max(340, Math.min(h, 620));
+        if (activeAspect) {
+          // Use the image's natural aspect ratio to calculate height
+          calculatedHeight = vw / activeAspect;
+        } else {
+          // Fallback to viewport-based calculation
+          calculatedHeight = Math.max(340, Math.min(vh, 620));
+        }
         
-        // Ensure we never exceed ~88% of viewport height to prevent "stretched" feel
-        h = Math.min(h, Math.round(vh * 0.88));
-        setContainerHeight(h);
+        // Ensure the height is reasonable for mobile
+        calculatedHeight = Math.max(300, Math.min(calculatedHeight, vh * 0.9));
+        setContainerHeight(calculatedHeight);
       } else {
-        setContainerHeight(Math.round(vh));
+        // For desktop, use full viewport height
+        setContainerHeight(vh);
       }
     };
     
-    compute();
-    window.addEventListener('resize', compute);
-    window.addEventListener('orientationchange', compute);
+    computeHeight();
+    window.addEventListener('resize', computeHeight);
+    window.addEventListener('orientationchange', computeHeight);
+    
     return () => {
-      window.removeEventListener('resize', compute);
-      window.removeEventListener('orientationchange', compute);
+      window.removeEventListener('resize', computeHeight);
+      window.removeEventListener('orientationchange', computeHeight);
     };
-  }, [activeAspect, activeBg]);
+  }, [activeAspect, isMobile]);
 
   // Crossfade to target background when hoveredSector changes
   useEffect(() => {
@@ -150,12 +155,29 @@ const FujiSilvertechLanding = () => {
     };
   }, [hoveredSector, sectors, activeBg]);
 
+  // Get optimal object position for each image
+  const getObjectPosition = (bgImage: string) => {
+    // Special handling for problematic images
+    if (bgImage.includes('5p.png')) {
+      return isMobile ? 'left center' : 'center center';
+    }
+    
+    // For other images, use top center if they need top alignment
+    return isTopAligned(bgImage) ? 'top center' : 'center center';
+  };
+
+  // Check if image needs special handling on mobile
+  const needsSpecialHandling = (bgImage: string) => {
+    return bgImage.includes('5p.png') && isMobile;
+  };
+
   return (
     <div
-      className="relative overflow-hidden font-sans w-full flex items-center justify-center"
+      className="relative overflow-hidden font-sans w-full flex items-center justify-center bg-black"
       style={{
         height: containerHeight ? `${containerHeight}px` : '100dvh',
         minHeight: '480px',
+        maxHeight: isMobile ? '90vh' : '100vh',
         transition: 'height 300ms ease',
         paddingTop: 'env(safe-area-inset-top)',
         paddingBottom: 0,
@@ -164,34 +186,45 @@ const FujiSilvertechLanding = () => {
       }}
     >
       {/* Background layers: base + overlay crossfade */}
-      <div
-        className="absolute inset-0 z-0 bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${activeBg})`,
-          backgroundPosition: isTopAligned(activeBg) ? 'top center' : 'center center',
-          backgroundSize: 'cover',
-          // Force contain for problematic images on mobile
-          ...(isMobile && activeBg.includes('5p.png') && {
-            backgroundSize: 'contain',
-            backgroundColor: '#f0f0f0' // Add a background color for any empty space
-          })
-        }}
-      />
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <img
+          src={activeBg}
+          alt="Background"
+          className={`w-full h-full transition-opacity duration-300 ${
+            needsSpecialHandling(activeBg) ? 'object-cover' : 'object-cover'
+          }`}
+          style={{
+            objectPosition: getObjectPosition(activeBg),
+            // Ensure the image fills the container completely
+            minWidth: '100%',
+            minHeight: '100%',
+            width: 'auto',
+            height: 'auto'
+          }}
+        />
+      </div>
 
       {/* Overlay background for transitions */}
-      <div
-        className={`absolute inset-0 z-10 transition-opacity duration-700 ease-[cubic-bezier(.4,0,.2,1)] ${overlayVisible && overlayBg ? 'opacity-100' : 'opacity-0 pointer-events-none'} bg-center bg-no-repeat`}
-        style={{
-          backgroundImage: overlayBg ? `url(${overlayBg})` : undefined,
-          backgroundPosition: isTopAligned(overlayBg) ? 'top center' : 'center center',
-          backgroundSize: 'cover',
-          // Force contain for problematic images on mobile
-          ...(isMobile && overlayBg?.includes('5p.png') && {
-            backgroundSize: 'contain',
-            backgroundColor: '#f0f0f0' // Add a background color for any empty space
-          })
-        }}
-      />
+      <div className={`absolute inset-0 z-10 transition-opacity duration-700 ease-[cubic-bezier(.4,0,.2,1)] ${
+        overlayVisible && overlayBg ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      } overflow-hidden`}>
+        {overlayBg && (
+          <img
+            src={overlayBg}
+            alt="Overlay background"
+            className={`w-full h-full ${
+              needsSpecialHandling(overlayBg) ? 'object-cover' : 'object-cover'
+            }`}
+            style={{
+              objectPosition: getObjectPosition(overlayBg),
+              minWidth: '100%',
+              minHeight: '100%',
+              width: 'auto',
+              height: 'auto'
+            }}
+          />
+        )}
+      </div>
       
       {/* Dynamic Text Overlay */}
       {hoveredSector !== null && sectors[hoveredSector]?.hoverText && (
@@ -229,13 +262,6 @@ const FujiSilvertechLanding = () => {
               </span>
             </div>
             
-            {/* Expanded tooltip for mobile on active selection */}
-            {/* {isMobile && hoveredSector === index && (
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded z-50 max-w-[90vw] text-center">
-                {sector.name}
-              </div>
-            )}
-             */}
             {index < sectors.length - 1 && (
               <span className="absolute top-0 right-0 w-px h-full bg-white opacity-40 z-50" aria-hidden="true"></span>
             )}

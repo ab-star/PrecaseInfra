@@ -135,14 +135,16 @@ const Footer = () => {
           zIndex: 2
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: { xs: 2.5, md: 4 } }}>
-            <Image
-              src="/brandIcon.jpeg"
-              alt="Company Logo"
-              width={48}
+            <Link href="/">
+              <Image
+                src="/brandIcon.jpeg"
+                alt="Company Logo"
+                width={48}
               height={48}
               style={{ borderRadius: '50%', boxShadow: "0 6px 20px rgba(0,0,0,0.15)" }}
               priority
             />
+            </Link>
           </Box>
           <Box sx={{ 
             display: 'grid', 

@@ -48,7 +48,7 @@ function ModelCanvas({ path, scale = 1.5, boundsMargin = 1.2 }: { path: string; 
           <meshStandardMaterial color="#9ca3af" />
         </mesh>
       }>
-        {/* REDUCE BOUNDS MARGIN TO MAKE MODEL LARGER */}
+        {/* ADJUSTED BOUNDS MARGIN FOR BETTER PRESENTATION */}
         <Bounds fit observe margin={boundsMargin}>
           <DrainModel path={path} scale={scale} />
         </Bounds>
@@ -71,22 +71,22 @@ export default function DrainsPage() {
     {
       title:'360° View of U Shape Drain T6 - Rotate 360° to inspect from all angles', 
       path:GLB_2, 
-      scale: 7.0, // SIGNIFICANTLY INCREASED from 9.5 to 12.0
-      boundsMargin: 0.8, // REDUCED MARGIN to make model larger in container
+      scale: 5.5, // REDUCED from 7.0 to 5.5 (balanced size) - KEEP AS IS
+      boundsMargin: 1.0, // INCREASED MARGIN slightly for better framing - KEEP AS IS
       textPosition: 'right'
     },
     {
       title:'360° View of U Shape Drain T25 - Rotate 360° to inspect from all angles', 
       path:GLB_3, 
-      scale: 7.5, // SIGNIFICANTLY INCREASED from 9.0 to 11.5
-      boundsMargin: 0.8, // REDUCED MARGIN
+      scale: 6.0, // REDUCED from 7.5 to 6.0 (balanced size) - KEEP AS IS
+      boundsMargin: 1.0, // INCREASED MARGIN slightly - KEEP AS IS
       textPosition: 'left'
     },
     {
       title:'360° View of FT Flume - Rotate 360° to inspect from all angles', 
       path:GLB_1, 
-      scale: 1.5, 
-      boundsMargin: 1.2, // Keep original margin for FT Flume
+      scale: 1.2, // REDUCED from 1.5 to 1.2 (only this one changed)
+      boundsMargin: 1.2, 
       textPosition: 'right'
     }
   ];
@@ -114,11 +114,11 @@ export default function DrainsPage() {
                 key={m.title}
                 className={`w-full max-w-6xl mx-auto rounded-xl ring-1 ring-black/5 shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 ${m.textPosition === 'left' ? 'md:flex-row-reverse' : ''} ${(index === 0 || index === models.length - 1) ? 'md:ml-auto md:mr-0' : ''}`}
               >
-                {/* INCREASED CONTAINER SIZE FOR FIRST TWO MODELS */}
+                {/* ADJUSTED CONTAINER SIZES FOR BETTER PROPORTIONS */}
                 <div
                   className={`relative rounded-lg overflow-hidden bg-center bg-cover ${
                     index < 2 
-                      ? 'w-full md:w-[72%] h-[320px] sm:h-[380px] md:h-[520px]' // LARGER CONTAINER for first two
+                      ? 'w-full md:w-[70%] h-[300px] sm:h-[350px] md:h-[450px]' // SLIGHTLY REDUCED container
                       : 'w-full md:w-[68%] h-[300px] sm:h-[360px] md:h-[480px]' // Original size for third
                   }`}
                   style={{ backgroundImage: `url(/product/Drain/background/${(index % 3) + 1}.webp)` }}
