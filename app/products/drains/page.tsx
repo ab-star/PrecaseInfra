@@ -147,61 +147,62 @@ export default function DrainsPage() {
       </section>
 
       {/* Section 3: Product Specifications */}
-      <section className="w-full bg-white py-8 md:py-12">
-        <div className="w-full" style={{paddingTop: "3rem"}}>
+{/* Section 3: Product Specifications - FIXED FOR MOBILE */}
+<section className="w-full bg-white py-8 md:py-12">
+  <div className="w-full" style={{paddingTop: "3rem"}}>
 
-          {/* Row: FT Flume */}
-          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
-            <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
-              <Image src="/product/Drain/images/FtFlume.webp" alt="FT Flume" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" priority />
-            </div>
-            <div className="flex-1 w-full">
-              <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">FT <span className="text-blue-600">Flume</span></h3>
-              <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-slate-700 text-sm md:text-base">
-                <li><span className="font-semibold text-slate-800">Sizes:</span> 600×800 mm to 2500×1800 mm</li>
-                <li><span className="font-semibold text-slate-800">Loading:</span> Pedestrian; 2.4 T/m² surcharge</li>
-                <li><span className="font-semibold text-slate-800">Location:</span> Edge of road</li>
-                <li><span className="font-semibold text-slate-800">Connection:</span> Groove + sealant; flange bolt</li>
-                <li><span className="font-semibold text-slate-800">Lifting:</span> Special arrangement</li>
-              </ul>
-            </div>
-          </article>
+    {/* Row: FT Flume */}
+    <article style={{marginBottom: "5rem"}} className="w-full rounded-xl bg-white shadow-lg border border-gray-200 p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+      <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
+        <Image src="/product/Drain/images/FtFlume.webp" alt="FT Flume" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" priority />
+      </div>
+      <div className="flex-1 w-full">
+        <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">FT <span className="text-blue-600">Flume</span></h3>
+        <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-slate-700 text-sm md:text-base">
+          <li><span className="font-semibold text-slate-800">Sizes:</span> 600×800 mm to 2500×1800 mm</li>
+          <li><span className="font-semibold text-slate-800">Loading:</span> Pedestrian; 2.4 T/m² surcharge</li>
+          <li><span className="font-semibold text-slate-800">Location:</span> Edge of road</li>
+          <li><span className="font-semibold text-slate-800">Connection:</span> Groove + sealant; flange bolt</li>
+          <li><span className="font-semibold text-slate-800">Lifting:</span> Special arrangement</li>
+        </ul>
+      </div>
+    </article>
 
-          {/* Row: U Shape Drain T6 */}
-          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
-            <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
-              <Image src="/product/Drain/images/UShapeDrainT6.webp" alt="U Shape Drain T6" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
-            </div>
-            <div className="flex-1 w-full">
-              <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">U Shape Drain <span className="text-blue-600">T6</span></h3>
-              <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-slate-700 text-sm md:text-base">
-                <li><span className="font-semibold text-slate-800">Sizes:</span> 300×300 mm to 900×900 mm</li>
-                <li><span className="font-semibold text-slate-800">Loading:</span> Pedestrian/LMV; 2.4 T/m² surcharge</li>
-                <li><span className="font-semibold text-slate-800">Location:</span> Edge of road with kerb</li>
-                <li><span className="font-semibold text-slate-800">Connection:</span> Groove with sealants</li>
-                <li><span className="font-semibold text-slate-800">Lifting:</span> Inbuilt inserts</li>
-              </ul>
-            </div>
-          </article>
+    {/* Row: U Shape Drain T6 */}
+    <article style={{marginBottom: "5rem"}} className="w-full rounded-xl bg-white shadow-lg border border-gray-200 p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+      <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
+        <Image src="/product/Drain/images/UShapeDrainT6.webp" alt="U Shape Drain T6" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
+      </div>
+      <div className="flex-1 w-full">
+        <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">U Shape Drain <span className="text-blue-600">T6</span></h3>
+        <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-slate-700 text-sm md:text-base">
+          <li><span className="font-semibold text-slate-800">Sizes:</span> 300×300 mm to 900×900 mm</li>
+          <li><span className="font-semibold text-slate-800">Loading:</span> Pedestrian/LMV; 2.4 T/m² surcharge</li>
+          <li><span className="font-semibold text-slate-800">Location:</span> Edge of road with kerb</li>
+          <li><span className="font-semibold text-slate-800">Connection:</span> Groove with sealants</li>
+          <li><span className="font-semibold text-slate-800">Lifting:</span> Inbuilt inserts</li>
+        </ul>
+      </div>
+    </article>
 
-          {/* Row: U Shape Drain T25 */}
-          <article style={{marginBottom: "5rem"}} className="w-full rounded-xl bg-slate-50/60 backdrop-blur-sm shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
-            <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
-              <Image src="/product/Drain/images/UshapeDrainT25.webp" alt="U Shape Drain T25" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
-            </div>
-            <div className="flex-1 w-full">
-              <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">U Shape Drain <span className="text-blue-600">T25</span></h3>
-              <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-slate-700 text-sm md:text-base">
-                <li><span className="font-semibold text-slate-800">Sizes:</span> 300×300 mm to 1200×1200 mm</li>
-                <li><span className="font-semibold text-slate-800">Loading:</span> 5 T wheel; 2.4 T/m² surcharge</li>
-                <li><span className="font-semibold text-slate-800">Location:</span> Part of the road</li>
-                <li><span className="font-semibold text-slate-800">Connection:</span> Groove with sealants</li>
-                <li><span className="font-semibold text-slate-800">Lifting:</span> Inbuilt inserts</li>
-              </ul>
-            </div>
-          </article>
-        </div>
-      </section>
+    {/* Row: U Shape Drain T25 */}
+    <article style={{marginBottom: "5rem"}} className="w-full rounded-xl bg-white shadow-lg border border-gray-200 p-4 md:p-6 flex flex-col md:flex-row items-center gap-6">
+      <div className="relative w-full md:w-[40%] min-h-[200px] md:min-h-[240px] bg-white rounded-lg overflow-hidden">
+        <Image src="/product/Drain/images/UshapeDrainT25.webp" alt="U Shape Drain T25" fill sizes="(min-width: 768px) 40vw, 100vw" className="object-contain p-4" />
+      </div>
+      <div className="flex-1 w-full">
+        <h3 className="text-xl md:text-2xl font-extrabold uppercase text-slate-900">U Shape Drain <span className="text-blue-600">T25</span></h3>
+        <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-slate-700 text-sm md:text-base">
+          <li><span className="font-semibold text-slate-800">Sizes:</span> 300×300 mm to 1200×1200 mm</li>
+          <li><span className="font-semibold text-slate-800">Loading:</span> 5 T wheel; 2.4 T/m² surcharge</li>
+          <li><span className="font-semibold text-slate-800">Location:</span> Part of the road</li>
+          <li><span className="font-semibold text-slate-800">Connection:</span> Groove with sealants</li>
+          <li><span className="font-semibold text-slate-800">Lifting:</span> Inbuilt inserts</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
 
       <section className="w-[100dvw] bg-black ml-[calc(50%-50dvw)] mr-[calc(50%-50dvw)]">
         <video
