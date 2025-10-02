@@ -112,7 +112,7 @@ const productSpecs = [
     id: 3,
     title: "U Shape Drain T25",
     subtitle: "Heavy Duty Commercial Drainage",
-    image: "/product/Drain/images/UshapeDrainT25.webp",
+    image: "/product/Drain/images/UshapeDrainT25.jpeg",
     features: [
       { label: "Sizes", value: "300×300 mm to 1200×1200 mm" },
       { label: "Loading", value: "5 T wheel; 2.4 T/m² surcharge" },
@@ -159,9 +159,9 @@ function ProductSpecCard({ product }: { product: typeof productSpecs[0] }) {
               <Box
                 sx={{
                   position: "relative",
-                  width: "100%",
-                  height: "100%",
-                  maxWidth: 400,
+                  width: "30rem",
+                  height: "20rem",
+                  maxWidth: 800,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -170,8 +170,8 @@ function ProductSpecCard({ product }: { product: typeof productSpecs[0] }) {
                 <Image
                   src={product.image}
                   alt={product.title}
-                  width={400}
-                  height={300}
+                  width={800}
+                  height={900}
                   style={{
                     objectFit: "contain",
                     width: "100%",

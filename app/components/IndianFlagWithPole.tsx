@@ -186,16 +186,16 @@ const IndianFlagWithPole = () => {
           position: 'relative',
         }}
       >
-        <h2 style={{ 
-          color: '#1a2a3a', 
-          fontWeight: 800, 
-          fontSize: isMobile ? '1.8rem' : isTablet ? '2.1rem' : '2.5rem', 
-          marginBottom: isMobile ? '12px' : isTablet ? '14px' : '16px', 
-          letterSpacing: 1,
-          lineHeight: 1.2
-        }}>
-          Igniting India&apos;s Infrastructure Renaissance
-        </h2>
+<h2 style={{ 
+  color: '#ff6b35', 
+  fontWeight: 800, 
+  fontSize: isMobile ? '1.8rem' : isTablet ? '2.1rem' : '2.5rem', 
+  marginBottom: isMobile ? '12px' : isTablet ? '14px' : '16px', 
+  letterSpacing: 1,
+  lineHeight: 1.2
+}}>
+  Igniting India&apos;s Infrastructure Renaissance
+</h2>
         <p style={{ 
           fontSize: isMobile ? '1rem' : isTablet ? '1.1rem' : '1.18em', 
           color: "#fff", 

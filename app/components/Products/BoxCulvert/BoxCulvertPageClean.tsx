@@ -6,6 +6,16 @@ import Image from 'next/image';
 import * as THREE from 'three';
 import AlternatingFeatures from './AlternatingFeatures';
 import Head from 'next/head';
+import {
+  Box,
+  Typography,
+  Container,
+  Grid,
+  useTheme,
+  useMediaQuery,
+  alpha,
+  Paper,
+} from "@mui/material";
 
 // Import Anton font
 import { Anton } from 'next/font/google';
@@ -251,50 +261,190 @@ const BoxCulvertPageClean = () => {
           </div>
         </section>
 
-        {/* "Looks Strong" Section - Increased height for desktop */}
-        <section className="relative w-full overflow-hidden flex items-center justify-center py-16 md:py-20 lg:py-28 min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh]"> {/* Added min-height classes */}
-          <Image
-            src="/concrete4.jpg"
-            alt="Concrete background"
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-10 py-12 lg:py-16 text-white"> {/* Increased padding */}
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-10 lg:gap-14"> {/* Increased gap */}
-              {/* Left: Text */}
-              <div className="w-full lg:w-[50%] text-center lg:text-left">
-                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold uppercase tracking-wide mb-6 md:mb-8"> {/* Larger text */}
-                  Strength with Precision, Built to Last
-                </h2>
-                <div className="space-y-4 md:space-y-5 text-base sm:text-lg md:text-xl leading-relaxed"> {/* Larger text and spacing */}
-                  <p>
-                    Manufactured with high-performance self-compacting concrete (SCC) and FE500 reinforcement steel, our culverts deliver exceptional density, finishing, and long service life. The self-explanatory handling system enables safe lifting, transportation, and placement, while precision-engineered leak-proof jointery guarantees watertight connections and long-term reliability.                  </p>
-                  <p>
-                    Our reinforced concrete culverts deliver exceptional strength and durability even in the most challenging environments,
-                    with precision engineering that ensures perfect alignment during installation.
-                  </p>
-                </div>
-              </div>
-              
-              {/* Right: Image */}
-              <div className="w-full lg:w-[45%] flex justify-center mt-10 lg:mt-0"> {/* Increased margin */}
-                <div className="relative w-full max-w-md lg:max-w-lg"> {/* Larger max width */}
-                  <Image
-                    src="/product/BoxCulvertProduct/strong/strong.png"
-                    alt="Box culvert frame"
-                    width={700} // Larger image
-                    height={700}
-                    className="object-contain w-full h-auto drop-shadow-2xl"
-                    priority
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+<section className="relative w-full overflow-hidden flex items-center justify-center py-16 md:py-20 lg:py-28 min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh]">
+  <Image
+    src="/concrete4.jpg"
+    alt="Concrete background"
+    fill
+    sizes="100vw"
+    className="object-cover"
+    priority
+  />
+  <div className="absolute inset-0 bg-black/50" />
+  
+  <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 10, py: 8 }}>
+    <Paper
+      elevation={0}
+      sx={{
+        backgroundColor: alpha('#ffffff', 0.92),
+        backdropFilter: 'blur(10px)',
+        borderRadius: 4,
+        p: { xs: 4, md: 6, lg: 8 },
+        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+        border: `1px solid ${alpha('#ffffff', 0.2)}`,
+      }}
+    >
+      <Grid container spacing={6} alignItems="center" justifyContent="center">
+        {/* Left: Text Content */}
+        <Grid item xs={12} lg={7}>
+          <Box sx={{ 
+            textAlign: { xs: 'center', lg: 'left' },
+            color: 'text.primary',
+          }}>
+            <Typography
+              variant="h2"
+              component="h2"
+              sx={{
+                fontWeight: 800,
+                fontSize: { 
+                  xs: '2.5rem', 
+                  sm: '3.5rem', 
+                  md: '4rem', 
+                  lg: '4.5rem' 
+                },
+                lineHeight: 1.1,
+                mb: 4,
+                background: 'linear-gradient(135deg, #2c2c2c 0%, #555555 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                textTransform: 'uppercase',
+                letterSpacing: '0.02em',
+              }}
+            >
+              Strength with Precision, Built to Last
+            </Typography>
+
+            <Box sx={{ 
+              '& > div': { mb: 3 }
+            }}>
+              <Paper
+                elevation={2}
+                sx={{
+                  p: 3,
+                  backgroundColor: alpha('#f8f9fa', 0.8),
+                  borderLeft: `4px solid #1976d2`,
+                  borderRadius: 2,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  }
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  component="p"
+                  sx={{
+                    fontWeight: 600,
+                    color: 'text.primary',
+                    fontSize: { xs: '1rem', md: '1.1rem' },
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Manufactured with high-performance self-compacting concrete (SCC) and FE500 reinforcement steel, our culverts deliver exceptional density, finishing, and long service life.
+                </Typography>
+              </Paper>
+
+              <Paper
+                elevation={2}
+                sx={{
+                  p: 3,
+                  backgroundColor: alpha('#f8f9fa', 0.8),
+                  borderLeft: `4px solid #2e7d32`,
+                  borderRadius: 2,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  }
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  component="p"
+                  sx={{
+                    fontWeight: 600,
+                    color: 'text.primary',
+                    fontSize: { xs: '1rem', md: '1.1rem' },
+                    lineHeight: 1.6,
+                  }}
+                >
+                  The self-explanatory handling system enables safe lifting, transportation, and placement, while precision-engineered leak-proof jointery guarantees watertight connections and long-term reliability.
+                </Typography>
+              </Paper>
+
+              <Paper
+                elevation={2}
+                sx={{
+                  p: 3,
+                  backgroundColor: alpha('#f8f9fa', 0.8),
+                  borderLeft: `4px solid #ed6c02`,
+                  borderRadius: 2,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                  }
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  component="p"
+                  sx={{
+                    fontWeight: 600,
+                    color: 'text.primary',
+                    fontSize: { xs: '1rem', md: '1.1rem' },
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Our reinforced concrete culverts deliver exceptional strength and durability even in the most challenging environments, with precision engineering that ensures perfect alignment during installation.
+                </Typography>
+              </Paper>
+            </Box>
+          </Box>
+        </Grid>
+
+        {/* Right: Image - Fixed centering */}
+        <Grid item xs={12} lg={5}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                maxWidth: { xs: 400, md: 500, lg: 550 },
+                mx: 'auto', // Center horizontally
+              }}
+            >
+              <Image
+                src="/product/BoxCulvertProduct/strong/strong.png"
+                alt="Box culvert frame"
+                width={600}
+                height={600}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  objectFit: 'contain',
+                }}
+                priority
+              />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </Paper>
+  </Container>
+</section>
 
         {/* Extra Video Section */}
         <section className="w-full bg-black">
