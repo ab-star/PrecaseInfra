@@ -261,7 +261,7 @@ const BoxCulvertPageClean = () => {
           </div>
         </section>
 
-<section className="relative w-full overflow-hidden flex items-center justify-center py-16 md:py-20 lg:py-28 min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh]">
+<section className="relative w-full overflow-hidden flex items-center justify-center py-12 md:py-16 lg:py-20 min-h-[40vh] md:min-h-[45vh] lg:min-h-[50vh]">
   <Image
     src="/concrete4.jpg"
     alt="Concrete background"
@@ -270,21 +270,21 @@ const BoxCulvertPageClean = () => {
     className="object-cover"
     priority
   />
-  <div className="absolute inset-0 bg-black/50" />
+  <div className="absolute inset-0 bg-black/40" /> {/* Lighter overlay */}
   
-  <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 10, py: 8 }}>
+  <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10, py: 4 }}> {/* Reduced container maxWidth and padding */}
     <Paper
       elevation={0}
       sx={{
-        backgroundColor: alpha('#ffffff', 0.92),
-        backdropFilter: 'blur(10px)',
-        borderRadius: 4,
-        p: { xs: 4, md: 6, lg: 8 },
-        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-        border: `1px solid ${alpha('#ffffff', 0.2)}`,
+        backgroundColor: alpha('#ffffff', 0.95),
+        backdropFilter: 'blur(8px)',
+        borderRadius: 3,
+        p: { xs: 3, md: 4, lg: 5 }, // Reduced padding
+        boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+        border: `1px solid ${alpha('#ffffff', 0.3)}`,
       }}
     >
-      <Grid container spacing={6} alignItems="center" justifyContent="center">
+      <Grid container spacing={4} alignItems="center" justifyContent="center"> {/* Reduced spacing */}
         {/* Left: Text Content */}
         <Grid item xs={12} lg={7}>
           <Box sx={{ 
@@ -292,18 +292,18 @@ const BoxCulvertPageClean = () => {
             color: 'text.primary',
           }}>
             <Typography
-              variant="h2"
+              variant="h3" // Changed from h2 to h3 for smaller size
               component="h2"
               sx={{
-                fontWeight: 800,
+                fontWeight: 700,
                 fontSize: { 
-                  xs: '2.5rem', 
-                  sm: '3.5rem', 
-                  md: '4rem', 
-                  lg: '4.5rem' 
-                },
-                lineHeight: 1.1,
-                mb: 4,
+                  xs: '2rem', 
+                  sm: '2.5rem', 
+                  md: '2.75rem', 
+                  lg: '3rem' 
+                }, // Reduced font sizes
+                lineHeight: 1.2,
+                mb: 3, // Reduced margin
                 background: 'linear-gradient(135deg, #2c2c2c 0%, #555555 100%)',
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
@@ -316,30 +316,30 @@ const BoxCulvertPageClean = () => {
             </Typography>
 
             <Box sx={{ 
-              '& > div': { mb: 3 }
+              '& > div': { mb: 2 } // Reduced margin between cards
             }}>
               <Paper
-                elevation={2}
+                elevation={1}
                 sx={{
-                  p: 3,
-                  backgroundColor: alpha('#f8f9fa', 0.8),
-                  borderLeft: `4px solid #1976d2`,
+                  p: 2, // Reduced padding
+                  backgroundColor: alpha('#f8f9fa', 0.9),
+                  borderLeft: `3px solid #1976d2`,
                   borderRadius: 2,
-                  transition: 'all 0.3s ease',
+                  transition: 'all 0.2s ease',
                   '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                   }
                 }}
               >
                 <Typography
-                  variant="h6"
+                  variant="body1" // Changed from h6 to body1
                   component="p"
                   sx={{
-                    fontWeight: 600,
+                    fontWeight: 500,
                     color: 'text.primary',
-                    fontSize: { xs: '1rem', md: '1.1rem' },
-                    lineHeight: 1.6,
+                    fontSize: { xs: '0.9rem', md: '1rem' }, // Smaller font
+                    lineHeight: 1.5,
                   }}
                 >
                   Manufactured with high-performance self-compacting concrete (SCC) and FE500 reinforcement steel, our culverts deliver exceptional density, finishing, and long service life.
@@ -347,27 +347,27 @@ const BoxCulvertPageClean = () => {
               </Paper>
 
               <Paper
-                elevation={2}
+                elevation={1}
                 sx={{
-                  p: 3,
-                  backgroundColor: alpha('#f8f9fa', 0.8),
-                  borderLeft: `4px solid #2e7d32`,
+                  p: 2,
+                  backgroundColor: alpha('#f8f9fa', 0.9),
+                  borderLeft: `3px solid #2e7d32`,
                   borderRadius: 2,
-                  transition: 'all 0.3s ease',
+                  transition: 'all 0.2s ease',
                   '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                   }
                 }}
               >
                 <Typography
-                  variant="h6"
+                  variant="body1"
                   component="p"
                   sx={{
-                    fontWeight: 600,
+                    fontWeight: 500,
                     color: 'text.primary',
-                    fontSize: { xs: '1rem', md: '1.1rem' },
-                    lineHeight: 1.6,
+                    fontSize: { xs: '0.9rem', md: '1rem' },
+                    lineHeight: 1.5,
                   }}
                 >
                   The self-explanatory handling system enables safe lifting, transportation, and placement, while precision-engineered leak-proof jointery guarantees watertight connections and long-term reliability.
@@ -375,27 +375,27 @@ const BoxCulvertPageClean = () => {
               </Paper>
 
               <Paper
-                elevation={2}
+                elevation={1}
                 sx={{
-                  p: 3,
-                  backgroundColor: alpha('#f8f9fa', 0.8),
-                  borderLeft: `4px solid #ed6c02`,
+                  p: 2,
+                  backgroundColor: alpha('#f8f9fa', 0.9),
+                  borderLeft: `3px solid #ed6c02`,
                   borderRadius: 2,
-                  transition: 'all 0.3s ease',
+                  transition: 'all 0.2s ease',
                   '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                   }
                 }}
               >
                 <Typography
-                  variant="h6"
+                  variant="body1"
                   component="p"
                   sx={{
-                    fontWeight: 600,
+                    fontWeight: 500,
                     color: 'text.primary',
-                    fontSize: { xs: '1rem', md: '1.1rem' },
-                    lineHeight: 1.6,
+                    fontSize: { xs: '0.9rem', md: '1rem' },
+                    lineHeight: 1.5,
                   }}
                 >
                   Our reinforced concrete culverts deliver exceptional strength and durability even in the most challenging environments, with precision engineering that ensures perfect alignment during installation.
@@ -405,7 +405,7 @@ const BoxCulvertPageClean = () => {
           </Box>
         </Grid>
 
-        {/* Right: Image - Fixed centering */}
+        {/* Right: Image */}
         <Grid item xs={12} lg={5}>
           <Box
             sx={{
@@ -422,15 +422,15 @@ const BoxCulvertPageClean = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '100%',
-                maxWidth: { xs: 400, md: 500, lg: 550 },
-                mx: 'auto', // Center horizontally
+                maxWidth: { xs: 300, md: 350, lg: 400 }, // Reduced max width
+                mx: 'auto',
               }}
             >
               <Image
                 src="/product/BoxCulvertProduct/strong/strong.png"
                 alt="Box culvert frame"
-                width={600}
-                height={600}
+                width={450} // Reduced image size
+                height={450}
                 style={{
                   width: '100%',
                   height: 'auto',
