@@ -43,7 +43,7 @@ const features: Feature[] = [
   {
     title: 'Built for Durability',
     description:
-      'High-strength self-compacting concrete and FE500 / 500T reinforcement deliver long-lasting performance.',
+      'High-strength self-compacting concrete and FE500 / 500D reinforcement deliver long-lasting performance.',
     image: '/product/BoxCulvertProduct/transition/2.png',
   },
   {

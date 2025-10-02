@@ -304,15 +304,18 @@ const BoxCulvertPageClean = () => {
                 }, // Reduced font sizes
                 lineHeight: 1.2,
                 mb: 3, // Reduced margin
-                background: 'linear-gradient(135deg, #2c2c2c 0%, #555555 100%)',
+                background: 'linear-gradient(135deg, #2e7d32 0%, #4caf50 100%)', // Updated to green shades
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 textTransform: 'uppercase',
                 letterSpacing: '0.02em',
+                textAlign: 'center', // Center align the heading
               }}
             >
-              Strength with Precision, Built to Last
+              Strength with Precision
+              <br />
+              Built to Last
             </Typography>
 
             <Box sx={{ 
@@ -321,7 +324,7 @@ const BoxCulvertPageClean = () => {
               <Paper
                 elevation={1}
                 sx={{
-                  p: 2, // Reduced padding
+                  p: 2.5, // Increased padding
                   backgroundColor: alpha('#f8f9fa', 0.9),
                   borderLeft: `3px solid #1976d2`,
                   borderRadius: 2,
@@ -333,23 +336,23 @@ const BoxCulvertPageClean = () => {
                 }}
               >
                 <Typography
-                  variant="body1" // Changed from h6 to body1
+                  variant="h6" // Changed back to h6 for larger font
                   component="p"
                   sx={{
                     fontWeight: 500,
                     color: 'text.primary',
-                    fontSize: { xs: '0.9rem', md: '1rem' }, // Smaller font
+                    fontSize: { xs: '1rem', md: '1.35rem' }, // Increased font size
                     lineHeight: 1.5,
                   }}
                 >
-                  Manufactured with high-performance self-compacting concrete (SCC) and FE500 reinforcement steel, our culverts deliver exceptional density, finishing, and long service life.
+                  Manufactured with high-performance self-compacting concrete (SCC) and FE500 / 500D reinforcement steel, our culverts deliver exceptional density, finishing, and long service life.
                 </Typography>
               </Paper>
 
               <Paper
                 elevation={1}
                 sx={{
-                  p: 2,
+                  p: 2.5, // Increased padding
                   backgroundColor: alpha('#f8f9fa', 0.9),
                   borderLeft: `3px solid #2e7d32`,
                   borderRadius: 2,
@@ -361,12 +364,12 @@ const BoxCulvertPageClean = () => {
                 }}
               >
                 <Typography
-                  variant="body1"
+                  variant="h6" // Changed back to h6 for larger font
                   component="p"
                   sx={{
                     fontWeight: 500,
                     color: 'text.primary',
-                    fontSize: { xs: '0.9rem', md: '1rem' },
+                    fontSize: { xs: '1rem', md: '1.35rem' }, // Increased font size
                     lineHeight: 1.5,
                   }}
                 >
@@ -377,7 +380,7 @@ const BoxCulvertPageClean = () => {
               <Paper
                 elevation={1}
                 sx={{
-                  p: 2,
+                  p: 2.5, // Increased padding
                   backgroundColor: alpha('#f8f9fa', 0.9),
                   borderLeft: `3px solid #ed6c02`,
                   borderRadius: 2,
@@ -389,12 +392,12 @@ const BoxCulvertPageClean = () => {
                 }}
               >
                 <Typography
-                  variant="body1"
+                  variant="h6" // Changed back to h6 for larger font
                   component="p"
                   sx={{
                     fontWeight: 500,
                     color: 'text.primary',
-                    fontSize: { xs: '0.9rem', md: '1rem' },
+                    fontSize: { xs: '1rem', md: '1.35rem' }, // Increased font size
                     lineHeight: 1.5,
                   }}
                 >

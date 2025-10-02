@@ -236,7 +236,7 @@ export default function AlternatingFeaturesWalls() {
                 fontWeight: 600,
                 color: 'text.primary',
                 mb: 4,
-                fontSize: { xs: '1.5rem', md: '1.75rem' }
+                fontSize: { xs: '1.5rem', md: '2rem' }
               }}
             >
               Key Features & Benefits
@@ -262,7 +262,7 @@ export default function AlternatingFeaturesWalls() {
                                     fontWeight: 600,
                                     color: 'text.primary',
                                     mb: 2,
-                                    fontSize: { xs: '1.1rem', md: '1.3rem' }
+                                    fontSize: { xs: '1.1rem', md: '1.8rem' }
                                   }}
                                 >
                                   {feature.title}
@@ -272,7 +272,7 @@ export default function AlternatingFeaturesWalls() {
                                   sx={{ 
                                     color: 'text.secondary',
                                     lineHeight: 1.6,
-                                    fontSize: { xs: '0.95rem', md: '1.05rem' }
+                                    fontSize: { xs: '0.95rem', md: '1.5rem' }
                                   }}
                                 >
                                   {feature.description}
