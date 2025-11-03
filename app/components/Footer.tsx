@@ -170,7 +170,7 @@ const Footer = () => {
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <PhoneIcon sx={{ color: '#fff' }} />
                 <Link href="tel:+919825680891" underline="hover" sx={{ color: "common.white", "&:hover": { color: "primary.light" } }}>
-                  +91- 9825680891
+                  +91- 9099599557
                 </Link>
               </Box>
             </Box>
