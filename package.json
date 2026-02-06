@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "cf:build": "next-on-pages",
     "vercel:build": "vercel build",
     "start": "next start",
     "lint": "next lint",
@@ -42,7 +41,6 @@
     "three": "^0.178.0"
   },
   "devDependencies": {
-    "@cloudflare/next-on-pages": "^1.13.0",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
