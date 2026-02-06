@@ -21,6 +21,7 @@ import {
   Close as CloseIcon,
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
+  Phone as PhoneIcon,
 } from "@mui/icons-material";
 
 // Create a custom theme
@@ -264,6 +265,31 @@ const MainHeader = () => {
             </Link>
           </nav>
           
+          {/* Right-side contact section - Desktop only */}
+          <div className="hidden md:flex items-center gap-2 ml-auto pr-4">
+            {/* Phone Contact */}
+            <a 
+              href="tel:+919876543210"
+              style={{ padding: '12px 28px', gap: '16px' }}
+              className="flex items-center rounded-lg bg-amber-500 hover:bg-amber-600 transition-all duration-300 shadow-lg"
+              title="Call us"
+            >
+              <PhoneIcon sx={{ fontSize: '1.75rem', color: '#fff', flexShrink: 0 }} />
+              <Typography 
+                sx={{ 
+                  color: '#fff', 
+                  fontWeight: 700, 
+                  fontSize: '1.1rem',
+                  margin: 0,
+                  padding: 0,
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                +91 9876543210
+              </Typography>
+            </a>
+          </div>
+          
           {/* Mobile menu button */}
           <IconButton 
             onClick={() => setMobileOpen(true)} 
@@ -359,9 +385,43 @@ const MainHeader = () => {
               </ListItem>
             </List>
             
-            {/* Footer with company info */}
-            <div className="p-3 bg-emerald-800/50 border-t border-emerald-600/50">
-              <Typography variant="body2" align="center" color="textSecondary">
+            {/* Footer with company info and contact */}
+            <div className="p-4 bg-emerald-800 border-t border-emerald-700 space-y-4">
+              {/* Contact Information */}
+              <a 
+                href="tel:+919876543210"
+                style={{ padding: '14px', gap: '16px' }}
+                className="flex items-center rounded-lg bg-amber-500 hover:bg-amber-600 transition-colors"
+              >
+                <PhoneIcon sx={{ fontSize: '1.75rem', color: '#fff', flexShrink: 0 }} />
+                <div style={{ padding: 0, margin: 0 }}>
+                  <Typography 
+                    sx={{ 
+                      color: '#fff', 
+                      fontWeight: 700,
+                      margin: 0,
+                      padding: 0,
+                      lineHeight: 1.3
+                    }}
+                  >
+                    +91 9876543210
+                  </Typography>
+                  <Typography 
+                    variant="caption" 
+                    sx={{ 
+                      color: 'rgba(255, 255, 255, 0.9)',
+                      margin: 0,
+                      padding: 0,
+                      display: 'block'
+                    }}
+                  >
+                    Call us now
+                  </Typography>
+                </div>
+              </a>
+              
+              {/* Copyright */}
+              <Typography variant="body2" align="center" color="textSecondary" className="pt-2 border-t border-emerald-700">
                 © {new Date().getFullYear()} 3G Infratech
               </Typography>
             </div>

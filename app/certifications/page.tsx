@@ -1,200 +1,277 @@
 "use client";
-import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import {
   Box,
-  Paper,
+  Container,
   Typography,
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Paper,
+  Chip,
+  Stack,
 } from '@mui/material';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DownloadIcon from '@mui/icons-material/Download';
+import {
+  VerifiedUser,
+  CheckCircle,
+  Nature,
+} from '@mui/icons-material';
 
-interface Certification {
-  id: number;
+interface CertificationCategory {
+  id: string;
   title: string;
+  icon: React.ReactNode;
   description: string;
-  filePath: string;
-  issueDate: string;
-  issuingAuthority: string;
+  logos: CertificationLogo[];
+}
+
+interface CertificationLogo {
+  id: number;
+  url: string;
+  alt: string;
 }
 
 export default function CertificationsPage() {
-  const [selected, setSelected] = useState<Certification | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const certifications: Certification[] = [
+  const certificationCategories: CertificationCategory[] = [
     {
-      id: 1,
-      title: '3G Infratech - ISO 14001',
-      description:
-        'Quality Management System certification demonstrating our commitment to consistent quality and continuous improvement.',
-      filePath: '/certif/3GISO14001.pdf',
-      issueDate: 'March 15, 2023',
-      issuingAuthority: 'International Organization for Standardization',
+      id: 'process-management',
+      title: 'Process & Management Systems',
+      icon: <VerifiedUser sx={{ fontSize: 32 }} />,
+      description: 'Industry-recognized certifications for process excellence and management systems',
+      logos: [
+        {
+          id: 1,
+          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-3-8.png',
+          alt: 'ISO Certification 1',
+        },
+        {
+          id: 2,
+          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-4-8.png',
+          alt: 'ISO Certification 2',
+        },
+        {
+          id: 3,
+          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-5-8.png',
+          alt: 'ISO Certification 3',
+        },
+      ],
     },
     {
-      id: 2,
-      title: '3G Infratech - ISO 45001',
-      description:
-        'Information Security Management System certification ensuring the highest standards of data protection and security.',
-      filePath: '/certif/3GISO45001.pdf',
-      issueDate: 'April 22, 2023',
-      issuingAuthority: 'International Organization for Standardization',
+      id: 'quality-testing',
+      title: 'Quality & Testing',
+      icon: <CheckCircle sx={{ fontSize: 32 }} />,
+      description: 'Certifications validating our quality assurance and testing standards',
+      logos: [
+        {
+          id: 4,
+          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-10-8.png',
+          alt: 'Quality Certification 1',
+        },
+        {
+          id: 5,
+          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-11-8.png',
+          alt: 'Quality Certification 2',
+        },
+      ],
     },
     {
-      id: 3,
-      title: 'ISO 9001 2015',
-      description:
-        'Service Organization Control compliance report verifying our security, availability, and confidentiality processes.',
-      filePath: '/certif/ISO90012015.pdf',
-      issueDate: 'May 30, 2023',
-      issuingAuthority: 'American Institute of CPAs',
+      id: 'sustainability',
+      title: 'Sustainability',
+      icon: <Nature sx={{ fontSize: 32 }} />,
+      description: 'Environmental and sustainability commitments recognized by leading organizations',
+      logos: [
+        {
+          id: 6,
+          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-14-8-8.png',
+          alt: 'Sustainability Certification',
+        },
+      ],
     },
   ];
-
-  useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 400);
-    return () => clearTimeout(t);
-  }, []);
 
   return (
     <Box
       sx={{
         minHeight: '100dvh',
         width: '100dvw',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         py: { xs: 4, md: 8 },
-        px: { xs: 2, md: 6 },
-        position: 'relative',
+        px: { xs: 2, md: 3 },
         backgroundImage:
-          "linear-gradient(120deg, rgba(248,250,252,0.94), rgba(241,245,249,0.94)), url('/lightGreenGranite.jpg')",
+          "linear-gradient(120deg, rgba(248,250,252,0.95), rgba(241,245,249,0.95)), url('/concrete2.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
     >
-      <Box sx={{ position: 'absolute', inset: 0, bgcolor: 'rgba(0,0,0,0.08)', pointerEvents: 'none' }} />
-      <Paper elevation={6} sx={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 1280, borderRadius: 4, p: { xs: 2, md: 3 } }}>
-        <Box sx={{ textAlign: 'center', mb: 3 }}>
-          <Typography variant="h4" fontWeight={800} gutterBottom>
-            Our Certifications
+      <Container maxWidth="lg">
+        {/* Header Section */}
+        <Box sx={{ textAlign: 'center', mb: 8 }}>
+          <Chip
+            label="Certifications"
+            variant="filled"
+            sx={{
+              fontSize: '1.1rem',
+              padding: '1.5rem',
+              mb: 2,
+              background: 'linear-gradient(135deg, #1871b6 0%, #2c5aa0 100%)',
+              color: 'white',
+            }}
+          />
+          <Typography
+            variant="h3"
+            component="h1"
+            sx={{
+              fontWeight: 900,
+              mb: 2,
+              background: 'linear-gradient(135deg, #1871b6 0%, #2c5aa0 100%)',
+              backgroundClip: 'text',
+              textFillColor: 'transparent',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            Our Certifications & Recognition
           </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            We maintain the highest standards of quality, safety, and compliance across our operations.
+          <Typography
+            variant="h6"
+            color="text.secondary"
+            sx={{
+              maxWidth: '700px',
+              margin: '0 auto',
+              fontWeight: 500,
+            }}
+          >
+            3G Infratech maintains the highest international standards for quality, safety, and sustainability across all operations. Our certifications reflect our commitment to excellence and continuous improvement.
           </Typography>
         </Box>
 
-        {loading ? (
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 280 }}>
-            <PictureAsPdfIcon color="disabled" sx={{ fontSize: 48 }} />
-          </Box>
-        ) : (
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 340px))',
-              justifyContent: 'center',
-              justifyItems: 'center',
-              gap: 2,
-            }}
-          >
-            {certifications.map((c) => (
-              <Card
-                key={c.id}
+        {/* Certification Categories */}
+        <Stack spacing={6}>
+          {certificationCategories.map((category) => (
+            <Box key={category.id}>
+              {/* Category Header */}
+              <Paper
+                elevation={2}
                 sx={{
-                  borderRadius: 3,
-                  overflow: 'hidden',
-                  transition: 'transform .2s ease, box-shadow .2s ease',
-                  '&:hover': { transform: 'translateY(-4px)', boxShadow: 8 },
-                  display: 'flex',
-                  flexDirection: 'column',
+                  p: 3,
+                  mb: 3,
+                  background: 'linear-gradient(135deg, rgba(24, 113, 182, 0.08) 0%, rgba(44, 90, 160, 0.06) 100%)',
+                  borderLeft: '6px solid #1871b6',
+                  borderRadius: 2,
                 }}
               >
-                <Box sx={{ height: 6, width: '100%', background: 'linear-gradient(90deg, #2563eb, #7c3aed)' }} />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5, gap: 1 }}>
-                    <PictureAsPdfIcon color="primary" />
-                    <Typography variant="h6" component="h3" fontWeight={700} noWrap title={c.title}>
-                      {c.title}
+                <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 1 }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: 2,
+                      background: 'linear-gradient(135deg, #1871b6 0%, #2c5aa0 100%)',
+                      color: 'white',
+                    }}
+                  >
+                    {category.icon}
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        fontWeight: 800,
+                        color: '#1871b6',
+                        mb: 0.5,
+                      }}
+                    >
+                      {category.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {category.description}
                     </Typography>
                   </Box>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
-                    {c.description}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary" display="block">
-                    Issued by: {c.issuingAuthority}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary" display="block">
-                    Date: {c.issueDate}
-                  </Typography>
-                </CardContent>
-                <CardActions sx={{ px: 2, pb: 2 }}>
-                  <Button
-                    variant="contained"
-                    startIcon={<VisibilityIcon />}
-                    onClick={() => setSelected(c)}
-                    sx={{ textTransform: 'none' }}
-                    fullWidth
-                  >
-                    Preview
-                  </Button>
-                  <Button
-                    component="a"
-                    href={c.filePath}
-                    download
-                    variant="outlined"
-                    startIcon={<DownloadIcon />}
-                    sx={{ textTransform: 'none' }}
-                    fullWidth
-                  >
-                    Download
-                  </Button>
-                </CardActions>
-              </Card>
-            ))}
-          </Box>
-        )}
-      </Paper>
+                </Stack>
+              </Paper>
 
-      {/* Preview Dialog */}
-      <Dialog open={!!selected} onClose={() => setSelected(null)} fullWidth maxWidth="xl">
-        <DialogTitle sx={{ pb: 1 }}>{selected?.title || 'Preview'}</DialogTitle>
-        <DialogContent dividers sx={{ p: 0 }}>
-          {selected && (
-            <Box sx={{ width: '100%', height: { xs: '80vh', md: '85vh' } }}>
-              <iframe
-                src={selected.filePath}
-                title={`Preview of ${selected.title}`}
-                style={{ width: '100%', height: '100%', border: 'none' }}
-              />
+              {/* Logo Grid */}
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' },
+                  gap: 3,
+                }}
+              >
+                {category.logos.map((logo) => (
+                  <Paper
+                    key={logo.id}
+                    elevation={3}
+                    sx={{
+                      p: 2,
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 3,
+                      background: 'white',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                        boxShadow: '0 20px 40px rgba(24, 113, 182, 0.15)',
+                      },
+                      minHeight: 200,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Image
+                        src={logo.url}
+                        alt={logo.alt}
+                        width={180}
+                        height={180}
+                        style={{
+                          maxWidth: '100%',
+                          height: 'auto',
+                          objectFit: 'contain',
+                        }}
+                      />
+                    </Box>
+                  </Paper>
+                ))}
+              </Box>
             </Box>
-          )}
-        </DialogContent>
-        <DialogActions>
-          {selected && (
-            <Button
-              component="a"
-              href={selected.filePath}
-              download
-              startIcon={<DownloadIcon />}
-              variant="contained"
-              sx={{ textTransform: 'none' }}
-            >
-              Download PDF
-            </Button>
-          )}
-          <Button onClick={() => setSelected(null)} sx={{ textTransform: 'none' }}>Close</Button>
-        </DialogActions>
-      </Dialog>
+          ))}
+        </Stack>
+
+        {/* Bottom Section */}
+        <Box
+          sx={{
+            mt: 10,
+            p: 4,
+            borderRadius: 3,
+            background: 'linear-gradient(135deg, rgba(24, 113, 182, 0.1) 0%, rgba(44, 90, 160, 0.08) 100%)',
+            borderTop: '2px solid #1871b6',
+            textAlign: 'center',
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+              color: '#1871b6',
+              mb: 1,
+            }}
+          >
+            Committed to Excellence
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            These certifications represent our dedication to delivering world-class precast solutions that meet and exceed international standards for quality, safety, environmental responsibility, and operational excellence. We continuously pursue further certifications and improvements to serve our clients better.
+          </Typography>
+        </Box>
+      </Container>
     </Box>
   );
 }

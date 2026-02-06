@@ -12,39 +12,22 @@ import {
   Button,
   Tabs,
   Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Paper,
-  Collapse,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
+  Stack
 } from '@mui/material';
 import {
   Construction,
   Engineering,
-  DesignServices,
-  SupportAgent,
-  Factory,
-  PrecisionManufacturing,
-  ExpandMore,
-  TableChart,
-  Email,
-  Language,
-  Share,
-  Download,
-  CalendarToday,
   LocationOn,
   AccountBalance,
-  Speed,
-  Savings,
-  AssignmentTurnedIn,
-  FormatQuote
+  Visibility,
+  VerifiedUser,
+  TrendingUp,
+  EmojiEvents
 } from '@mui/icons-material';
 import { ConstructionOutlined } from "@mui/icons-material";
 
@@ -53,8 +36,7 @@ const CaseStudiesPage = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedCaseStudy, setSelectedCaseStudy] = useState(null);
-  const SHOW_GALLERY = false; // Set to true to enable the gallery functionality
-
+  const SHOW_GALLERY = true;
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -69,577 +51,547 @@ const CaseStudiesPage = () => {
     setOpenDialog(false);
   };
 
-  const caseStudies = [
+  const privateCaseStudies = [
     {
       id: 1,
-      title: "Transforming Infrastructure with Precast Solutions",
-      client: "Adani Group & KKS Projects",
-      location: "Border Zone, Near Sea Creek",
+      title: "Chemical Complex for Aarti Industries Ltd., Dahej",
+      client: "Aarti Industries Ltd.",
+      location: "Dahej, Gujarat",
+      overview: "3G Infratech partnered with Aarti Industries Ltd., a leading Indian manufacturer of specialty chemicals, to provide robust precast infrastructure for their expansive chemical complex in Dahej, Gujarat. The project required a high degree of precision and durability to withstand a corrosive industrial environment, ensuring long-term safety and operational continuity.",
+      background: "Aarti Industries Limited (AIL) is a globally recognized chemical conglomerate with a strong presence in pharmaceuticals and specialty chemicals. Known for its commitment to sustainability and operational excellence, AIL sought a partner who could deliver infrastructure that met its stringent standards for quality and safety. Our performance on this project was formally recognized by AIL with a Certificate of Recognition for our extraordinary support during the 2024-25 fiscal year.",
       challenges: [
-        "Continuous saline water logging making on-site casting and curing unreliable",
-        "Slushy terrain with poor soil stability",
-        "High labor and equipment costs due to continuous dewatering, shuttering, and formwork",
-        "Long construction cycle with conventional RCC structures"
+        "Effective stormwater management system capable of handling heavy monsoon rainfall",
+        "Fast-track execution to align with expansion schedule",
+        "Stringent safety protocols required in live chemical plant environment",
+        "Robust precast solution to manage rainwater and prevent waterlogging"
       ],
       solutions: [
-        "Precast Box Culverts for cross-drainage and saline water passage",
-        "Precast U-Shape Drains for effective stormwater discharge",
-        "Precast Retaining Walls to stabilize embankments",
-        "Precast Compound Walls for boundary and site protection"
+        "Heavy-duty FT Flumes for stormwater management",
+        "U Shape Drain & Pedestal for underground utility corridors",
+        "Comprehensive precast solutions for drainage network",
+        "High-performance concrete (HPC) engineered products"
       ],
-      features: [
-        "M50 SCC precast concrete, resistant to saline exposure",
-        "Leak-proof jointery ensuring watertight performance",
-        "Self-explanatory handling system for fast and safe installation",
-        "Factory precision eliminating on-site casting risks"
-      ],
-      impacts: {
-        time: "60% time savings (40 days vs 100 days conventional)",
-        cost: "₹6 Crores savings in overhead costs",
-        manpower: "80% reduction in manpower requirement",
-        quality: "Superior durability in saline conditions"
-      }
+      methodology: "Meticulous, phased execution plan. All precast elements manufactured at state-of-the-art facility using M50 grade Self-Compacting Concrete (SCC) for superior finish. Off-site production minimized on-site activities, enhancing safety and reducing construction timeline.",
+      highlights: [
+        "Durable, chemical-resistant infrastructure",
+        "Project completed on schedule",
+        "Certificate of Recognition from Aarti Industries",
+        "Ecovadis Gold sustainability rating"
+      ]
     },
     {
       id: 2,
-      title: "Metro Rail Project Accelerated with Precast Technology",
-      client: "Delhi Metro Rail Corporation",
-      location: "New Delhi",
+      title: "Industrial Complex for Kansai Nerolac, Dahej",
+      client: "Kansai Nerolac",
+      location: "Dahej, Gujarat",
+      overview: "3G Infratech was entrusted with the construction of a large-scale industrial complex for Kansai Nerolac. The project involved developing a state-of-the-art manufacturing facility using precast technology to ensure speed, quality, and long-term durability.",
+      background: "Kansai Nerolac is a leading paint and coatings manufacturer requiring robust industrial infrastructure.",
       challenges: [
-        "Tight project timeline with heavy penalties for delays",
-        "Limited workspace in densely populated urban area",
-        "Need for precision engineering in seismic zone",
-        "High traffic area requiring minimal disruption"
+        "Large-scale paint manufacturing facility requirements",
+        "Complex drainage and effluent management systems",
+        "Tight timelines for operational readiness",
+        "High-performance structural requirements"
       ],
       solutions: [
-        "Precast tunnel segments for metro lines",
-        "Precast station elements including walls and platforms",
-        "Precast foot over bridges and entry points",
-        "Precast noise barriers along elevated sections"
+        "Complete precast superstructure design and manufacturing",
+        "Custom-designed Retaining Walls for stormwater management",
+        "Comprehensive drainage systems",
+        "Specialized industrial solutions"
       ],
-      features: [
-        "High-precision manufacturing with tolerances under 2mm",
-        "Seismic-resistant design elements",
-        "Quick-connect systems for rapid installation",
-        "Architectural finishes for aesthetic appeal"
-      ],
-      impacts: {
-        time: "45% reduction in construction timeline",
-        cost: "₹4.2 Crores saved through reduced labor and equipment",
-        manpower: "70% reduction in onsite workforce",
-        quality: "Consistent quality with zero defects in structural elements"
-      }
+      methodology: "Advanced precast design and manufacturing capabilities with focus on efficiency and speed.",
+      highlights: [
+        "Complete precast superstructure",
+        "Efficient stormwater and effluent management",
+        "Fast execution timeline",
+        "Operational facility meeting market demands"
+      ]
     },
     {
       id: 3,
-      title: "Industrial Park Development with Precast Components",
-      client: "Tata Industrial Park",
-      location: "Pune, Maharashtra",
+      title: "Agrochemical Facility for UPL, Jhagadia",
+      client: "UPL",
+      location: "Jhagadia, Bharuch, India",
+      overview: "3G Infratech delivered a comprehensive precast solution for UPL, a leading global producer of crop protection products and sustainable agricultural solutions. The project involved the construction of a durable and efficient manufacturing facility designed to support heavy industrial infrastructure and complex drainage requirements.",
+      background: "UPL is a globally recognized agrochemical manufacturer with stringent infrastructure requirements.",
       challenges: [
-        "Need for rapid construction to meet investor move-in deadlines",
-        "Requirement for durable structures in industrial environment",
-        "Limited availability of skilled labor in remote location",
-        "Complex architectural requirements for modern facilities"
+        "Heavy industrial infrastructure demands",
+        "Complex drainage requirements",
+        "Durability in demanding industrial environment",
+        "Efficient facility layout and execution"
       ],
       solutions: [
-        "Precast structural frames for factory buildings",
-        "Precast wall panels with insulation properties",
-        "Precast hollow core slabs for flooring",
-        "Precast staircase and balcony units"
+        "Heavy-duty Box Culverts for underground utility corridors",
+        "Robust U Shape Drains for surface drainage",
+        "High-performance precast concrete solutions",
+        "Comprehensive infrastructure design"
       ],
-      features: [
-        "Integrated insulation for energy efficiency",
-        "Custom architectural finishes as per design",
-        "Pre-installed conduits for electrical and plumbing",
-        "Fire-resistant specifications for industrial safety"
-      ],
-      impacts: {
-        time: "Project completed 8 months ahead of schedule",
-        cost: "22% overall cost savings compared to conventional methods",
-        manpower: "60% reduction in onsite labor requirements",
-        quality: "Consistent finish quality across all buildings"
-      }
-    },
+      methodology: "Advanced design, manufacturing, and supply of tailored precast components for agrochemical sector.",
+      highlights: [
+        "Secure underground corridors for utilities",
+        "Effective surface drainage management",
+        "Long-term infrastructure resilience",
+        "High-performance concrete solutions"
+      ]
+    }
+  ];
+
+  const governmentCaseStudies = [
     {
       id: 4,
-      title: "Bridge Construction in Challenging Terrain",
-      client: "NHPC Limited",
-      location: "Himalayan Foothills, Uttarakhand",
+      title: "Modernization of Bharuch-Ankleshwar Cargo Airport Infrastructure",
+      client: "Airports Authority of India (AAI)",
+      location: "Bharuch-Ankleshwar, Gujarat",
+      overview: "3G Infratech played a pivotal role in the expansion and modernization of Bharuch-Ankleshwar Cargo Airport. The project involved constructing new terminal infrastructure using precast technology to enhance passenger capacity and operational efficiency.",
+      background: "A critical aviation infrastructure project requiring minimal operational disruption.",
       challenges: [
-        "Extreme weather conditions with limited working season",
-        "Difficult terrain with limited access for construction equipment",
-        "Seismic zone requiring specialized engineering",
-        "Environmental sensitivity requiring minimal site disturbance"
+        "Continuous airport operations during construction",
+        "Large paved surfaces requiring extensive drainage",
+        "Strict aviation safety norms compliance",
+        "Minimal disruption to airport operations"
       ],
       solutions: [
-        "Precast bridge girders manufactured off-site",
-        "Precast abutments and pier elements",
-        "Precast deck slabs with anti-skid surface",
-        "Precast parapets and safety barriers"
+        "Heavy-duty Box Culverts for underground utility corridors",
+        "U Shape Drain for stormwater management",
+        "Strategic precast deployment for rapid installation",
+        "Aviation-compliant specifications"
       ],
-      features: [
-        "High-strength concrete for seismic resistance",
-        "Lightweight design for easier transportation",
-        "Corrosion-resistant reinforcement for longevity",
-        "Modular design for quick assembly during short weather windows"
+      methodology: "Coordinated execution with airport authorities ensuring zero operational impact.",
+      highlights: [
+        "Robust underground utility corridors",
+        "Extensive stormwater management",
+        "Minimal airport disruption",
+        "Aviation safety compliance"
+      ]
+    },
+    {
+      id: 5,
+      title: "Smart City Development - Silvassa Smart City Mission",
+      client: "Silvassa Smart City Limited",
+      location: "Silvassa, Dadra and Nagar Haveli",
+      overview: "3G Infratech partnered with Silvassa Smart City Limited to contribute to the ambitious urban transformation of Silvassa. Our role involved developing key public infrastructure using precast technology to ensure speed, sustainability, and high quality.",
+      background: "Supporting India's Smart City Mission with cutting-edge precast infrastructure solutions.",
+      challenges: [
+        "Rapid infrastructure development requirements",
+        "Sustainable construction practices",
+        "Multiple infrastructure elements coordination",
+        "Quality and durability standards"
       ],
-      impacts: {
-        time: "70% reduction in onsite construction time",
-        cost: "₹3.8 Crores saved through efficient methodology",
-        manpower: "75% reduction in high-altitude labor requirements",
-        quality: "Superior engineering quality with precise tolerances"
-      }
+      solutions: [
+        "Box Culverts for landscaping and soil retention",
+        "Modern drainage network with U Shape Drains",
+        "FT Flumes for specialized drainage",
+        "End-to-end infrastructure solutions"
+      ],
+      methodology: "Smart City Mission-aligned execution with focus on sustainable practices.",
+      highlights: [
+        "Accelerated public infrastructure development",
+        "Long-term durability assurance",
+        "Sustainable construction practices",
+        "Modern drainage systems"
+      ]
+    },
+    {
+      id: 6,
+      title: "Precast Bunkers for Indian Army, Rajouri, Kashmir",
+      client: "Indian Army",
+      location: "Rajouri, Jammu & Kashmir",
+      overview: "3G Infratech was entrusted with a mission-critical project to supply and install advanced precast bunkers for the Indian Army in Rajouri, Kashmir. This project represents our capability to serve the nation's defence sector with precision-engineered precast solutions designed to withstand extreme environmental conditions and operational demands.",
+      background: "Supporting India's national security with defense infrastructure. The bunker systems are integral to the Indian Army's operational infrastructure in Rajouri sector, one of the country's most strategically important regions.",
+      challenges: [
+        "Enhance safety and living conditions in high-altitude terrain",
+        "Protective structures within minimal footprint",
+        "Rapid deployment capability in remote border areas",
+        "Minimal on-site construction activity",
+        "Strict military timelines and security protocols"
+      ],
+      solutions: [
+        "Modular precast bunker systems design and manufacturing",
+        "Compact, high-strength bunker units",
+        "M50 grade high-performance concrete construction",
+        "Enhanced reinforced steel for maximum protection",
+        "Rapid, safe, and discreet installation methodology"
+      ],
+      methodology: "Military-grade precision execution. All manufacturing conducted at state-of-the-art facility under strict quality control and security oversight. Modular design enables rapid, safe installation in sensitive border locations.",
+      highlights: [
+        "Advanced precast bunker systems",
+        "Superior protective capacity",
+        "Military-grade precision and security",
+        "Operational infrastructure strengthening",
+        "Contribution to national security"
+      ]
     }
   ];
 
-  const testimonials = [
-    {
-      id: 1,
-      quote: "We are extremely pleased to share our experience with 3G Infratech. The company committed to supplying 20 km of U-Shape Drains within 120 days—and delivered every unit right on time. Beyond supply, 3G Infratech supported us in the hydraulic design of the stormwater drain network, optimizing sizes and ensuring cost-effective, efficient solutions.",
-      author: "X M SSSSSS, Director of Operation, PQR company",
-      company: "PQR Infrastructure"
-    },
-    {
-      id: 2,
-      quote: "3G Infratech's precast solutions helped us complete our metro project 6 months ahead of schedule. Their technical expertise and quality products were instrumental in overcoming complex engineering challenges in dense urban environments.",
-      author: "Rajesh Kumar, Project Director, Delhi Metro",
-      company: "Delhi Metro Rail Corporation"
-    },
-    {
-      id: 3,
-      quote: "The precision and quality of 3G Infratech's precast elements exceeded our expectations. Their team provided excellent support from design through installation, making our industrial park project a great success.",
-      author: "Sanjay Mehta, CEO, Tata Industrial Parks",
-      company: "Tata Group"
-    }
-  ];
 
-    if (!SHOW_GALLERY) {
-      return (
-        <Box
-          sx={{
-            minHeight: "100dvh",
-            width: "100dvw",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundImage:
-              "url('/concrete2.jpg'), linear-gradient(120deg, rgba(248,250,252,0.55), rgba(241,245,249,0.5))",
-            backgroundSize: "cover, cover",
-            backgroundPosition: "center, center",
-            backgroundRepeat: "no-repeat, no-repeat",
-          }}
-        >
-          <Container maxWidth="md">
-            <Card 
-              elevation={8} 
-              sx={{ 
-                p: 4, 
-                borderRadius: 3, 
-                textAlign: "center",
-                backgroundColor: "rgba(255, 255, 255, 0.95)",
-                backdropFilter: "blur(10px)"
-              }}
-            >
-              <ConstructionOutlined 
-                sx={{ 
-                  fontSize: 64, 
-                  color: "primary.main", 
-                  mb: 2 
-                }} 
-              />
-              <Typography variant="h4" fontWeight={800} color="text.primary" gutterBottom>
-                Page Under Construction
-              </Typography>
-              <Typography variant="h6" color="text.secondary" sx={{ mb: 3 }}>
-                We're working on something amazing!
-              </Typography>
-              <Typography color="text.secondary" sx={{ mb: 4 }}>
-                Our Case Study is currently being updated with new content. 
-                Please check back soon for updates and exciting new visuals 
-              </Typography>
-              <Box
-                component="img"
-                src="/under-construction.svg"
-                alt="Under construction"
-                sx={{ 
-                  width: "100%", 
-                  maxWidth: 300, 
-                  height: "auto",
-                  mx: "auto",
-                  mb: 3
-                }}
-              />
-              <Button 
-                variant="contained" 
-                size="large" 
-                href="/"
-                sx={{ 
-                  borderRadius: 2,
-                  px: 4,
-                  py: 1
-                }}
-              >
-                Return to Home
-              </Button>
-            </Card>
-          </Container>
-        </Box>
-      );
-    }
+  const allCaseStudies = [...privateCaseStudies, ...governmentCaseStudies];
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Box sx={{ bgcolor: '#f8fafc', minHeight: '100vh' }}>
       {/* Header Section */}
-      <Box sx={{ textAlign: 'center', mb: 6 }}>
-        <Chip 
-          icon={<Construction />} 
-          label="Case Studies" 
-          color="primary" 
-          sx={{ 
-            fontSize: '1.2rem', 
-            padding: '1.5rem', 
-            mb: 2,
-            background: 'linear-gradient(45deg, #2c3e50, #4a6572)'
-          }} 
-        />
-        <Typography 
-          variant="h3" 
-          component="h1" 
-          sx={{ 
-            fontWeight: 'bold', 
-            color: '#2c3e50',
-            background: 'linear-gradient(45deg, #2c3e50, #4a6572)',
-            backgroundClip: 'text',
-            textFillColor: 'transparent',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            mb: 2
-          }}
-        >
-          Success Stories
-        </Typography>
-        <Typography variant="h6" color="text.secondary" sx={{ maxWidth: '800px', margin: '0 auto' }}>
-          Discover how 3G Infratech's precast solutions have helped leading companies save time, reduce costs, and overcome complex construction challenges.
-        </Typography>
+      <Box
+        sx={{
+          background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+          color: 'white',
+          py: { xs: 6, md: 8 },
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '400px',
+            height: '400px',
+            background: 'rgba(255,255,255,0.05)',
+            borderRadius: '50%',
+            transform: 'translate(100px, -100px)'
+          }
+        }}
+      >
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+          <Box sx={{ textAlign: 'center', mb: 2 }}>
+            <Chip
+              icon={<Construction />}
+              label="Case Studies"
+              sx={{
+                bgcolor: 'rgba(255,255,255,0.2)',
+                color: 'white',
+                fontSize: '1rem',
+                padding: '1.5rem',
+                mb: 3,
+                '& .MuiChip-icon': { color: 'white' }
+              }}
+            />
+          </Box>
+          <Typography variant="h2" sx={{ fontWeight: 900, mb: 2, textAlign: 'center' }}>
+            Our Expertise in Action
+          </Typography>
+          <Typography variant="h6" sx={{ maxWidth: '600px', mx: 'auto', textAlign: 'center', fontWeight: 300, opacity: 0.95 }}>
+            3G Infratech's case studies showcase our expertise in delivering complex precast solutions across diverse sectors and geographies. Each project reflects our commitment to innovation, quality, and client success.
+          </Typography>
+        </Container>
       </Box>
 
-      {/* Tabs for Case Studies and Testimonials */}
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 4 }}>
-        <Tabs value={activeTab} onChange={handleTabChange} centered>
-          <Tab label="Case Studies" />
-          <Tab label="Client Testimonials" />
-          <Tab label="Installation Methodology" />
-        </Tabs>
-      </Box>
-
-      {/* Case Studies Content */}
-      {activeTab === 0 && (
-        <Grid container spacing={4}>
-          {caseStudies.map((caseStudy) => (
-            <Grid item xs={12} md={6} key={caseStudy.id}>
-              <Card 
-                elevation={4} 
-                sx={{ 
-                  height: '100%', 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  transition: 'transform 0.3s',
-                  '&:hover': {
-                    transform: 'translateY(-8px)',
-                    boxShadow: 6
-                  }
-                }}
-              >
-                <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                  <Typography variant="h5" component="h2" fontWeight="bold" color="#2c3e50" gutterBottom>
-                    {caseStudy.title}
-                  </Typography>
-                  
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <AccountBalance sx={{ fontSize: 20, color: '#2c3e50', mr: 1 }} />
-                    <Typography variant="body1" fontWeight="medium">
-                      Client: {caseStudy.client}
-                    </Typography>
-                  </Box>
-                  
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <LocationOn sx={{ fontSize: 20, color: '#2c3e50', mr: 1 }} />
-                    <Typography variant="body1">
-                      Location: {caseStudy.location}
-                    </Typography>
-                  </Box>
-                  
-                  <Typography variant="body2" paragraph>
-                    Key Achievements:
-                  </Typography>
-                  
-                  <Grid container spacing={1} sx={{ mb: 2 }}>
-                    <Grid item xs={6}>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Speed sx={{ fontSize: 16, color: '#2c3e50', mr: 0.5 }} />
-                        <Typography variant="body2" fontWeight="medium">
-                          Time Saved: {caseStudy.impacts.time}
-                        </Typography>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Savings sx={{ fontSize: 16, color: '#2c3e50', mr: 0.5 }} />
-                        <Typography variant="body2" fontWeight="medium">
-                          Cost Savings: {caseStudy.impacts.cost}
-                        </Typography>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Engineering sx={{ fontSize: 16, color: '#2c3e50', mr: 0.5 }} />
-                        <Typography variant="body2" fontWeight="medium">
-                          Manpower: {caseStudy.impacts.manpower}
-                        </Typography>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <AssignmentTurnedIn sx={{ fontSize: 16, color: '#2c3e50', mr: 0.5 }} />
-                        <Typography variant="body2" fontWeight="medium">
-                          Quality: {caseStudy.impacts.quality}
-                        </Typography>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                  
-                  <Button 
-                    variant="outlined" 
-                    fullWidth 
-                    sx={{ 
-                      mt: 2,
-                      color: '#2c3e50', 
-                      borderColor: '#2c3e50',
-                      '&:hover': {
-                        borderColor: '#4a6572',
-                        backgroundColor: 'rgba(44, 62, 80, 0.1)'
-                      }
-                    }}
-                    onClick={() => handleOpenDialog(caseStudy)}
-                  >
-                    View Case Study Details
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )}
-
-      {/* Testimonials Content */}
-      {activeTab === 1 && (
-        <Grid container spacing={4}>
-          {testimonials.map((testimonial) => (
-            <Grid item xs={12} md={6} key={testimonial.id}>
-              <Card 
-                elevation={4} 
-                sx={{ 
-                  height: '100%', 
-                  background: 'linear-gradient(to bottom right, #f8f9fa, #e9ecef)',
-                  position: 'relative'
-                }}
-              >
-                <CardContent sx={{ p: 3 }}>
-                  <Box sx={{ position: 'absolute', top: 16, right: 16, opacity: 0.1 }}>
-                    <FormatQuote sx={{ fontSize: 64, color: '#2c3e50' }} />
-                  </Box>
-                  
-                  <Typography variant="body1" fontStyle="italic" paragraph>
-                    "{testimonial.quote}"
-                  </Typography>
-                  
-                  <Divider sx={{ my: 2 }} />
-                  
-                  <Typography variant="body1" fontWeight="bold" color="#2c3e50">
-                    {testimonial.author}
-                  </Typography>
-                  
-                  <Typography variant="body2" color="text.secondary">
-                    {testimonial.company}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )}
-
-      {/* Installation Methodology Content */}
-      {activeTab === 2 && (
-        <Box sx={{ textAlign: 'center' }}>
-          <Card elevation={4} sx={{ p: 4, background: 'linear-gradient(to bottom right, #f8f9fa, #e9ecef)' }}>
-            <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
-                <Download sx={{ fontSize: 48, color: '#2c3e50' }} />
-              </Box>
-              
-              <Typography variant="h5" component="h2" fontWeight="bold" color="#2c3e50" gutterBottom>
-                Installation Methodology Resources
-              </Typography>
-              
-              <Typography variant="body1" paragraph sx={{ maxWidth: '600px', margin: '0 auto' }}>
-                Access our comprehensive installation guides, methodology statements, and technical documents for all our precast products.
-              </Typography>
-              
-              <Grid container spacing={3} sx={{ mt: 2 }}>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Card variant="outlined" sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>Box Culverts</Typography>
-                    {/* <Button variant="contained" startIcon={<Download />}>
-                      Download PDF
-                    </Button> */}
-                  </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Card variant="outlined" sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>U-Shape Drains</Typography>
-                    {/* <Button variant="contained" startIcon={<Download />}>
-                      Download PDF
-                    </Button> */}
-                  </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Card variant="outlined" sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>Retaining Walls</Typography>
-                    {/* <Button variant="contained" startIcon={<Download />}>
-                      Download PDF
-                    </Button> */}
-                  </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Card variant="outlined" sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>Compound Walls</Typography>
-                    {/* <Button variant="contained" startIcon={<Download />}>
-                      Download PDF
-                    </Button> */}
-                  </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Card variant="outlined" sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>Precast Slabs</Typography>
-                    {/* <Button variant="contained" startIcon={<Download />}>
-                      Download PDF
-                    </Button> */}
-                  </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Card variant="outlined" sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>General Guidelines</Typography>
-                    {/* <Button variant="contained" startIcon={<Download />}>
-                      Download PDF
-                    </Button> */}
-                  </Card>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
+      {/* Main Content */}
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 8 } }}>
+        {/* Tab Navigation */}
+        <Box sx={{ mb: 6 }}>
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            centered
+            variant="scrollable"
+            scrollButtonsDisplay="auto"
+            sx={{
+              '& .MuiTab-root': {
+                fontSize: '1rem',
+                fontWeight: 600,
+                textTransform: 'none',
+                minWidth: 'auto',
+                px: 3,
+                py: 2,
+                color: 'text.secondary'
+              },
+              '& .MuiTabs-indicator': {
+                height: 3,
+                background: 'linear-gradient(90deg, #1e3c72, #2a5298)'
+              }
+            }}
+          >
+            <Tab label="Private Sector" />
+            <Tab label="Government Sector" />
+          </Tabs>
+          <Divider sx={{ mt: 2 }} />
         </Box>
-      )}
+
+        {/* Private Sector Case Studies */}
+        {activeTab === 0 && (
+          <Grid container spacing={4}>
+            {privateCaseStudies.map((caseStudy) => (
+              <Grid item xs={12} md={6} key={caseStudy.id}>
+                <Card
+                  elevation={0}
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                      boxShadow: '0 20px 40px rgba(30, 60, 114, 0.1)',
+                      borderColor: '#2a5298'
+                    }
+                  }}
+                >
+                  <CardContent sx={{ flexGrow: 1, p: 4 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1 }}>
+                      <Engineering sx={{ color: '#2a5298', fontSize: 24 }} />
+                      <Typography variant="caption" sx={{ color: '#2a5298', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        Industrial
+                      </Typography>
+                    </Box>
+
+                    <Typography variant="h5" sx={{ fontWeight: 800, mb: 2, color: '#1e3c72' }}>
+                      {caseStudy.title}
+                    </Typography>
+
+                    <Stack spacing={1.5} sx={{ mb: 3 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <AccountBalance sx={{ fontSize: 18, color: '#666' }} />
+                        <Typography variant="body2" color="text.secondary">
+                          <strong>Client:</strong> {caseStudy.client}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <LocationOn sx={{ fontSize: 18, color: '#666' }} />
+                        <Typography variant="body2" color="text.secondary">
+                          {caseStudy.location}
+                        </Typography>
+                      </Box>
+                    </Stack>
+
+                    <Typography variant="body2" paragraph sx={{ color: 'text.secondary', lineHeight: 1.7 }}>
+                      {caseStudy.overview.substring(0, 150)}...
+                    </Typography>
+
+                    <Box sx={{ mb: 3 }}>
+                      <Typography variant="caption" sx={{ fontWeight: 700, color: '#2a5298', textTransform: 'uppercase', display: 'block', mb: 1 }}>
+                        Key Solutions
+                      </Typography>
+                      <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                        {caseStudy.solutions.slice(0, 2).map((solution, idx) => (
+                          <Chip key={idx} label={solution} size="small" variant="outlined" />
+                        ))}
+                      </Stack>
+                    </Box>
+
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      sx={{
+                        background: 'linear-gradient(90deg, #1e3c72, #2a5298)',
+                        textTransform: 'none',
+                        fontWeight: 600,
+                        py: 1.5,
+                        '&:hover': {
+                          background: 'linear-gradient(90deg, #163355, #1f3f6f)'
+                        }
+                      }}
+                      onClick={() => handleOpenDialog(caseStudy)}
+                    >
+                      View Full Case Study
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+
+        {/* Government Sector Case Studies */}
+        {activeTab === 1 && (
+          <Grid container spacing={4}>
+            {governmentCaseStudies.map((caseStudy) => (
+              <Grid item xs={12} md={6} key={caseStudy.id}>
+                <Card
+                  elevation={0}
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                      boxShadow: '0 20px 40px rgba(30, 60, 114, 0.1)',
+                      borderColor: '#2a5298'
+                    }
+                  }}
+                >
+                  <CardContent sx={{ flexGrow: 1, p: 4 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1 }}>
+                      <VerifiedUser sx={{ color: '#2a5298', fontSize: 24 }} />
+                      <Typography variant="caption" sx={{ color: '#2a5298', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>
+                        Government
+                      </Typography>
+                    </Box>
+
+                    <Typography variant="h5" sx={{ fontWeight: 800, mb: 2, color: '#1e3c72' }}>
+                      {caseStudy.title}
+                    </Typography>
+
+                    <Stack spacing={1.5} sx={{ mb: 3 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <AccountBalance sx={{ fontSize: 18, color: '#666' }} />
+                        <Typography variant="body2" color="text.secondary">
+                          <strong>Authority:</strong> {caseStudy.client}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <LocationOn sx={{ fontSize: 18, color: '#666' }} />
+                        <Typography variant="body2" color="text.secondary">
+                          {caseStudy.location}
+                        </Typography>
+                      </Box>
+                    </Stack>
+
+                    <Typography variant="body2" paragraph sx={{ color: 'text.secondary', lineHeight: 1.7 }}>
+                      {caseStudy.overview.substring(0, 150)}...
+                    </Typography>
+
+                    <Box sx={{ mb: 3 }}>
+                      <Typography variant="caption" sx={{ fontWeight: 700, color: '#2a5298', textTransform: 'uppercase', display: 'block', mb: 1 }}>
+                        Key Solutions
+                      </Typography>
+                      <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                        {caseStudy.solutions.slice(0, 2).map((solution, idx) => (
+                          <Chip key={idx} label={solution} size="small" variant="outlined" />
+                        ))}
+                      </Stack>
+                    </Box>
+
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      sx={{
+                        background: 'linear-gradient(90deg, #1e3c72, #2a5298)',
+                        textTransform: 'none',
+                        fontWeight: 600,
+                        py: 1.5,
+                        '&:hover': {
+                          background: 'linear-gradient(90deg, #163355, #1f3f6f)'
+                        }
+                      }}
+                      onClick={() => handleOpenDialog(caseStudy)}
+                    >
+                      View Full Case Study
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </Container>
 
       {/* Case Study Detail Dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
         {selectedCaseStudy && (
           <>
-            <DialogTitle sx={{ bgcolor: '#2c3e50', color: 'white' }}>
-              <Typography variant="h5" fontWeight="bold">
-                {selectedCaseStudy.title}
-              </Typography>
+            <DialogTitle sx={{ background: 'linear-gradient(90deg, #1e3c72, #2a5298)', color: 'white', fontWeight: 800, fontSize: '1.3rem' }}>
+              {selectedCaseStudy.title}
             </DialogTitle>
-            <DialogContent sx={{ p: 3 }}>
+            <DialogContent sx={{ p: 4 }}>
+              <Box sx={{ mb: 3, pt: 2 }}>
+                <Stack spacing={1.5} sx={{ mb: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <AccountBalance sx={{ color: '#2a5298' }} />
+                    <Typography variant="body2">
+                      <strong>Client/Authority:</strong> {selectedCaseStudy.client}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <LocationOn sx={{ color: '#2a5298' }} />
+                    <Typography variant="body2">
+                      <strong>Location:</strong> {selectedCaseStudy.location}
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Box>
+
+              <Divider sx={{ my: 2 }} />
+
               <Box sx={{ mb: 3 }}>
-                <Typography variant="h6" gutterBottom color="#2c3e50" fontWeight="bold">
+                <Typography variant="h6" sx={{ fontWeight: 800, color: '#1e3c72', mb: 1 }}>
                   Project Overview
                 </Typography>
-                <Typography variant="body1" paragraph>
-                  Client: {selectedCaseStudy.client}
-                </Typography>
-                <Typography variant="body1" paragraph>
-                  Location: {selectedCaseStudy.location}
+                <Typography variant="body2" paragraph sx={{ color: 'text.secondary', lineHeight: 1.8 }}>
+                  {selectedCaseStudy.overview}
                 </Typography>
               </Box>
-              
+
+              {selectedCaseStudy.background && (
+                <Box sx={{ mb: 3 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#1e3c72', mb: 1 }}>
+                    Client/Authority Background
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.8 }}>
+                    {selectedCaseStudy.background}
+                  </Typography>
+                </Box>
+              )}
+
               <Box sx={{ mb: 3 }}>
-                <Typography variant="h6" gutterBottom color="#2c3e50" fontWeight="bold">
-                  Challenges Faced
+                <Typography variant="h6" sx={{ fontWeight: 800, color: '#1e3c72', mb: 1 }}>
+                  Project Challenges
                 </Typography>
-                <ul>
-                  {selectedCaseStudy.challenges.map((challenge, index) => (
-                    <li key={index}>
-                      <Typography variant="body1">{challenge}</Typography>
-                    </li>
+                <Stack spacing={1}>
+                  {selectedCaseStudy.challenges.map((challenge, idx) => (
+                    <Box key={idx} sx={{ display: 'flex', gap: 1.5 }}>
+                      <Typography sx={{ color: '#2a5298', fontWeight: 800 }}>•</Typography>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {challenge}
+                      </Typography>
+                    </Box>
                   ))}
-                </ul>
+                </Stack>
               </Box>
-              
+
               <Box sx={{ mb: 3 }}>
-                <Typography variant="h6" gutterBottom color="#2c3e50" fontWeight="bold">
-                  Precast Solutions
+                <Typography variant="h6" sx={{ fontWeight: 800, color: '#1e3c72', mb: 1 }}>
+                  Our Solutions
                 </Typography>
-                <ul>
-                  {selectedCaseStudy.solutions.map((solution, index) => (
-                    <li key={index}>
-                      <Typography variant="body1">{solution}</Typography>
-                    </li>
+                <Stack spacing={1}>
+                  {selectedCaseStudy.solutions.map((solution, idx) => (
+                    <Box key={idx} sx={{ display: 'flex', gap: 1.5 }}>
+                      <Typography sx={{ color: '#2a5298', fontWeight: 800 }}>✓</Typography>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {solution}
+                      </Typography>
+                    </Box>
                   ))}
-                </ul>
+                </Stack>
               </Box>
-              
+
               <Box sx={{ mb: 3 }}>
-                <Typography variant="h6" gutterBottom color="#2c3e50" fontWeight="bold">
-                  Key Features Delivered
+                <Typography variant="h6" sx={{ fontWeight: 800, color: '#1e3c72', mb: 1 }}>
+                  Execution Methodology
                 </Typography>
-                <ul>
-                  {selectedCaseStudy.features.map((feature, index) => (
-                    <li key={index}>
-                      <Typography variant="body1">{feature}</Typography>
-                    </li>
-                  ))}
-                </ul>
-              </Box>
-              
-              <Box>
-                <Typography variant="h6" gutterBottom color="#2c3e50" fontWeight="bold">
-                  Project Impact
+                <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.8 }}>
+                  {selectedCaseStudy.methodology}
                 </Typography>
-                <TableContainer component={Paper} variant="outlined">
-                  <Table>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell component="th" scope="row">Time Savings</TableCell>
-                        <TableCell>{selectedCaseStudy.impacts.time}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell component="th" scope="row">Cost Efficiency</TableCell>
-                        <TableCell>{selectedCaseStudy.impacts.cost}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell component="th" scope="row">Manpower Reduction</TableCell>
-                        <TableCell>{selectedCaseStudy.impacts.manpower}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell component="th" scope="row">Quality Improvement</TableCell>
-                        <TableCell>{selectedCaseStudy.impacts.quality}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
               </Box>
+
+              {selectedCaseStudy.highlights && (
+                <Box>
+                  <Typography variant="h6" sx={{ fontWeight: 800, color: '#1e3c72', mb: 1 }}>
+                    Key Highlights
+                  </Typography>
+                  <Stack spacing={1}>
+                    {selectedCaseStudy.highlights.map((highlight, idx) => (
+                      <Box key={idx} sx={{ display: 'flex', gap: 1.5, alignItems: 'flex-start' }}>
+                        <EmojiEvents sx={{ color: '#2a5298', flexShrink: 0, mt: 0.5 }} />
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                          {highlight}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Stack>
+                </Box>
+              )}
             </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseDialog}>Close</Button>
-              {/* <Button variant="contained" startIcon={<Download />}>
-                Download Case Study
-              </Button> */}
+            <DialogActions sx={{ p: 2 }}>
+              <Button onClick={handleCloseDialog} variant="outlined">
+                Close
+              </Button>
             </DialogActions>
           </>
         )}
       </Dialog>
-    </Container>
+    </Box>
   );
 };
 
