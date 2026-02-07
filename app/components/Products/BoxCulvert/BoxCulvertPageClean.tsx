@@ -168,7 +168,7 @@ const BoxCulvertPageClean = () => {
         </section>
 
         {/* 3D Model Section - Increased height for desktop */}
-        <section className="w-full py-16 md:py-20 lg:py-24 bg-gray-50 flex flex-col items-center justify-center">
+        <section className="w-full py-16 md:py-20 lg:py-24 flex flex-col items-center justify-center" style={{margin: "4rem 0px"}}>
           {/* Concrete-themed heading for 3D model */}
           <div className="w-full max-w-5xl mx-auto px-4 mb-6 md:mb-8 text-center">
             <h2 className={`${anton.className} text-3xl md:text-5xl lg:text-6xl uppercase tracking-wide mb-2 md:mb-4`}
@@ -191,7 +191,7 @@ const BoxCulvertPageClean = () => {
 
           <div 
             ref={canvasContainerRef}
-            className="w-full max-w-5xl mx-auto rounded-lg overflow-hidden shadow-lg bg-white border border-gray-200"
+            className="w-full max-w-5xl mx-auto rounded-lg overflow-hidden"
             style={{ 
               height: isMobile ? '50vh' : isTablet ? '55vh' : '65vh', // Increased desktop height
               maxHeight: isDesktop ? '750px' : '700px', // Taller max height for desktop
