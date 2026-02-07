@@ -1,11 +1,22 @@
 "use client";
-import React, { createContext, useContext, useState } from 'react';
-// Simplified stub auth (real firebase auth removed for minimal admin portal)
-export interface User { uid: string; email: string | null; displayName?: string | null }
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  User as FirebaseUser 
+} from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+
+export interface User {
+  uid: string;
+  email: string | null;
+  displayName?: string | null;
+}
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   loading: boolean;
 }
@@ -22,38 +33,35 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Sample admin credentials (for demo purposes)
-  const SAMPLE_ADMIN = {
-    email: 'admin@infrastire.com',
-    password: 'admin123'
-  };
-
-  // Firebase auth listener removed
-
-  const login = async (email: string, password: string): Promise<boolean> => {
-  try {
-      // Check for sample admin credentials first
-      if (email === SAMPLE_ADMIN.email && password === SAMPLE_ADMIN.password) {
-        setUser({ uid:'demo', email, displayName:'Admin User'});
-        return true;
+  // Listen to Firebase auth state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
+      if (firebaseUser) {
+        setUser({
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          displayName: firebaseUser.displayName,
+        });
+      } else {
+        setUser(null);
       }
-      return false;
-    } catch {
-      return false;
-    }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const login = async (email: string, password: string): Promise<void> => {
+    await signInWithEmailAndPassword(auth, email, password);
+    // onAuthStateChanged will update state automatically
   };
 
   const logout = async (): Promise<void> => {
-    try {
-  // Clear demo session (noop)
-      setUser(null);
-    } catch {}
+    await signOut(auth);
+    // onAuthStateChanged will update state automatically
   };
-
-  // Check for demo admin session on mount
-  // Demo session restore removed
 
   const value = {
     user,

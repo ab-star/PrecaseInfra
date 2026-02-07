@@ -1,40 +1,44 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminLoginPage() {
+  const { login } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  // Hard navigation used after login so middleware runs on target route
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
     try {
-  const params = new URLSearchParams(window.location.search);
-  const nextParam = params.get('next') || '/admin/gallery';
-  const res = await fetch('/api/admin-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, next: nextParam }) });
-      if (!res.ok) {
-        const data = await res.json().catch(()=>({ error: 'Invalid credentials'}));
-        setError(data.error || 'Login failed');
-        return;
+      await login(email, password);
+      // Use router.push to navigate after login without page reload
+      // This preserves the in-memory Firebase session
+      router.push('/admin/dashboard');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Invalid credentials';
+      // Common Firebase auth errors
+      if (message.includes('auth/user-not-found') || message.includes('auth/wrong-password')) {
+        setError('Invalid email or password');
+      } else if (message.includes('auth/invalid-email')) {
+        setError('Invalid email format');
+      } else if (message.includes('auth/too-many-requests')) {
+        setError('Too many failed attempts. Try again later.');
+      } else {
+        setError(message);
       }
-  const { user } = await res.json();
-  sessionStorage.setItem('adminUser', JSON.stringify(user));
-  const next = nextParam;
-  // Use hard navigation so middleware executes on the new route reliably
-  window.location.href = next;
-  } catch {
-      setError('Network error');
     } finally {
       setLoading(false);
     }
   };
-
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
@@ -58,7 +62,7 @@ export default function AdminLoginPage() {
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M1.5 6.75A2.25 2.25 0 0 1 3.75 4.5h16.5A2.25 2.25 0 0 1 22.5 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 17.25V6.75Zm2.318-.75 7.432 5.097a.75.75 0 0 0 .84 0L19.522 6h-15.704Z"/></svg>
                   </span>
                   <input
-                  style={{paddingLeft: "2.5rem"}}
+                    style={{paddingLeft: "2.5rem"}}
                     type="email"
                     autoComplete="email"
                     className="w-full rounded-full border border-gray-300 bg-white pl-10 pr-4 py-3 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -66,6 +70,7 @@ export default function AdminLoginPage() {
                     value={email}
                     onChange={(e)=>setEmail(e.target.value)}
                     required
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -77,7 +82,7 @@ export default function AdminLoginPage() {
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5"><path d="M12 1.5a4.5 4.5 0 0 0-4.5 4.5v3H6a1.5 1.5 0 0 0-1.5 1.5v7.5A1.5 1.5 0 0 0 6 19.5h12a1.5 1.5 0 0 0 1.5-1.5V10.5A1.5 1.5 0 0 0 18 9h-1.5v-3A4.5 4.5 0 0 0 12 1.5Zm-3 4.5A3 3 0 0 1 12 3a3 3 0 0 1 3 3v3H9v-3Z"/></svg>
                   </span>
                   <input
-                  style={{paddingLeft: "2.5rem"}}
+                    style={{paddingLeft: "2.5rem"}}
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
                     className="w-full rounded-full border border-gray-300 bg-white pl-10 pr-16 py-3 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -85,8 +90,14 @@ export default function AdminLoginPage() {
                     value={password}
                     onChange={(e)=>setPassword(e.target.value)}
                     required
+                    disabled={loading}
                   />
-                  <button type="button" onClick={()=>setShowPassword(s=>!s)} className="absolute inset-y-0 right-2 px-3 flex items-center text-gray-500 hover:text-gray-700 text-xs select-none">
+                  <button 
+                    type="button" 
+                    onClick={()=>setShowPassword(s=>!s)} 
+                    className="absolute inset-y-0 right-2 px-3 flex items-center text-gray-500 hover:text-gray-700 text-xs select-none"
+                    disabled={loading}
+                  >
                     {showPassword ? 'Hide' : 'Show'}
                   </button>
                 </div>

@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, initializeFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import { getAuth, inMemoryPersistence } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -30,4 +31,10 @@ try {
 }
 export const db = dbInternal;
 export const storage = getStorage(app);
+
+// Initialize Auth with in-memory persistence only (no persistence across page refresh/reload)
+const auth = getAuth(app);
+auth.setPersistence(inMemoryPersistence);
+export { auth };
+
 export default app;

@@ -73,13 +73,13 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       
-      {/* Background pattern */}
+      Background pattern
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-0 left-0 w-full h-full bg-[url('/concrete_texture.jpg')] bg-repeat"></div>
       </div>
 
       {/* Header */}
-      <header className="relative z-10 bg-black/20 backdrop-blur-sm border-b border-white/10">
+      {/* <header className="relative z-10 bg-black/20 backdrop-blur-sm border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
@@ -122,11 +122,10 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-      </header>
+      </header> */}
 
       {/* Main Content */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Welcome Section */}
+      {/* <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -141,7 +140,6 @@ const AdminDashboard = () => {
           </p>
         </motion.div>
 
-        {/* Stats Grid */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -189,7 +187,6 @@ const AdminDashboard = () => {
           </div>
         </motion.div>
 
-        {/* Management Cards */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -238,7 +235,6 @@ const AdminDashboard = () => {
           ))}
         </motion.div>
 
-        {/* Quick Actions */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -273,7 +269,7 @@ const AdminDashboard = () => {
             </Link>
           </div>
         </motion.div>
-      </main>
+      </main> */}
     </div>
   );
 };
