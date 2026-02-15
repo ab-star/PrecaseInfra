@@ -38,18 +38,18 @@ export default function CertificationsPage() {
       logos: [
         {
           id: 1,
-          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-3-8.png',
-          alt: 'ISO Certification 1',
+          url: '/certIcon/ISO.jpeg',
+          alt: 'ISO Certification',
         },
         {
           id: 2,
-          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-4-8.png',
-          alt: 'ISO Certification 2',
+          url: '/certIcon/5S.jpeg',
+          alt: '5S Certification',
         },
         {
           id: 3,
-          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-5-8.png',
-          alt: 'ISO Certification 3',
+          url: '/certIcon/ZED.jpeg',
+          alt: 'ZED Certification',
         },
       ],
     },
@@ -61,29 +61,29 @@ export default function CertificationsPage() {
       logos: [
         {
           id: 4,
-          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-10-8.png',
-          alt: 'Quality Certification 1',
+          url: '/certIcon/QualityControl.jpeg',
+          alt: 'Quality Control Certification',
         },
         {
           id: 5,
-          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-11-8.png',
-          alt: 'Quality Certification 2',
+          url: '/certIcon/ISO.jpeg',
+          alt: 'ISO Certification',
         },
       ],
     },
-    {
-      id: 'sustainability',
-      title: 'Sustainability',
-      icon: <Nature sx={{ fontSize: 32 }} />,
-      description: 'Environmental and sustainability commitments recognized by leading organizations',
-      logos: [
-        {
-          id: 6,
-          url: 'https://fujisilvertech.com/wp-content/uploads/2024/02/Asset-14-8-8.png',
-          alt: 'Sustainability Certification',
-        },
-      ],
-    },
+    // {
+    //   id: 'sustainability',
+    //   title: 'Sustainability',
+    //   icon: <Nature sx={{ fontSize: 32 }} />,
+    //   description: 'Environmental and sustainability commitments recognized by leading organizations',
+    //   logos: [
+    //     {
+    //       id: 6,
+    //       url: '/certIcon/placeholder-eco.jpeg',
+    //       alt: 'Sustainability Certification',
+    //     },
+    //   ],
+    // },
   ];
 
   return (

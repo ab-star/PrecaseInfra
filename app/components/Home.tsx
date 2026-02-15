@@ -26,7 +26,7 @@ export default function Home() {
       <SustainabilitySectionAnimated />
       {/* <ConstructionSectorNavigation /> */}
       {/* <FutureReadySection /> */}
-      <TestimonialCarousel />
+      {/* <TestimonialCarousel /> */}
       <VisionSection />
       {/* <Footer /> */}
     </>
