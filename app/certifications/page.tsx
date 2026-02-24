@@ -41,16 +41,6 @@ export default function CertificationsPage() {
           url: '/certIcon/ISO.jpeg',
           alt: 'ISO Certification',
         },
-        {
-          id: 2,
-          url: '/certIcon/5S.jpeg',
-          alt: '5S Certification',
-        },
-        {
-          id: 3,
-          url: '/certIcon/ZED.jpeg',
-          alt: 'ZED Certification',
-        },
       ],
     },
     {
@@ -60,30 +50,30 @@ export default function CertificationsPage() {
       description: 'Certifications validating our quality assurance and testing standards',
       logos: [
         {
-          id: 4,
-          url: '/certIcon/QualityControl.jpeg',
-          alt: 'Quality Control Certification',
+          id: 2,
+          url: '/certIcon/5S.jpeg',
+          alt: '5S Certification',
         },
         {
-          id: 5,
-          url: '/certIcon/ISO.jpeg',
-          alt: 'ISO Certification',
+          id: 4,
+          url: '/certIcon/QualityControl.jpeg',
+          alt: 'Approved Tested Certification',
         },
       ],
     },
-    // {
-    //   id: 'sustainability',
-    //   title: 'Sustainability',
-    //   icon: <Nature sx={{ fontSize: 32 }} />,
-    //   description: 'Environmental and sustainability commitments recognized by leading organizations',
-    //   logos: [
-    //     {
-    //       id: 6,
-    //       url: '/certIcon/placeholder-eco.jpeg',
-    //       alt: 'Sustainability Certification',
-    //     },
-    //   ],
-    // },
+    {
+      id: 'sustainability',
+      title: 'Sustainability',
+      icon: <Nature sx={{ fontSize: 32 }} />,
+      description: 'Environmental and sustainability commitments recognized by leading organizations',
+      logos: [
+        {
+          id: 3,
+          url: '/certIcon/ZED.jpeg',
+          alt: 'ZED Silver Certification',
+        },
+      ],
+    },
   ];
 
   return (
@@ -192,9 +182,11 @@ export default function CertificationsPage() {
               {/* Logo Grid */}
               <Box
                 sx={{
-                  display: 'grid',
-                  gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' },
+                  display: 'flex',
+                  flexWrap: 'wrap',
                   gap: 3,
+                  justifyContent: 'center',
+                  alignItems: 'stretch',
                 }}
               >
                 {category.logos.map((logo) => (
@@ -203,7 +195,6 @@ export default function CertificationsPage() {
                     elevation={3}
                     sx={{
                       p: 2,
-                      height: '100%',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -214,7 +205,8 @@ export default function CertificationsPage() {
                         transform: 'translateY(-8px)',
                         boxShadow: '0 20px 40px rgba(24, 113, 182, 0.15)',
                       },
-                      minHeight: 200,
+                      width: { xs: '100%', sm: 220, md: 240 },
+                      height: 220,
                     }}
                   >
                     <Box
