@@ -155,36 +155,6 @@ export default function ViewProjectsPage() {
     },
     {
       id: "govt-3",
-      title: "Kiran Medical College & Hospital",
-      client: "Government of Gujarat",
-      location: "Gujarat",
-      sector: "Healthcare",
-      description:
-        "Constructed a multi-specialty hospital and medical college facility utilizing precast components, U Shape Drains for campus drainage, ensuring rapid construction and structural integrity.",
-      highlights: [
-        "Multi-specialty healthcare facility",
-        "Precast structural components",
-        "Campus-wide drainage system",
-        "Rapid construction methodology",
-      ],
-    },
-    {
-      id: "govt-4",
-      title: "Adani Green Energy Project, Khavda",
-      client: "Adani Green Energy",
-      location: "Khavda, Gujarat",
-      sector: "Renewable Energy",
-      description:
-        "Provided precast solutions, including Box Culverts for cable trenches for a large-scale solar power project. The project involved the delivery of durable and reliable precast structures capable of withstanding harsh environmental conditions.",
-      highlights: [
-        "Box Culverts for cable management",
-        "Large-scale solar project",
-        "Harsh environment durability",
-        "Renewable energy infrastructure",
-      ],
-    },
-    {
-      id: "govt-5",
       title: "GIDC Industrial Estate, Jambusar",
       client: "Gujarat Industrial Development Corporation (GIDC)",
       location: "Jambusar, Gujarat",
@@ -199,7 +169,7 @@ export default function ViewProjectsPage() {
       ],
     },
     {
-      id: "govt-6",
+      id: "govt-4",
       title: "Precast Bunker Systems for Indian Army, Rajouri",
       client: "Indian Army",
       location: "Rajouri, Jammu & Kashmir",

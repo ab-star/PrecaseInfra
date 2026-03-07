@@ -41,6 +41,16 @@ export default function CertificationsPage() {
           url: '/certIcon/ISO.jpeg',
           alt: 'ISO Certification',
         },
+         {
+          id: 2,
+          url: '/certIcon/IsoOne.png',
+          alt: 'ISO Certification',
+        },
+         {
+          id: 3,
+          url: '/certIcon/IsoTwo.png',
+          alt: 'ISO Certification',
+        },
       ],
     },
     {
