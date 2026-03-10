@@ -11,7 +11,6 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
-import { useRequireAdminSession } from "../_hooks/useRequireAdminSession";
 
 // MUI
 import {
@@ -51,7 +50,6 @@ interface ContactDoc {
 const PAGE_SIZE = 10;
 
 export default function AdminContactsPage() {
-  useRequireAdminSession();
 
   // pagination state
   const [pages, setPages] = useState<ContactDoc[][]>([]);
@@ -76,9 +74,11 @@ export default function AdminContactsPage() {
     try {
       setLoading(true);
       setError(null);
+      console.log("Loaded contacts aaaaaa:")
       let qy = query(baseQuery, limit(PAGE_SIZE));
       if (cursor) qy = query(baseQuery, startAfter(cursor), limit(PAGE_SIZE));
       const snap = await getDocs(qy);
+            console.log("Loaded contacts bbbbbb zzzz:")
       const docs = snap.docs.map((d) => {
         const data = d.data() as DocumentData;
         return {
@@ -91,6 +91,7 @@ export default function AdminContactsPage() {
           createdAt: data.createdAt?.toDate?.(),
         } as ContactDoc;
       });
+      console.log("Loaded contacts:", snap.docs);
       setPages((prev) => (cursor ? [...prev, docs] : [docs]));
       setCursors((prev) =>
         cursor
@@ -99,14 +100,17 @@ export default function AdminContactsPage() {
       );
       setCanNext(snap.docs.length === PAGE_SIZE);
       if (!cursor) setPageIndex(0);
-  } catch {
+  } catch(err) {
       setError("Failed to load contacts");
+      console.error("Firestore error:", err);
+        setError("Failed to load contacts");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    console.log("hioiiiiaaaaaa")
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -131,7 +135,7 @@ export default function AdminContactsPage() {
   const selected = items.find((i) => i.id === openId) || null;
 
   return (
-    <Box
+  <Box
       sx={{
         minHeight: "100dvh",
         width: "100dvw",
@@ -139,12 +143,12 @@ export default function AdminContactsPage() {
         alignItems: "center",
         justifyContent: "center",
         py: { xs: 4, md: 8 },
-        px: { xs: 2, md: 3 },
+        px: { xs: 2, md: 6 },
+        position: "relative",
         backgroundImage:
-          "url('/concrete2.jpg'), linear-gradient(120deg, rgba(248,250,252,0.55), rgba(241,245,249,0.5))",
-        backgroundSize: "cover, cover",
-        backgroundPosition: "center, center",
-        backgroundRepeat: "no-repeat, no-repeat",
+          "linear-gradient(120deg, rgba(248,250,252,0.94), rgba(241,245,249,0.94)), url('/concrete2.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <Paper

@@ -50,7 +50,6 @@ function hasToDate(x: unknown): x is { toDate?: () => Date } {
 }
 
 export default function GalleryAdminPage() {
-  useRequireAdminSession();
   const [file, setFile] = useState<File | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);

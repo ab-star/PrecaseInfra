@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
 export default function AdminHome() {
-  redirect('/admin/gallery');
+  redirect('/admin/contacts');
   return null;
 }
